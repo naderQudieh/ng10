@@ -1,9 +1,9 @@
 <div class="background">
   <div class="gradient">
-      <div class="container"> 
+      <div [ngClass]="routeAnimationsElements" class="container"> 
           <h1>{{ 'main.menu.about' | translate }}</h1>
           <div class="actions">
-              <a [ngClass]="routeAnimationsElements" mat-raised-button class="actions-main" color="primary" routerLink="../feature-list">
+              <a  mat-raised-button class="actions-main" color="primary" routerLink="../feature-list">
                   {{ 'anms.menu.features' | translate }}
               </a>
               <a mat-raised-button class="actions-main" color="accent" routerLink="../examples" [ngClass]="routeAnimationsElements">
