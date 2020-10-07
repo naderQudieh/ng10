@@ -2,12 +2,13 @@
     <div  [ngClass]="routeAnimationsElements" class="gradient">
         <div fxLayout="column"  >
           
-            <div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="10px" fxFlex="100">
-                <mat-card-header fxFlex="100">
-                    <mat-card-title> <h3> {{ 'main.menu.products' | translate }}</h3></mat-card-title>
-                </mat-card-header>
-                <div fxLayout="row wrap" fxFlex="1100px">
-                    <mat-card *ngFor="let photo of topSelection" fxFlex="200px">
+            <div fxLayout="row wrap" fxLayoutAlign="center start" fxFlexFill>
+                <div   class="pageHeader"  fxFlexFill>
+                   <h3 fxFlexFill> {{ 'main.menu.products' | translate }}</h3> 
+                </div> 
+               
+                <div style="margin-top:20px;max-width:1200px" fxLayout="row wrap" fxLayoutGap="15px"  >
+                    <mat-card  *ngFor="let photo of topSelection"     fxFlex="200px" >
                         <img mat-card-sm-image src="{{photo.url}}" alt="">
                         <mat-card-actions style="margin-bottom:2px;" fxLayout="row" fxLayoutAlign="flex-start">
                             <div style="margin-left: 10px;" fxFlex="15%">

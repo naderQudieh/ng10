@@ -19,7 +19,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { BidiModule } from '@angular/cdk/bidi'
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -29,7 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 export const MATERIAL_MODULES_CORE = [MatDialogModule ,
-    MatToolbarModule,
+    MatToolbarModule, BidiModule,
     MatIconModule,
     MatMenuModule,
     MatSidenavModule,

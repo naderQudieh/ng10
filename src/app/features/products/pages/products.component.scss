@@ -1,9 +1,9 @@
 @import '../../../../styles-variables';
 
-.mat-card {
-    margin: 10px 10px !important;
+.mat-card { 
     padding: 0 0 !important;
     text-align: center;
+    margin-top:15px!important;
 }
 
 .mat-card-sm-image {
@@ -11,68 +11,9 @@
     height: 180px;
 }
 
-.pointer {
-    cursor: pointer;
-}
-.gradient {
-    &::before {
-        position: absolute;
-        top: 51%;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        content: '';
-        z-index: 0;
-    }
-}
-
-@media (max-width: map-get($grid-breakpoints, md)) {
-    .background {
-        .actions {
-            margin: 50px 0;
-        }
-
-        .get-started {
-            width: auto;
-        }
-    }
-
-    .follow-releases {
-        width: auto;
-
-        img {
-            max-width: 100%;
-        }
-    }
-}
-
-@media (max-width: map-get($grid-breakpoints, sm)) {
-    .background {
-        padding: 40px 0 0 0;
-
-        h1 {
-            line-height: 1em;
-        }
-
-        .actions {
-            margin: 40px 0 0 0;
-
-            span {
-                padding: 10px 0 20px 0;
-            }
-
-            a {
-                width: 100%;
-            }
-        }
-
-        .get-started {
-            width: auto;
-            margin: 40px auto 40px auto;
-        }
-    }
-
-    .follow-releases {
-        margin: 0 auto 40px auto;
-    }
+.pageHeader {
+    white-space: nowrap; 
+    line-height: 50px;
+    background-color: #3f8fc9;
+    padding-left:50px;
 }
