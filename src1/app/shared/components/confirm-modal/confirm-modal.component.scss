@@ -1,0 +1,63 @@
+ 
+
+:host {
+  display: flex;
+  flex-direction: column;
+  .modal-content {
+    min-width: 520px;
+    width: auto;
+    max-width: 800px;
+    flex: 1;
+    padding: 0;
+    margin: auto 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  ::ng-deep {
+    .mat-dialog-content {
+      max-height: inherit;
+    }
+  }
+  .dialog-header {
+    display: flex;
+    border-bottom: 1px solid gray;
+    margin-bottom: 15px;
+    .title {
+      display: flex;
+      flex: 1;
+      font-size: 22pt;
+      font-weight: bold;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+    .dialog-close {
+      outline: none;
+      cursor: pointer;
+      margin: auto 0;
+      font-size: 40px;
+      font-family: initial;
+      padding: 0;
+      background-color: transparent;
+      border: 0;
+      -webkit-appearance: none;
+      ::ng-deep {
+        .mat-button-wrapper>* {
+          vertical-align: baseline;
+        }
+      }
+    }
+  }
+}
+
+mat-dialog-actions {
+  padding-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  button:nth-child(n + 2) {
+    margin-left: 10px;
+  }
+  &.mat-dialog-actions {
+    margin-bottom: auto;
+  }
+}

@@ -1,0 +1,58 @@
+[
+    {
+        "catName": "Headphones and Speakers",
+        "catSub": "JBL, Sony & More",
+        "offer": "Upto 50% off",
+        "url": "assets\\Hot_Deals\\headphones.jpg",
+        "catCode": "Headphones_and_speakers"
+    },
+    {
+        "catName": "Health Drinks & Beverages",
+        "catSub": "Bournvita, Nescafe & More",
+        "offer": "Extra 5% Off",
+        "url": "assets\\Hot_Deals\\beverages.jpg",
+        "catCode": "Health_drinks_Beverages"
+    },
+    {
+        "catName": "Home Decor Range",
+        "catSub": "Sticker and More",
+        "offer": "From ₹49",
+        "url": "assets\\Hot_Deals\\homeDecor.jpg",
+        "catCode": "Home_Decor_Range"
+    },
+    {
+        "catName": "Metronaut, Provogue & More",
+        "catSub": "Tops, Dresses & More",
+        "offer": "Upto80%Off+Extra5%Off",
+        "url": "assets\\Hot_Deals\\metronaut.jpg",
+        "catCode": "Metronaut"
+    },
+    {
+        "catName": "ADIDAS, Puma...",
+        "catSub": "Walking, Running Shoes...",
+        "offer": "Upto 50%+Extra 5% Off",
+        "url": "assets\\Hot_Deals\\shoes.jpg",
+        "catCode": "Walking_Running_Shoes"
+    },
+    {
+        "catName": "Blackzone & Hicell keypad Phones",
+        "catSub": "Keypad phones",
+        "offer": "Extra Rs100 off",
+        "url": "assets\\Hot_Deals\\blackzone.jpg",
+        "catCode": "Keypad_Phones"
+    },
+    {
+        "catName": "Fastrack, Timex & more",
+        "catSub": "#Wear your Style",
+        "offer": "Upto 70%+Extra 5% off",
+        "url": "assets\\Hot_Deals\\watch.jpg",
+        "catCode": "Watches_and_wears"
+    },
+    {
+        "catName": "T-Shirts & Jeans",
+        "catSub": "Grab Now",
+        "offer": "Upto 60%+Extra 5%Off",
+        "url": "assets\\Hot_Deals\\tshirt.jpg",
+        "catCode": "Tshirts_Jeans"
+    }
+]

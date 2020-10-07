@@ -1,0 +1,46 @@
+<div class="page-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+    <mat-card fxFlex="45" [fxFlex.xs]="95" [fxFlex.sm]="75" [fxFlex.lg]="20">
+        <mat-card-header>
+            <div>  <mat-icon style="font-size:30px;">person_add</mat-icon> </div>
+            <mat-card-title> <h3>{{ 'form.auth.login' | translate }}</h3></mat-card-title>
+        </mat-card-header>  
+        <mat-card-content>
+            <form fxLayout="column" [formGroup]="mainform" autocomplete="off">
+                <mat-form-field fxFill>
+                    <input matInput placeholder="{{ 'form.auth.email' | translate }}"
+                           formControlName="email" type="email">
+                    <mat-error *ngIf="mainform.get('email').hasError('required')">
+                        {{ 'form.auth.email.error1' | translate }}
+                    </mat-error>
+                    <mat-error *ngIf="mainform.get('email').hasError('email')">
+                        {{ 'form.auth.email.error2' | translate }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFill>
+                    <input id="password"
+                           matInput
+                           formControlName="password" placeholder="Password*"
+                           [type]="hide ? 'password':'text'">
+                    <mat-icon matSuffix (click)="hide = !hide">
+                        {{hide ? 'visibility' : 'visibility_off'}}
+                    </mat-icon>
+                    <mat-error *ngIf="mainform.get('password').invalid">
+                        {{ 'form.auth.password' | translate }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-spinner *ngIf="isLoading"></mat-spinner>
+            </form>
+        </mat-card-content>
+        <mat-card-actions fxLayout="column" fxFlex.xl="100" fxLayoutAlign="end space-between">
+            <button color="primary" (click)="SubmitForm(mainform);" mat-flat-button>Login</button>
+
+            <label fxLayoutAlign="center">
+                <span style="font-size:smaller;line-height:40px">
+                    Not a user yet?
+                    <a routerLink="/auth/signup" class="btn btn-link remember">Register</a><br />
+                    <a routerLink="/auth/resetpassword" class="btn btn-link remember">Reset Password</a>
+                </span>
+            </label>
+        </mat-card-actions>
+    </mat-card>
+</div>

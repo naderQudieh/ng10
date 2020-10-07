@@ -1,0 +1,17 @@
+<mat-dialog-content class="modal-content">
+  <div class="dialog-header">
+    <div *ngIf="title" class="title">{{ title }}</div>
+    <button type="button" class="dialog-close float-right" title="Close" mat-icon-button matDialogClose tabindex="-1">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">{{ text }}</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button (click)="submit()" mat-raised-button class="actions-main" color="primary">
+        {{ yesButtonText | translate }}
+    </button>
+    <button mat-raised-button class="actions-main" color="accent" matDialogClose>
+        {{ noButtonText | translate }}
+    </button> 
+</mat-dialog-actions>

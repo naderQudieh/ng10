@@ -1,0 +1,93 @@
+<div [class]="'theme-wrapper ' + (theme$ | async)"> 
+    <mat-sidenav-container>
+        <mat-sidenav fixedInViewport="true" #sidenav mode="over">
+            <mat-toolbar color="primary">
+                {{ 'appName' | translate}}
+                <button style=" margin-left: 80px;" mat-icon-button (click)="sidenav.toggle()">
+                    <fa-icon class="fas   fa-lg" icon="bars"></fa-icon>
+                </button>
+
+            </mat-toolbar>
+
+            <mat-nav-list>
+                <a mat-list-item *ngFor="let item of navigationSideMenu" (click)="sidenav.close()" [routerLink]="[item.link]"
+                   routerLinkActive="active">
+                    {{item.label | translate}}
+                </a>
+                <a mat-list-item href="https://github.com/tomastrajan/angular-ngrx-material-starter" target="_blank" rel="noopener noreferrer">
+                    Github
+                </a>
+            </mat-nav-list>
+            <a mat-list-item matTooltip="profile" routerLink="/setting" class="d-none d-sm-inline">
+                <mat-icon>settings</mat-icon>   {{ 'main.menu.setting' | translate}}
+            </a>
+            <a mat-list-item matTooltip="profile" routerLink="/profile" class="d-none d-sm-inline">
+                <mat-icon>account_box</mat-icon>   {{ 'user.profile' | translate}}
+            </a>
+        </mat-sidenav>
+
+        <div class="wrapper">
+
+            <div class="toolbar" [style.position]="(stickyHeader$ | async) ? 'fixed' : 'inherit'" [class.mat-elevation-z4]="(stickyHeader$ | async)">
+                <mat-toolbar color="primary">
+                    <button mat-icon-button (click)="sidenav.toggle()">
+                        <fa-icon icon="bars"></fa-icon>
+                    </button>
+
+                    <span routerLink="" class="branding spacer center d-inline d-sm-none">
+                        <img [src]="logo" [alt]="logo" />
+                    </span>
+
+                    <span routerLink="" class="branding spacer d-none d-md-inline">
+                        <img [src]="logo" [alt]="logo" /> {{'appName' | translate }}
+                    </span>
+                    <a matTooltip="products" mat-icon-button routerLink="/products" class="d-none d-sm-inline">
+                        <mat-icon>stars</mat-icon>
+                    </a>
+                    <a matTooltip="home" mat-icon-button routerLink="/home" class="d-none d-sm-inline">
+                        <mat-icon>home</mat-icon>
+                    </a>
+                    <button matTooltip="about" mat-icon-button routerLink="about" class="d-none d-sm-inline">
+                        about  
+                    </button>
+                    <a mat-icon-button mat-button mat-stroked-button color="accent" *ngIf="!(isAuthenticated)" (click)="onLoginClick()">
+                        {{ 'main.menu.login' | translate }}
+                    </a>
+
+                    <button matTooltip="logout" mat-icon-button *ngIf="(isAuthenticated)" [matMenuTriggerFor]="toolbarUserMenu">
+                        <fa-icon icon="user-circle"></fa-icon>
+                    </button>
+                    <mat-menu #toolbarUserMenu="matMenu">
+                        <button mat-menu-item (click)="onLogoutClick()">
+                            <mat-icon>exit_to_app</mat-icon>
+                            <span>{{ 'main.menu.logout' | translate }}</span>
+                        </button>
+                    </mat-menu>
+
+                    <button matTooltip="settings" mat-icon-button routerLink="setting" *ngIf="isAuthenticated" class="d-none d-sm-inline">
+                        <mat-icon>settings</mat-icon>
+                    </button>
+
+                    <span *ngIf="language$ | async as language">
+                        <mat-select [ngModel]="language" (selectionChange)="onLanguageSelect($event)">
+                            <mat-option *ngFor="let l of languages" [value]="l">
+                                {{ l.toUpperCase() }}
+                            </mat-option>
+                        </mat-select>
+                    </span>
+                </mat-toolbar>
+            </div>
+
+            <div class="content" [@routeAnimations]="o.isActivated && o.activatedRoute.routeConfig.data && o.activatedRoute.routeConfig.data.title">
+                <router-outlet #o="outlet"></router-outlet>
+
+            </div>
+            <app-footer></app-footer>
+        </div>
+
+    </mat-sidenav-container>
+
+
+
+
+</div>

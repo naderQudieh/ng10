@@ -1,0 +1,34 @@
+[
+    {
+        "catName": "Hair Bows",
+        "url": "assets\\categoryHairbow.jpg"
+    },
+    {
+        "catName": "Hand Bags",
+        "url": "assets\\categoryHandBags.jpg"
+    },
+    {
+        "catName": "Cosmetics",
+        "url": "assets\\categoryCosmetics.jpg"
+    },
+    {
+        "catName": "Clothing and summer wear",
+        "url": "assets\\categoryCloths.jpg"
+    },
+    {
+        "catName": "Utensils and Blah",
+        "url": "assets\\categoryUtensils.jpg"
+    },
+    {
+        "catName": "Bath Items",
+        "url": "assets\\categoryBathItems.jpg"
+    },
+    {
+        "catName": "Head band",
+        "url": "assets\\categoryPhones.jpg"
+    },
+    {
+        "catName": "Gym Equipment",
+        "url": "assets\\Gym_Equipment_large.jpg"
+    }
+]

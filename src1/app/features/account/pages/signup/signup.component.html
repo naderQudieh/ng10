@@ -1,0 +1,55 @@
+<div  class="page-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+    <mat-card fxFlex="45" [fxFlex.xs]="95" [fxFlex.sm]="75" [fxFlex.lg]="20">
+        <mat-card-header>
+            <div>  <mat-icon style="font-size:30px;" >person_add</mat-icon> </div>
+            <mat-card-title> <h3>{{ 'form.auth.signup' | translate }}</h3></mat-card-title>
+        </mat-card-header> 
+        <mat-card-content>
+            <form fxLayout="column" [formGroup]="mainform" autocomplete="off">
+                <mat-form-field fxFill>
+                    <input #emailField matInput placeholder="{{'form.auth.email' | translate }}"
+                           formControlName="email" required>
+                    <mat-error *ngIf="mainform.get('email').invalid">
+                        {{ 'form.auth.email.error1' | translate }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFill>
+                    <!--<mat-label>Password</mat-label>-->
+                    <input type="password" matInput placeholder="{{ 'form.auth.password' | translate }}"
+                           formControlName="password" required>
+                    <mat-error *ngIf="mainform.get('password').invalid">
+                        {{ 'form.auth.email.password' | translate }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFill>
+                    <input type="password" matInput placeholder="{{ 'form.auth.confirmedPassword' | translate }}"
+                           formControlName="confirmedPassword" required>
+                    <mat-error *ngIf="mainform.get('password').invalid">
+                        {{ 'form.auth.email.confirmedPassword' | translate }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFill>
+                    <input matInput formControlName="birthday" [matDatepicker]="picker" placeholder="{{ 'user.birthday' | translate }}">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="mainform.get('birthday').hasError('required')">
+                        {{ 'form.auth.birthday.error2' | translate }}
+                    </mat-error>
+                </mat-form-field>
+
+
+            </form>
+        </mat-card-content>
+        <mat-card-actions fxLayout="column" fxFlex.xl="100" fxLayoutAlign="end space-between">
+            
+            <button color="primary" (click)="SubmitForm(mainform);" mat-flat-button>Register</button>
+            <span fxFlex=""></span>
+            <label fxLayoutAlign="center">
+                <span style="font-size:smaller;line-height:40px">
+                    Already Have Account?
+                    <a routerLink="/auth/login" class="btn btn-link remember">Login</a>
+                </span>
+            </label>
+        </mat-card-actions>
+    </mat-card>
+</div>
