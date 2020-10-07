@@ -28,16 +28,21 @@
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate && node .all-contributors-html.js",
     "contributors:check": "all-contributors check"
+
   },
   "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "hooks": { "pre-commit": "npx lint-staged" }
   },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "./src/**/*.{js,jsx}": [
+      "prettier --write",
+      "eslint",
+      "git add"
     ]
   },
   "private": true,
