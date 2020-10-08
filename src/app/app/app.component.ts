@@ -39,20 +39,19 @@ export class AppComponent implements OnInit {
         { link: 'setting', label: 'main.menu.setting' }
     ];
     
-    selectedtheme: any  ;
-    loggedIn$: Observable<boolean>;
-    stickyHeader$: Observable<boolean>;
+    selectedtheme: any;
     selectedlanguage: any;
-
-    authState: Observable<any>;
-    isAuthenticated: boolean = false;
+    isAuthenticated: any;
+   
+  
     private _dirChangeSubscription = Subscription.EMPTY;
     constructor(dir: Directionality, @Inject(DOCUMENT) private document: Document, private globalVarSrv: globalVariableService,
-        private overlayContainer: OverlayContainer,  private router: Router, private store: Store<AppState>) {
-        //this.store.pipe(select(getAuth), take(1))
-        //    .subscribe((auth) => {
-        //        console.log(auth);
-        //    });
+        private overlayContainer: OverlayContainer, private router: Router, private store: Store<AppState>) {
+        this.store.pipe(select(getAuth) )
+            .subscribe((auth) => {
+                console.log(auth);
+                this.isAuthenticated = auth.isAuthenticated;
+            });
 
         //this.isRtl = dir.value === 'rtl';
         //this.isRtl2 = dir.value;
@@ -62,11 +61,12 @@ export class AppComponent implements OnInit {
         //    this.isRtl2 = drc;
         //});
        
-        //this.globalVarSrv.isUserLoggedIn.subscribe(
-        //    a => {
-        //        console.log(a);
-        //    }
-        //)
+        this.globalVarSrv.getIsAuthenticated().subscribe(
+            auth => {
+                console.log(auth);
+               // this.isAuthenticated = auth ;
+            }
+        )
         
         this.languages = this.globalVarSrv.getLanguages().map(p => p.value);
         this.themes = this.globalVarSrv.getThemesList().map(p => p.value);
@@ -118,7 +118,7 @@ export class AppComponent implements OnInit {
 
 
     onLogoutClick() {
-        this.globalVarSrv.setAuthenticated(false);
+        //this.globalVarSrv.setAuthenticated(false);
         this.store.dispatch(new fromActions.LogOut());
     }
 

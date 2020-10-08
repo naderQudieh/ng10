@@ -40,7 +40,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
       isolate: false
     }),
-    EffectsModule.forFeature([
+    EffectsModule.forRoot([
          AuthEffects
     ])
   ],

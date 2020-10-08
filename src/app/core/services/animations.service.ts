@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 
-//@Injectable makes it easier to add classes to the providers array in a NgModule.Well,
-//the providerIn takes it one step further and now adds it for you directly to the module.
+ 
 @Injectable({ providedIn: 'root'})
 export class AnimationsService {
   constructor() {
-    AnimationsService.routeAnimationType = 'NONE';
+      AnimationsService.routeAnimationType = 'PAGE';
   }
 
-  private static routeAnimationType: RouteAnimationType = 'NONE';
+    private static routeAnimationType: RouteAnimationType = 'PAGE';
 
   static isRouteAnimationsType(type: RouteAnimationType) {
     return AnimationsService.routeAnimationType === type;

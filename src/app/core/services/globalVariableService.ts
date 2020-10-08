@@ -27,7 +27,7 @@ export class globalVariableService  {
         { value: 'ar', label: 'ArabicA' }
     ];
 
-    public isUserLoggedIn = new BehaviorSubject<boolean>(this.hasToken());   
+    public isAuthenticated = new BehaviorSubject<boolean>(this.hasToken());   
     public UserLanguage = new BehaviorSubject<string>(this.CurrentLang());
     public UserTheme = new BehaviorSubject<string>(this.CurrentTheme());
 
@@ -35,11 +35,7 @@ export class globalVariableService  {
         this.InitilizaeApp();
     }
 
- 
-
-    setAuthenticated(isAuthenticated: boolean): void { 
-        this.isUserLoggedIn.next(isAuthenticated);
-    }
+  
  
     InitilizaeApp(): void {
         let lang = this.CurrentLang();
@@ -54,7 +50,14 @@ export class globalVariableService  {
             this.setTheme(lang);
         }
     }
-    isLoggedIn(): Observable<boolean> {
+     
+
+
+    setAuthenticated(isAuthenticated: boolean): void {
+        this.isAuthenticated.next(isAuthenticated);
+    }
+
+    getIsAuthenticated(): Observable<boolean> {
         if (this.hasToken()) {
 
             this.setAuthenticated(true);
@@ -62,8 +65,11 @@ export class globalVariableService  {
 
             this.setAuthenticated(false);
         }
-        return this.isUserLoggedIn.asObservable();
+        return this.isAuthenticated.asObservable();
     }
+
+
+    
 
     setLanguage(lang: string): void {
         this.localStorage.setItem('settingslang', lang)
@@ -73,12 +79,12 @@ export class globalVariableService  {
 
     getLanguage(): Observable<string> { 
             let lang = this.localStorage.getItem('settingslang');
-            console.log(lang);
+            
             if (!lang) {
                 lang = "en";
                 this.setLanguage(lang);
             }
-            console.log(lang);
+            
             return this.UserLanguage.asObservable(); 
     }
 
