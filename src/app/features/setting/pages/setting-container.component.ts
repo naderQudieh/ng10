@@ -1,17 +1,10 @@
-/// <reference path="../../../core/store/setting/setting.selectors.ts" />
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-
+import { globalVariableService } from '../../../core/services';
 import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../core/core.module';
 
-import {  actionSettingChangeAnimationsElements,
-  actionSettingChangeAnimationsPage,  actionSettingChangeAutoNightMode,
-  actionSettingChangeLanguage,  actionSettingChangeTheme,  actionSettingChangeStickyHeader
-} from '../../../core/store/setting/setting.actions';
-import { SettingState, State } from '../../../core/store/setting/setting.model';
-import { selectSetting } from '../../../core/store/setting/setting.selectors';
-
+ 
 @Component({
   selector: 'anms-setting',
   templateUrl: './setting-container.component.html',
@@ -20,50 +13,47 @@ import { selectSetting } from '../../../core/store/setting/setting.selectors';
 })
 export class SettingContainerComponent implements OnInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
-  setting$: Observable<SettingState>;
+ 
 
-  themes = [
-    { value: 'DEFAULT-THEME', label: 'blue' },
-    { value: 'LIGHT-THEME', label: 'light' },
-    { value: 'NATURE-THEME', label: 'nature' },
-    { value: 'BLACK-THEME', label: 'dark' }
-  ];
+    public languages: any[]
+    public themes: any[]  
+    public selectedtheme: any;
+    public selectedlanguage: any;
 
-  languages = [
-    { value: 'en', label: 'English' },
-    { value: 'fr', label: 'Français' },
-    { value: 'ar', label: 'ArabicA' }
-  ];
+    constructor( private globalVarSrv: globalVariableService,) {
+        this.languages = this.globalVarSrv.getLanguages().map(p => p.value);
+        this.themes = this.globalVarSrv.getThemesList();//.map(p => p.value);
+       
+    }
 
-  constructor(private store: Store<State>) {}
+    ngOnInit() {
+        this.globalVarSrv.getTheme().subscribe(theme => { 
+            let apptheme = this.themes.filter(item => {
+                return item.value.toLowerCase() === theme.toLowerCase()
+            }); 
+            this.selectedtheme = apptheme[0];  
+        })
 
-  ngOnInit() {
-    this.setting$ = this.store.pipe(select(selectSetting));
+        this.globalVarSrv.getLanguage().subscribe(lang => {
+          
+            let applang = this.languages.filter(item => { 
+                return item  === lang 
+            });
+            this.selectedlanguage = applang[0];
+        })
   }
 
-  onLanguageSelect({ value: language }) {
-    this.store.dispatch(actionSettingChangeLanguage({ language }));
+    onLanguageSelect({ value: lang }) {
+        console.log(lang);
+        this.globalVarSrv.setLanguage(lang);  
   }
-
-  onThemeSelect({ value: theme }) {
-    this.store.dispatch(actionSettingChangeTheme({ theme }));
-  }
-
-  onAutoNightModeToggle({ checked: autoNightMode }) {
-    this.store.dispatch(actionSettingChangeAutoNightMode({ autoNightMode }));
-  }
-
-  onStickyHeaderToggle({ checked: stickyHeader }) {
-    this.store.dispatch(actionSettingChangeStickyHeader({ stickyHeader }));
-  }
-
-  onPageAnimationsToggle({ checked: pageAnimations }) {
-    this.store.dispatch(actionSettingChangeAnimationsPage({ pageAnimations }));
-  }
-
-  onElementsAnimationsToggle({ checked: elementsAnimations }) {
-    this.store.dispatch(
-      actionSettingChangeAnimationsElements({ elementsAnimations })
-    );
-  }
+      
+  onThemeSelect({ value: theme }) { 
+        let apptheme = this.themes.filter(item => { 
+            return item.value === theme.value
+        });
+        this.selectedtheme = apptheme[0] ; 
+        this.globalVarSrv.setTheme(apptheme[0].value.toLowerCase());  
+  } 
+ 
 }

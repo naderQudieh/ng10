@@ -1,7 +1,8 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthToken, UserClaims } from '../../features/account/store/auth.model';
- 
+import { Observable, of } from 'rxjs';
+
 export const TOKEN_INFO = 'user_token';
 export const USER_INFO = 'user_claims';
 
@@ -17,17 +18,26 @@ export class LocalStorageService {
 
     constructor(@Inject(BROWSER_STORAGE) public storage: Storage,  public jwtHelper: JwtHelperService) { } 
 
-    setItem(key: string, value: any) {
-        localStorage.setItem(key, JSON.stringify(value));
+  
+    public setItem(key: string, value: any)  {
+        
+            localStorage.setItem(key, JSON.stringify(value));
+           
     }
 
-    getItem(key: string) {
-        return JSON.parse(localStorage.getItem(key));
+    public getItem(key: string)  {
+        try { 
+            return JSON.parse(localStorage.getItem(key));
+        } catch (err) {
+            return null;
+        }  
     }
 
-    removeItem(key: string) {
-        localStorage.removeItem(key);
+    public removeItem(key: string)  { 
+         localStorage.removeItem(key);  
     }
+
+     
 
 
     setUserToken(token: AuthToken) {

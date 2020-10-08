@@ -1,18 +1,21 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { LazyElementsModule } from '@angular-extensions/elements';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '../../shared/shared.module';
 import { Store, select } from '@ngrx/store';
 import { tap, take, distinctUntilChanged, filter } from 'rxjs/operators';
-import { environment } from '../../../environments/environment'; 
-import { LanguageService } from '../../shared/servcies/language.service';
+import { environment } from '../../../environments/environment';
+import { globalVariableService } from '../../core/services';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AppState } from '../../core/core.module';
+
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HomeRoutingModule } from './home-routing.module'; 
 import { HomeComponent } from './pages/home.component';
 import { ProductsService } from '../products/products.service';
-import { AppState, selectSettingLanguage } from '../../core/core.module';
+
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(
@@ -21,7 +24,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 @NgModule({
     declarations: [HomeComponent],
-    imports: [ SharedModule, HomeRoutingModule, LazyElementsModule,
+    imports: [ CommonModule,SharedModule, HomeRoutingModule, LazyElementsModule,
         TranslateModule.forRoot({
         loader: {
             provide: TranslateLoader,
@@ -37,10 +40,14 @@ export function HttpLoaderFactory(http: HttpClient) {
  
  
 export class HomeModule {
-    constructor(private store: Store<AppState>, private readonly translateService: TranslateService) {
-        this.store.pipe(select(selectSettingLanguage))
-            .subscribe((language) => {
-                this.translateService.use(language)
-            });
+    constructor(private store: Store<AppState>, private readonly translateService: TranslateService,
+        private readonly globalVarSrv: globalVariableService) {
+        this.globalVarSrv.getLanguage().subscribe((language) => {
+            this.translateService.use(language)
+        });
+        //this.store.pipe(select(selectSettingLanguage))
+        //    .subscribe((language) => { 
+        //        this.translateService.use(language)
+        //    }); 
     }
 }

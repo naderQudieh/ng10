@@ -19,4 +19,13 @@ import { AppComponent } from './app/app.component';
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+ 
+export class AppModule {
+    //constructor(private readonly globalVarSrv: globalVariableService) {
+        
+    //    this.globalVarSrv.getLanguage().subscribe((language) => {
+    //        this.translateService.use(language)
+    //    });
+    //    faIconLibrary.addIcons(...faIconscore);
+    //}
+}

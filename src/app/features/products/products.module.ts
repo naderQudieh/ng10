@@ -3,15 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { LazyElementsModule } from '@angular-extensions/elements';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'; 
 import { SharedModule } from '../../shared/shared.module';
 import { environment } from '../../../environments/environment';
 import { ProductsService } from './products.service';
 import { ProductsRoutingModule } from './products-routing.module';   
 import { LayoutComponent } from './layout/layout.component';
-import { ProductsComponent } from './pages/products.component';
-import { ProductsEffects } from './products.effects';
+import { ProductsComponent } from './pages/products.component'; 
+import { globalVariableService } from '../../core/services';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
@@ -35,10 +35,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       },
       isolate: false
-    }),  
-      EffectsModule.forFeature([
-          ProductsEffects
-     ]) 
+    })
   ],
   declarations: [
       LayoutComponent, ProductsComponent 
@@ -47,5 +44,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     providers: [ProductsService]
 })
 export class ProductsModule {
-  constructor() {}
+    constructor(private readonly translateService: TranslateService,
+        private readonly globalVarSrv: globalVariableService) {
+        this.globalVarSrv.getLanguage().subscribe((language) => {
+            this.translateService.use(language)
+        });
+        //this.store.pipe(select(selectSettingLanguage))
+        //    .subscribe((language) => { 
+        //        this.translateService.use(language)
+        //    }); 
+    }
 }

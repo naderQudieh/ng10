@@ -11,8 +11,9 @@ import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from '../../../environments/environment';
-import { AppState, selectSettingLanguage } from '../../core/core.module';
+import { AppState  } from '../../core/core.module';
 import { tap, take, distinctUntilChanged, filter } from 'rxjs/operators';
+import { globalVariableService } from '../../core/services';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(
@@ -38,10 +39,13 @@ export function HttpLoaderFactory(http: HttpClient) {
 })
  
 export class AboutModule {
-    constructor(private store: Store<AppState>, private readonly translateService: TranslateService) { 
-        this.store.pipe(select(selectSettingLanguage))
-            .subscribe((language) => { 
-                this.translateService.use(language)
-            }); 
+    constructor(private store: Store<AppState>, private readonly translateService: TranslateService, private readonly globalVarSrv: globalVariableService) { 
+        this.globalVarSrv.getLanguage().subscribe((language) => { 
+            this.translateService.use(language) 
+        });
+        //this.store.pipe(select(selectSettingLanguage))
+        //    .subscribe((language) => { 
+        //        this.translateService.use(language)
+        //    }); 
     }
 }

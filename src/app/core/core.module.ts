@@ -18,9 +18,6 @@ import { JwtModule } from '@auth0/angular-jwt';
 import {  ROUTE_ANIMATIONS_ELEMENTS,  routeAnimations} from './route.animations';
 
 import { NotificationService } from './services/notification.service';
-import { SettingEffects } from './store/setting/setting.effects';
-
-import { selectSettingLanguage, selectEffectiveTheme, selectSettingStickyHeader } from './store/setting/setting.selectors';
 import { faIconscore } from './constants';
 
 import { FooterComponent } from '../shared/components/footer/footer.component'; 
@@ -31,13 +28,13 @@ import { Configuration } from './configuration';
 
 
 import {
-    AppErrorHandler, SnackbarService, TitleService, globalStoreService,
+    AppErrorHandler, SnackbarService, TitleService, globalVariableService,
     LocalStorageService, AnimationsService, AuthGuardService
 } from './services';
  
 
 
-const SHARED_SERVICES: any[] = [globalStoreService,
+const SHARED_SERVICES: any[] = [globalVariableService,
     LocalStorageService, AnimationsService, NotificationService,
     AppErrorHandler, AuthGuardService, TitleService, SnackbarService
 ];
@@ -47,7 +44,7 @@ export {
     AppErrorHandler, AuthGuardService, TitleService, SnackbarService, 
     routeAnimations, ROUTE_ANIMATIONS_ELEMENTS, 
     AppState,  
-    selectRouterState,   selectEffectiveTheme,  selectSettingLanguage,  selectSettingStickyHeader
+    selectRouterState     
 };
 
 export function tokenGetter() { 
@@ -85,8 +82,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         }),
     // ngrx
     StoreModule.forRoot(reducers),
-    StoreRouterConnectingModule.forRoot(),
-        EffectsModule.forRoot([ SettingEffects  ]),
+    StoreRouterConnectingModule.forRoot(), 
     environment.production? [] : StoreDevtoolsModule.instrument({ name: 'AppZero'}),
 
     // 3rd party
@@ -111,27 +107,17 @@ export function HttpLoaderFactory(http: HttpClient) {
              FontAwesomeModule, TranslateModule]
 })
 export class CoreModule {
-  constructor(   @Optional()    @SkipSelf()    parentModule: CoreModule, faIconLibrary: FaIconLibrary  ) {
-    if (parentModule) {
-      throw new Error('CoreModule is already loaded. Import only in AppModule');
-    }
+    constructor(@Optional() @SkipSelf() parentModule: CoreModule, faIconLibrary: FaIconLibrary,
+        private readonly translateService: TranslateService, private readonly globalVarSrv: globalVariableService
+    ) {
+        if (parentModule) {
+           throw new Error('CoreModule is already loaded. Import only in AppModule');
+        }
+        
+        this.globalVarSrv.getLanguage().subscribe((language) => {  
+            this.translateService.use(language)
+        }); 
       faIconLibrary.addIcons(...faIconscore);
   }
 }
-
-export function initStore(store: Store<AppState>) {
-    console.log('INIT STORE MODULE ...');
-    return () => new Promise(resolve => {
-        resolve(true);
-        //store.dispatch(authAction.getUser());
-
-        //store.pipe(
-        //    select(authSelect.isInitialized),
-        //    filter((isInitialized: boolean) => isInitialized),
-        //    take(1),
-        //).subscribe(() => {
-        //    console.log('INIT STORE MODULE DONE');
-        //    resolve(true);
-        //});
-    });
-}
+ 

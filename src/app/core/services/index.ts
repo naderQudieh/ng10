@@ -8,4 +8,4 @@ export * from './app-error-handler.service';
 export * from './api.service';
 export * from './auth-guard.service';
 export * from './snackbar.service';
-export * from './globalstoreservcie';
+export * from './globalVariableService';

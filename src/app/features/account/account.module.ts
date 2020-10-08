@@ -3,13 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { LazyElementsModule } from '@angular-extensions/elements';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'; 
 import { SharedModule } from '../../shared/shared.module';
 import { environment } from '../../../environments/environment';
-
+import { globalVariableService } from '../../core/services';
 import { AccountRoutingModule } from './account-routing.module'; 
-import { AccountEffects } from './account.effects';
 import { AuthEffects } from './store/auth.effects';
 import { FEATURE_NAME, account_reducers } from './account.state';
 
@@ -42,7 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       isolate: false
     }),
     EffectsModule.forFeature([
-        AccountEffects, AuthEffects
+         AuthEffects
     ])
   ],
   declarations: [
@@ -52,5 +51,14 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: []
 })
 export class AccountModule {
-  constructor() {}
+    constructor(private readonly translateService: TranslateService,
+        private readonly globalVarSrv: globalVariableService) {
+        this.globalVarSrv.getLanguage().subscribe((language) => {
+            this.translateService.use(language)
+        });
+        //this.store.pipe(select(selectSettingLanguage))
+        //    .subscribe((language) => { 
+        //        this.translateService.use(language)
+        //    }); 
+    }
 }

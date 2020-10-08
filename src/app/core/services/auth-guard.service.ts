@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanLoad, Route , UrlTree, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { globalStoreService } from './globalstoreservcie';
+import { globalVariableService } from './globalVariableService';
 //import { selectIsAuthenticated } from '../../features/account/store/auth.selectors';
 import { AccountState, } from '../../features/account/account.state';
 import {AuthState  } from '../../features/account/store/auth.model';
@@ -15,7 +15,8 @@ import { log } from 'util';
 })
 export class AuthGuardService implements CanActivate {
     isAuthenticated: boolean;
-    constructor(private authService: AuthService,private router: Router, private store: Store<AppState>, private gStoreService: globalStoreService,) {
+    constructor(private authService: AuthService, private router: Router, private store: Store<AppState>,
+        private globalVarSrv: globalVariableService,) {
       
        // this.store.pipe(select(selectAuthState), take(1))
        //             .subscribe((auth) => {
@@ -23,16 +24,17 @@ export class AuthGuardService implements CanActivate {
        //                 //return of(auth.isAuthenticated);
        //             }); 
 
-       // this.gStoreService.isAuthenticated.subscribe(
-       //     a => {
-       //         console.log(a);
-       //         //this.isAuthenticated = a; 
-       //     }
-       //)
+       
     }
   
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree { 
-       
+        this.globalVarSrv.isUserLoggedIn.subscribe((isAuth) => {
+            if (!isAuth) {
+                console.log(isAuth);
+               // this.router.navigate(['login'])
+               // return false
+            }
+        })
         const observable = new Observable<boolean>((observer) => {
             const authenticated: boolean = this.authService.isAuthenticated(); 
             console.log(authenticated);

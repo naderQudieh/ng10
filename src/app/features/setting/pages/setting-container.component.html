@@ -1,99 +1,34 @@
 <div class="container">
-  <div class="row">
-    <div class="col-sm-12"><h3>{{ 'form.auth.login' | translate }}</h3>
-      <h1>{{'anms.setting.title' | translate }}</h1>
-    </div>
-  </div>
-  <br>
-  <ng-container *ngIf="setting$ | async as setting">
     <div class="row">
-      <div class="col-md-6 group" [ngClass]="routeAnimationsElements">
-        <h2>{{ 'anms.setting.general.title' | translate }}</h2>
-        <div class="icon-form-field">
-          <mat-icon color="accent"><fa-icon icon="language" color="accent"></fa-icon></mat-icon>
-          <mat-form-field>
-            <mat-select [placeholder]="'anms.setting.general.placeholder' | translate"
-                        [ngModel]="setting.language"
-                        (selectionChange)="onLanguageSelect($event)"
-                        name="language">
-              <ng-container  *ngFor="let l of languages">
-                <!-- ngFor hack of missing ngLet of Angular -->
-                <mat-option *ngFor="let title of ['anms.setting.general.language.' + l.value | translate]"
-                  [value]="l.value"
-                  [title]="title !== l.label
-                    ? title
-                    : ''">
-                  {{ l.label }}
-                </mat-option>
-              </ng-container>
-            </mat-select>
-          </mat-form-field>
+        <div class="col-sm-12">
+            <h1>xxxxx</h1>
         </div>
-        <div class="icon-form-field">
-           <mat-icon color="accent"><fa-icon icon="bars" color="accent"></fa-icon></mat-icon>
-           <mat-placeholder>{{ 'anms.setting.themes.sticky-header' | translate }}
-           </mat-placeholder>
-           <mat-slide-toggle
-             [checked]="setting.stickyHeader"
-             (change)="onStickyHeaderToggle($event)">
-           </mat-slide-toggle>
-         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 group" [ngClass]="routeAnimationsElements">
-        <h2>{{ 'anms.setting.themes.title' | translate }}</h2>
-        <div class="icon-form-field">
-          <mat-icon color="accent"><fa-icon icon="paint-brush" color="accent"></fa-icon></mat-icon>
-          <mat-form-field>
-            <mat-select [placeholder]="'anms.setting.themes.placeholder' | translate"
-                        [ngModel]="setting.theme"
-                        (selectionChange)="onThemeSelect($event)"
-                        name="themes">
-              <mat-option *ngFor="let t of themes" [value]="t.value">
-                {{ 'anms.setting.themes.' + t.label | translate }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+    </div> 
+    <ng-container>
+
+        <div class="row">
+            <div class="col-md-6" [ngClass]="routeAnimationsElements">
+                <mat-form-field *ngIf="selectedlanguage" fxFill>
+                    <mat-select  placeholder="{{ 'form.auth.email' | translate }}" [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
+                        <mat-option *ngFor="let lang of languages" [value]="lang">
+                            {{ lang  }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> 
+            </div>
         </div>
-        <div class="icon-form-field">
-          <mat-icon color="accent"><fa-icon icon="lightbulb" color="accent"></fa-icon></mat-icon>
-          <mat-placeholder>{{ 'anms.setting.themes.night-mode' | translate }}
-          </mat-placeholder>
-          <mat-slide-toggle
-            [checked]="setting.autoNightMode"
-            (change)="onAutoNightModeToggle($event)">
-          </mat-slide-toggle>
+        <div class="row">
+            <div class="col-md-6" [ngClass]="routeAnimationsElements">
+                <span *ngIf="selectedtheme">
+                    <mat-select [ngModel]="selectedtheme" (selectionChange)="onThemeSelect($event)">
+                        <mat-option *ngFor="let theme of themes" [value]="theme">
+                            {{theme.label.toUpperCase() }}
+                        </mat-option>
+                    </mat-select>
+                </span>
+
+
+            </div>
         </div>
-      </div>
-      <div class="col-md-6 group" [ngClass]="routeAnimationsElements">
-        <h2>{{ 'anms.setting.animations.title' | translate }}</h2>
-        <div class="icon-form-field">
-          <mat-icon color="accent"><mat-icon color="accent"><fa-icon icon="window-maximize"></fa-icon></mat-icon></mat-icon>
-          <mat-placeholder>{{ 'anms.setting.animations.page' | translate }}
-          </mat-placeholder>
-          <mat-slide-toggle
-            matTooltip="Sorry, this feature is disabled in IE, EDGE and Safari"
-            matTooltipPosition="before"
-            *ngIf="setting.pageAnimationsDisabled"
-            disabled>
-          </mat-slide-toggle>
-          <mat-slide-toggle
-            *ngIf="!setting.pageAnimationsDisabled"
-            [checked]="setting.pageAnimations"
-            (change)="onPageAnimationsToggle($event)">
-          </mat-slide-toggle>
-        </div>
-        <div class="icon-form-field">
-          <mat-icon color="accent"><fa-icon icon="stream" color="accent"></fa-icon></mat-icon>
-          <mat-placeholder>{{ 'anms.setting.animations.elements' | translate }}
-          </mat-placeholder>
-          <mat-slide-toggle
-            [checked]="setting.elementsAnimations"
-            (change)="onElementsAnimationsToggle($event)">
-          </mat-slide-toggle>
-        </div>
-      </div>
-    </div>
-  </ng-container>
+    </ng-container>
 </div>

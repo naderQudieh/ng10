@@ -1,4 +1,5 @@
-<div [class]="'theme-wrapper ' + (theme$ | async)"> 
+<div [class]="'theme-wrapper ' + (selectedtheme)">
+
     <mat-sidenav-container>
         <mat-sidenav fixedInViewport="true" #sidenav mode="over">
             <mat-toolbar color="primary">
@@ -48,7 +49,7 @@
                         <mat-icon>home</mat-icon>
                     </a>
                     <button matTooltip="about" mat-icon-button routerLink="about" class="d-none d-sm-inline">
-                        about  
+                        about
                     </button>
                     <a mat-icon-button mat-button mat-stroked-button color="accent" *ngIf="!(isAuthenticated)" (click)="onLoginClick()">
                         {{ 'main.menu.login' | translate }}
@@ -64,17 +65,27 @@
                         </button>
                     </mat-menu>
 
-                    <button matTooltip="settings" mat-icon-button routerLink="setting" *ngIf="isAuthenticated" class="d-none d-sm-inline">
+                    <button matTooltip="settings" mat-icon-button routerLink="setting"  class="d-none d-sm-inline">
                         <mat-icon>settings</mat-icon>
                     </button>
 
-                    <span *ngIf="language$ | async as language">
-                        <mat-select [ngModel]="language" (selectionChange)="onLanguageSelect($event)">
+                    <span *ngIf="selectedlanguage">
+                        <mat-select [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
                             <mat-option *ngFor="let l of languages" [value]="l">
                                 {{ l.toUpperCase() }}
                             </mat-option>
                         </mat-select>
                     </span>
+
+                    <span *ngIf="selectedtheme" >
+                        <mat-select [ngModel]="selectedtheme.toUpperCase()" (selectionChange)="onThemeSelect($event)">
+                            <mat-option *ngFor="let l of themes" [value]="l">
+                                {{ l.toUpperCase() }}
+                            </mat-option>
+                        </mat-select>
+                    </span>
+                     
+
                 </mat-toolbar>
             </div>
 

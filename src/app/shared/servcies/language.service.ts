@@ -31,8 +31,14 @@ export class LanguageService {
       this.translate.use(event.lang);
     });
   }
-  getLang(): string {
-    return this.storageService.getItem('lang');
+    getLang()  {  
+        this.storageService.getItem('lang')
+            .then((lang: string) => {
+                return lang;
+            }).catch(() => {
+                return '';
+         })
+      //return this.storageService.getItem('lang');
   }
   public setCurrentLanguage(lang:string) { 
     this.storageService.setItem('lang', lang);

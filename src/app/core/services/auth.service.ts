@@ -9,7 +9,7 @@ import { LocalStorageService } from '../../core/services/local-storage.service';
 import { UserInfo, AuthToken, UserClaims, AuthState } from '../../features/account/store/auth.model';
 import { AppState } from '../store/app.state';
 import { AuthReducer, AuthActions, AuthSelectors } from '../../features/account/store';
-import { globalStoreService } from './globalstoreservcie';
+import { globalVariableService } from './globalVariableService';
 
 @Injectable({
     providedIn: 'root',
@@ -19,7 +19,7 @@ export class AuthService {
     protected logoutUrl = `${environment.baseUrl}/auth/sign-out`;
     protected tokenUrl = `${environment.baseUrl}/auth/login`;
  
-    constructor(private gStoreService: globalStoreService, protected http: HttpClient, public jwtHelper: JwtHelperService,
+    constructor(private gStoreService: globalVariableService, protected http: HttpClient, public jwtHelper: JwtHelperService,
         protected storageService: LocalStorageService) {
         
     }
