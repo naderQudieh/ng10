@@ -183,9 +183,7 @@
 
   "map_location": "اختيار هذا الموقع",
 
-  "Setting_Setting": "الاعدادات",
-  "Setting_Country": "الدولة",
-  "Setting_language": "اللغة",
+
   "Setting_languageMassege": "يجب اختيار لغة",
   "Setting_Submit": "حفظ",
 
@@ -291,6 +289,10 @@
   "user.profile.skindark": "غامق",
   "error_password_or_username": "كلمة مرور او اسم المستخدم خطأ",
   "error": "خطأ",
-  "try_agein": "حاول مره ثانية"
+  "try_agein": "حاول مره ثانية",
 
+
+  "Setting_Setting": "الاعدادات",
+  "Setting_Country": "الدولة",
+  "Setting_Language": "اللغة"
 }

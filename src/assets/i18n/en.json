@@ -139,5 +139,10 @@
   "button.link_facebook": "ربط حساب الفيسبوك",
   "button.unlink_facebook": "عدم ربط حساب الفيسبوك",
   "button.link_github": "ربط حساب الجيتهب",
-  "button.unlink_github": "عدم ربط حساب الجيتهب"
+  "button.unlink_github": "عدم ربط حساب الجيتهب",
+
+
+  "Setting_Setting": "Setting",
+  "Setting_Country": "Country",
+  "Setting_Language": "Language"
 }

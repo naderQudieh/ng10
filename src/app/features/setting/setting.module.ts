@@ -1,34 +1,51 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Store, select } from '@ngrx/store';
 import { HttpClient } from '@angular/common/http';
+import { SharedModule } from '../../shared/shared.module';
 import { LazyElementsModule } from '@angular-extensions/elements';
 import { StoreModule } from '@ngrx/store';
-import { SharedModule } from '../../shared/shared.module';
-import { Store, select } from '@ngrx/store';
-import { tap, take, distinctUntilChanged, filter } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { AppState } from '../../core/core.module';
+import { tap, take, distinctUntilChanged, filter } from 'rxjs/operators';
 import { globalVariableService } from '../../core/services';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AppState } from '../../core/core.module';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 
 import { SettingRoutingModule } from './setting-routing.module';
 import { SettingContainerComponent } from './pages/setting-container.component';
 
+export function HttpLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(
+        http,
+        `${environment.i18nPrefix}/assets/i18n/`,
+        '.json'
+    );
+}
+
 @NgModule({
   declarations: [SettingContainerComponent],
-  imports: [CommonModule, SharedModule, SettingRoutingModule]
+    imports: [CommonModule, SharedModule, SettingRoutingModule,
+
+        TranslateModule.forChild({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            },
+            isolate: false
+        }) 
+    ]
 })
  
 export class SettingModule {
     constructor( private readonly translateService: TranslateService,
         private readonly globalVarSrv: globalVariableService) {
         this.globalVarSrv.getLanguage().subscribe((language) => {
+            console.log(language);
             this.translateService.use(language)
         });
-        //this.store.pipe(select(selectSettingLanguage))
-        //    .subscribe((language) => { 
-        //        this.translateService.use(language)
-        //    }); 
+        
     }
 }

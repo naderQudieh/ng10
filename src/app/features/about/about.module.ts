@@ -4,8 +4,6 @@ import { Store, select } from '@ngrx/store';
 import { HttpClient } from '@angular/common/http';
 import { SharedModule } from '../../shared/shared.module';
 import { TranslateService } from '@ngx-translate/core';
-import { AboutComponent } from './pages/about.component';
-import { AboutRoutingModule } from './about-routing.module';
 import { LazyElementsModule } from '@angular-extensions/elements';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -15,6 +13,8 @@ import { AppState  } from '../../core/core.module';
 import { tap, take, distinctUntilChanged, filter } from 'rxjs/operators';
 import { globalVariableService } from '../../core/services';
 
+import { AboutComponent } from './pages/about.component';
+import { AboutRoutingModule } from './about-routing.module';
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(
         http,

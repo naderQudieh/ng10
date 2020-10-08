@@ -12,6 +12,7 @@ import { AppState, routeAnimations  } from '../core/core.module';
 import * as fromActions from '../features/account/store/auth.actions';
 import { AuthActions, AuthState, getAuth, getAuthError } from '../features/account/store';
 import { BidiModule, Directionality, Direction } from '@angular/cdk/bidi'
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
     selector: 'anms-root',
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit {
     isAuthenticated: boolean = false;
     private _dirChangeSubscription = Subscription.EMPTY;
     constructor(dir: Directionality, @Inject(DOCUMENT) private document: Document, private globalVarSrv: globalVariableService,
-        private router: Router, private store: Store<AppState>) {
+        private overlayContainer: OverlayContainer,  private router: Router, private store: Store<AppState>) {
         //this.store.pipe(select(getAuth), take(1))
         //    .subscribe((auth) => {
         //        console.log(auth);
@@ -69,6 +70,7 @@ export class AppComponent implements OnInit {
         
         this.languages = this.globalVarSrv.getLanguages().map(p => p.value);
         this.themes = this.globalVarSrv.getThemesList().map(p => p.value);
+         
     }
 
     private static isIEorEdgeOrSafari() {
@@ -80,9 +82,21 @@ export class AppComponent implements OnInit {
         this.globalVarSrv.getLanguage().subscribe(lang => {
             this.selectedlanguage = lang;
         })
- 
+        //this.selectedtheme = 'black-theme';
         this.globalVarSrv.getTheme().subscribe(theme => {
             this.selectedtheme = theme.toLowerCase();
+
+            const classList = this.overlayContainer.getContainerElement().classList;
+            const toRemove = Array.from(classList).filter((item: string) =>
+                item.includes('-theme')
+            );
+            if (toRemove.length) {
+                classList.remove(...toRemove);
+            }
+            classList.add(this.selectedtheme);
+
+            //this.overlayContainer.getContainerElement().classList.add(this.selectedtheme);
+           // console.log(this.overlayContainer.getContainerElement().classList);
         }) 
         
     }

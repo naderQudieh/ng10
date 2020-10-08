@@ -1,34 +1,39 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <h1>xxxxx</h1>
+            <h1>{{ 'Setting_Setting' | translate }}</h1>
         </div>
     </div> 
     <ng-container>
 
         <div class="row">
             <div class="col-md-6" [ngClass]="routeAnimationsElements">
+                <mat-icon color="accent"><fa-icon icon="language" color="accent"></fa-icon></mat-icon>
                 <mat-form-field *ngIf="selectedlanguage" fxFill>
-                    <mat-select  placeholder="{{ 'form.auth.email' | translate }}" [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
+                    <mat-select placeholder="{{ 'Setting_Language' | translate }}" [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
                         <mat-option *ngFor="let lang of languages" [value]="lang">
                             {{ lang  }}
                         </mat-option>
                     </mat-select>
-                </mat-form-field> 
+                </mat-form-field>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-6" [ngClass]="routeAnimationsElements">
-                <span *ngIf="selectedtheme">
-                    <mat-select [ngModel]="selectedtheme" (selectionChange)="onThemeSelect($event)">
+                <mat-icon color="accent"><fa-icon icon="paint-brush" color="accent"></fa-icon></mat-icon>
+                <mat-form-field *ngIf="selectedtheme" fxFill>
+                    <mat-select [placeholder]="'anms.setting.themes.placeholder' | translate"
+                                [ngModel]="selectedtheme"
+                                (selectionChange)="onThemeSelect($event)"
+                                name="themes">
                         <mat-option *ngFor="let theme of themes" [value]="theme">
-                            {{theme.label.toUpperCase() }}
+                            {{ 'anms.setting.themes.' + theme.label | translate }}
                         </mat-option>
                     </mat-select>
-                </span>
-
-
+                </mat-form-field>
             </div>
         </div>
+       
     </ng-container>
 </div>
