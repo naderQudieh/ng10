@@ -3,7 +3,7 @@ import { UtilityService } from '../../../core/services/utility.service';
 import { ProductsService } from '../../products/products.service';
 import { Subscription, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../../shared/servcies/language.service';
+import { LanguageService } from '../../../shared/services/language.service';
 import { CanActivate, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot, CanLoad, Route, UrlTree, Router } from '@angular/router';
 
 @Component({

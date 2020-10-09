@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { StoreModule, Store } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; 
+import { CustomNGXLoggerService, LoggerModule, NgxLoggerLevel } from "ngx-logger";
 import { MissingTranslationHandler, TranslateModule, TranslateLoader, TranslateService, TranslateCompiler } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 //import { RecaptchaModule } from 'ng-recaptcha';
@@ -14,10 +15,11 @@ import { httpInterceptorProviders } from './interceptors';
 import { FaIconLibrary,  FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { MATERIAL_MODULES_CORE } from '../shared/material.module';
 import { JwtModule } from '@auth0/angular-jwt';
+import { SpinnerService } from '../shared/services';
 
 import {  ROUTE_ANIMATIONS_ELEMENTS,  routeAnimations} from './route.animations';
 
-import { NotificationService } from './services/notification.service';
+ 
 import { faIconscore } from './constants';
 
 import { FooterComponent } from '../shared/components/footer/footer.component'; 
@@ -28,20 +30,20 @@ import { Configuration } from './configuration';
 
 
 import {
-    AppErrorHandler, SnackbarService, TitleService, globalVariableService,
+    AppErrorHandler, SnackbarService,  TitleService, globalVariableService,
     LocalStorageService, AnimationsService, AuthGuardService
 } from './services';
  
 
 
-const SHARED_SERVICES: any[] = [globalVariableService,
-    LocalStorageService, AnimationsService, NotificationService,
-    AppErrorHandler, AuthGuardService, TitleService, SnackbarService
+const SHARED_SERVICES: any[] = [globalVariableService, TitleService,  
+    LocalStorageService, AnimationsService, SnackbarService,
+    AppErrorHandler, AuthGuardService, SpinnerService,
 ];
 
 export {
-    LocalStorageService, AnimationsService, NotificationService,
-    AppErrorHandler, AuthGuardService, TitleService, SnackbarService, 
+    LocalStorageService, AnimationsService, SnackbarService,
+    AppErrorHandler, AuthGuardService, TitleService, SpinnerService,
     routeAnimations, ROUTE_ANIMATIONS_ELEMENTS, 
     AppState,  
     selectRouterState     

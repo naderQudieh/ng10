@@ -17,7 +17,8 @@
 @import './app/app/app.component.scss-theme';
 @import './app/shared/components/big-input/big-input/big-input.component.scss-theme';
 @import './app/features/about/pages/about.component.scss-theme';
- 
+@import './app/features/products/products.component.scss-theme.scss';
+
 @mixin custom-components-theme($theme) {
   @include anms-styles-reset-theme($theme);
   @include anms-app-component-theme($theme);

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
  const PROFILE_URL = 'profile';
  const PROFILE_SETTINGS = 'profile/setting';
 
-@Injectable({ providedIn: 'root' })
+ 
 export class RouteManager {
   constructor(private readonly router: Router) {}
 

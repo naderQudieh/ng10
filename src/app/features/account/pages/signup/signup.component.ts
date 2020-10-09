@@ -5,7 +5,7 @@ import { filter, debounceTime, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 //import { RecaptchaComponent } from 'ng-recaptcha';
-import { ROUTE_ANIMATIONS_ELEMENTS, NotificationService } from '../../../../core/core.module';
+import { ROUTE_ANIMATIONS_ELEMENTS  } from '../../../../core/core.module';
 import { AuthActions, AuthState, getAuth, getAuthError } from '../../store';
  
 
@@ -30,8 +30,7 @@ export class SignupComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private store: Store,
-    private translate: TranslateService,
-    private notificationService: NotificationService
+    private translate: TranslateService 
   ) {}
 
   ngOnInit() {

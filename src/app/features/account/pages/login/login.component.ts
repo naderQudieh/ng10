@@ -6,7 +6,7 @@ import { Subscription, Observable } from 'rxjs';
 import { filter, debounceTime, map, take } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ROUTE_ANIMATIONS_ELEMENTS, NotificationService } from '../../../../core/core.module';
+import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../../core/core.module';
 import { AuthActions, AuthState, getAuth, getAuthError } from '../../store';
 
 @Component({
@@ -35,8 +35,7 @@ export class LoginComponent implements OnInit {
         private router: Router,
     private fb: FormBuilder,
     private store: Store,
-    private translate: TranslateService,
-    private notificationService: NotificationService
+    private translate: TranslateService 
   ) {}
 
     ngOnInit() {

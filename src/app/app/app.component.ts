@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { DOCUMENT } from "@angular/common";
 import { Inject } from "@angular/core";
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { filter, debounceTime, map, take } from 'rxjs/operators';
 import { environment as env } from '../../environments/environment';
 import { globalVariableService } from '../core/services';
@@ -13,6 +13,7 @@ import * as fromActions from '../features/account/store/auth.actions';
 import { AuthActions, AuthState, getAuth, getAuthError } from '../features/account/store';
 import { BidiModule, Directionality, Direction } from '@angular/cdk/bidi'
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { SpinnerService } from '../shared/services/spinner.service';
 
 @Component({
     selector: 'anms-root',
@@ -42,12 +43,17 @@ export class AppComponent implements OnInit {
     selectedtheme: any;
     selectedlanguage: any;
     isAuthenticated: any;
-   
-  
+    
+    showSpinner$: Observable<boolean>;
     private _dirChangeSubscription = Subscription.EMPTY;
-    constructor(dir: Directionality, @Inject(DOCUMENT) private document: Document, private globalVarSrv: globalVariableService,
+
+    constructor(private spinnerService: SpinnerService, dir: Directionality,
+        @Inject(DOCUMENT) private document: Document, private globalVarSrv: globalVariableService,
         private overlayContainer: OverlayContainer, private router: Router, private store: Store<AppState>) {
-        this.store.pipe(select(getAuth) )
+        
+        // this.router.navigate([''])
+        this.showSpinner$ = spinnerService.getValue();
+        this.store.pipe(select(getAuth))
             .subscribe((auth) => {
                 console.log(auth);
                 this.isAuthenticated = auth.isAuthenticated;
@@ -72,11 +78,12 @@ export class AppComponent implements OnInit {
         this.themes = this.globalVarSrv.getThemesList().map(p => p.value);
          
     }
-
+   
     private static isIEorEdgeOrSafari() {
         return ['ie', 'edge', 'safari'].includes(browser().name);
     }
 
+    
     ngOnInit(): void {
 
         this.globalVarSrv.getLanguage().subscribe(lang => {

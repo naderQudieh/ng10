@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { SpinnerService } from '../../servcies';
+import { SpinnerService } from '../../services';
 
 
 @Component({

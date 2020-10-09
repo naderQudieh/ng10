@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
 import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../core/core.module';
-import { ConfirmModalService } from '../../../shared/servcies';
+import { ConfirmModalService } from '../../../shared/services';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'anms-about',

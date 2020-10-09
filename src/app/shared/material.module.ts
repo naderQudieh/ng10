@@ -27,9 +27,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 export const MATERIAL_MODULES_CORE = [MatDialogModule ,
-    MatToolbarModule, BidiModule,
+    MatToolbarModule, BidiModule, MatProgressBarModule,
     MatIconModule,
     MatMenuModule,
     MatSidenavModule,
@@ -40,7 +41,7 @@ export const MATERIAL_MODULES_CORE = [MatDialogModule ,
     MatButtonModule,
 ];
 const MATERIAL_MODULES_SHARED = [
-    FlexLayoutModule, MatTabsModule, MatChipsModule, MatSlideToggleModule, MatDividerModule, MatSliderModule,
+    FlexLayoutModule, MatTabsModule, MatChipsModule, MatProgressBarModule, MatSlideToggleModule, MatDividerModule, MatSliderModule,
     MatButtonModule,
     MatCardModule,
     MatRadioModule,

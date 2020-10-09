@@ -1,5 +1,10 @@
 @import '../../styles-variables';
-
+.loading-container {
+    z-index: 201;
+    top: 0;
+    left: 0;
+    height: 10px;
+}
 .theme-wrapper {
   height: 100%;
   width: 100%;

@@ -1,3 +1,4 @@
+ 
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy} from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
@@ -11,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
     selector: 'app-products',
     templateUrl: './products.component.html',
-    styleUrls: ['./products.component.scss']
+    styleUrls: ['../products.component.scss']
 })
 export class ProductsComponent implements OnInit {
     routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
@@ -25,7 +26,7 @@ export class ProductsComponent implements OnInit {
 
     constructor(utilityService: UtilityService, private homeProducts: ProductsService,
         translate: TranslateService) {
-        
+        //console.log('xxx');
     }
     ngOnInit(): void {
 

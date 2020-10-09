@@ -1,4 +1,3 @@
-/// <reference path="servcies/confirm-modal.service.ts" />
 import { NgModule ,Optional, SkipSelf  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,12 +10,12 @@ import { BigInputActionComponent } from './components/big-input/big-input-action
 import { RtlSupportDirective } from './components/rtl-support/rtl-support.directive';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { SpinnerService, NotifyService, RouteManager,  ConfirmModalService } from './servcies';
+import { SpinnerService, NotifyService,   ConfirmModalService } from './services';
 
 
 
 const SHARED_SERVICES: any[] = [
-    SpinnerService, ConfirmModalService, NotifyService, RouteManager
+    SpinnerService, ConfirmModalService, NotifyService 
 ];
 
 const SHARED_COMPONENTS: any[] = [

@@ -1,35 +1,51 @@
-import { Injectable, NgZone} from "@angular/core";
+import { Injectable, NgZone } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
- 
-@Injectable()
+
+@Injectable({
+  providedIn: 'root'
+})
 export class SnackbarService {
+  constructor(
+    private readonly snackBar: MatSnackBar,
+    private readonly zone: NgZone
+  ) {}
 
-  constructor(private snackBar: MatSnackBar, private zone: NgZone) {}
-
-  public showSnackBarSuccess(message: string) {
-        const config = new MatSnackBarConfig();
-        config.panelClass = ["snackbar__success"];
-        config.duration = 2500;
-        config.verticalPosition = "bottom";
-        this.snackBar.open(message, "", config);
-    }
-
-  public showSnackBarError(message: string) {
-        const config = new MatSnackBarConfig();
-        config.panelClass = ["snackbar__error"];
-        config.duration = 3000;
-        config.verticalPosition = "bottom";
-        this.snackBar.open(message, "", config);
-    }
-
-  public showSnackBarInfo (message: string) {
-    const config = new MatSnackBarConfig();
-    config.panelClass = ['snackbar__info'];
-    config.verticalPosition = 'bottom';
-    config.horizontalPosition = 'center';
-    config.duration = 5000;
-    this.zone.run(() => {
-      this.snackBar.open(message, 'x', config);
+  default(message: string) {
+    this.show(message, {
+      duration: 2000,
+      panelClass: 'default-notification-overlay'
     });
+  }
+
+  info(message: string) {
+    this.show(message, {
+      duration: 2000,
+      panelClass: 'info-notification-overlay'
+    });
+  }
+
+  success(message: string) {
+    this.show(message, {
+      duration: 2000,
+      panelClass: 'success-notification-overlay'
+    });
+  }
+
+  warn(message: string) {
+    this.show(message, {
+      duration: 2500,
+      panelClass: 'warning-notification-overlay'
+    });
+  }
+
+  error(message: string) {
+    this.show(message, {
+      duration: 3000,
+      panelClass: 'error-notification-overlay'
+    });
+  }
+
+  private show(message: string, configuration: MatSnackBarConfig) { 
+    this.zone.run(() => this.snackBar.open(message, null, configuration));
   }
 }

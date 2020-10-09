@@ -1,4 +1,4 @@
-@import '../../../../styles-variables';
+@import '../../../styles-variables';
 
 .mat-card { 
     padding: 0 0 !important;
@@ -16,4 +16,18 @@
     line-height: 50px;
     background-color: #3f8fc9;
     padding-left:50px;
+}
+nav {
+    margin-bottom: 20px;
+
+    .mat-tab-link {
+        min-width: 120px;
+        padding: 0 15px;
+    }
+
+    @media (max-width: map-get($grid-breakpoints, md)) {
+        .mat-tab-link {
+            min-width: 0;
+        }
+    }
 }
