@@ -25,54 +25,44 @@ export class AuthEffects {
     ) {
           
     }
-    @Effect({ dispatch: false })
-    LogIn: Observable<any> = createEffect(() =>
-        this.actions.pipe(ofType(AuthActionTypes.LOGIN))
-            .pipe(map((action: LogIn) => {
-               return  action.payload ;  
-            }))
-            .pipe(
-                switchMap((payload) => {
-                   console.log(payload);
-                    return this.authService.login(payload).pipe(map((authToken) => { 
-                                //console.log(authToken);
-                                if (authToken) {  
-                                    if (payload['returnUrl']) {
-                                        authToken['returnUrl'] = payload['returnUrl'];
-                                    }  
-                                    return new LogInSuccess(authToken);
-                                } else {
-                                    return new LogInError({ error: 'Sign in first' });
-                                }
-                            })
-                        )
-                        .pipe(
-                            catchError((error) => {
-                                return of(new LogInError({ error }));
-                            })
-                        );
-                })
+   
+    @Effect()
+    loginAction$ = this.actions.pipe( ofType(AuthActionTypes.LOGIN),
+        map((action:LogIn) => action.payload),
+        switchMap(payload =>
+            this.authService.login(payload).pipe(
+                map((authToken: any) => { 
+                    if (authToken) {
+                        if (payload['returnUrl']) {
+                            authToken['returnUrl'] = payload['returnUrl'];
+                        }
+                        return new LogInSuccess(authToken);
+                    } else {
+                        return new LogInError({ error: 'Sign in first' });
+                    }
+                }),  
+                catchError(error => of(new LogInError({ error })))
             )
+        )
     );
 
-
     @Effect({ dispatch: false })
-    LogInSuccess = this.actions.pipe(
-        ofType(AuthActionTypes.LOGIN_SUCCESS),
-        flatMap((action: any) => { 
-            let payload = action['payload']; 
-            let redirectUrl = payload['redirectUrl'] || null;  
-            if (redirectUrl==null) {
+    loginSuccess  = this.actions.pipe(ofType( AuthActionTypes.LOGIN_SUCCESS),
+        map((action:any) => action.payload),
+        switchMap((payload: any) => { 
+            let redirectUrl = payload['redirectUrl'] || null;
+            if (redirectUrl == null) {
                 redirectUrl = '/home';
             } else {
-                this._delete(payload,  'redirectUrl');
+                this._delete(payload, 'redirectUrl');
             } 
-            this.router.navigateByUrl(redirectUrl);
-            return this.authService.LogInSuccess(payload); 
+            this.authService.LogInSuccess(payload);
+            return this.router.navigateByUrl(redirectUrl);
+            
         })
     );
 
-  
+    
     
     @Effect({ dispatch: false })
     SignUp: Observable<any> = createEffect(() =>
