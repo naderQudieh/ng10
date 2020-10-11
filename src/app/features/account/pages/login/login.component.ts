@@ -18,15 +18,15 @@ export class LoginComponent implements OnInit {
     isLoading = false;
     public error$: Observable<string>;
     hide = true;
-    returnUrl: string="";
+    redirectUrl: string="";
     private loadingSub: Subscription;
-  mainform = this.fb.group({
-    autosave: false,
-      email: ['', [Validators.required, Validators.email]],  
-      password: ['', [Validators.required]
-      ] 
+      mainform = this.fb.group({
+        autosave: false,
+          email: ['', [Validators.required, Validators.email]],  
+          password: ['', [Validators.required]
+          ] 
     
-  });
+      });
 
  
 
@@ -40,18 +40,27 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         this.isLoading = false; 
-        this.store.pipe(select(getAuth), take(1))
-        .subscribe((auth) => {
-            console.log(auth);
-            //this.mainform.patchValue(auth)
-        });
+        //this.store.pipe(select(getAuth), take(1))
+        //.subscribe((auth) => {
+        //    console.log(auth);
+        //    //this.mainform.patchValue(auth)
+        //});
         this.error$ = this.store.pipe(select(getAuthError)); 
         this.route.params.subscribe((params) => {
-            if (params.returnUrl) {
-                this.returnUrl = params.returnUrl;
+            console.log(params); 
+            if (params.redirectUrl) {
+                this.redirectUrl = params.redirectUrl;
             }
             
-             console.log(this.returnUrl); 
+            console.log(this.redirectUrl); 
+        });
+        this.route.queryParams.subscribe((params) => {
+            console.log(params);
+            if (params.redirectUrl) {
+                this.redirectUrl = params.redirectUrl;
+            }
+
+            console.log(this.redirectUrl);
         }); 
   }
   
@@ -62,11 +71,10 @@ export class LoginComponent implements OnInit {
         let me = {
             email: data.value.email,
             password: data.value.password,
-            returnUrl: this.returnUrl
-        }
-        console.log(me);
+            redirectUrl: this.redirectUrl
+        } 
         if (data.value) {
-
+            console.log(this.redirectUrl); 
             this.store.dispatch(new AuthActions.LogIn(me));
         }
     }

@@ -78,3 +78,15 @@ export const getAuthTokenClaims = createSelector(
     getAuth,
     fromAuth.getAuthTokenClaims
 );
+export const getValidToken  = createSelector(
+    getAuth,
+    (authState: AuthState) => {
+        if (authState) {
+            if (!authState.isTokenExpired && authState.authToken) {
+                return authState.authToken;
+            }  
+        }   
+        return null;
+       
+    }
+);

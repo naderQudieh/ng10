@@ -20,6 +20,10 @@ mat-sidenav-container {
         display: flex;
         z-index: 10;
 
+         button {
+           min-width:70px!important;
+        }
+
         .nav-button {
             margin: 0 10px 0 0;
         }
@@ -64,6 +68,7 @@ mat-sidenav-container {
             .nav-button {
                 min-width: 0;
                 padding: 0 10px;
+                min-width: 50px;
             }
         }
     }

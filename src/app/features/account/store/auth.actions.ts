@@ -9,16 +9,13 @@ export enum AuthActionTypes {
     SIGNUP = '[Auth] Signup',
     SIGNUP_SUCCESS = '[Auth] Signup Success',
     SIGNUP_ERROR = '[Auth] Signup Failure',
-    LOGOUT = '[Auth] Logout',
-    INIT_APP= '[App] Start app initializer',
-    INIT_APP_ERROR= '[App] Start app initializer fail',
+    LOGOUT = '[Auth] Logout' 
 }
 
 export class LogIn implements Action {
     readonly type = AuthActionTypes.LOGIN;
     constructor(public payload: UserModel ) {
-        console.log('Action LogIn');
-        console.log(payload);
+        console.log('Action LogIn'); 
     }
 }
 
@@ -31,7 +28,9 @@ export class LogInSuccess implements Action {
 
 export class LogInError implements Action {
     readonly type = AuthActionTypes.LOGIN_ERROR;
-    constructor(public payload: any) { }
+    constructor(public payload: any) {
+        console.log('Action LogInError');
+    }
 }
 
 export class SignUp implements Action {
@@ -41,26 +40,26 @@ export class SignUp implements Action {
 
 export class SignUpSuccess implements Action {
     readonly type = AuthActionTypes.SIGNUP_SUCCESS;
-    constructor(public payload: any) { }
+    constructor(public payload: any) {
+        console.log('Action SignUpSuccess');
+    }
 }
 
 export class SignUpError implements Action {
     readonly type = AuthActionTypes.SIGNUP_ERROR;
-    constructor(public payload: any) { }
+    constructor(public payload: any) {
+        console.log('Action SignUpError');
+    }
 }
 
 export class LogOut implements Action {
     readonly type = AuthActionTypes.LOGOUT;
+    constructor() {
+        console.log('Action LogOut');
+    }
 }
 
-export class StartAppInitializer implements Action {
-    readonly type = AuthActionTypes.INIT_APP;
-    constructor(public payload: any = null) { }
-}
-export class StartAppInitializerFail implements Action {
-    readonly type = AuthActionTypes.INIT_APP_ERROR;
-    constructor(public payload: any = null) { }
-}
+ 
 
 export type All =
     | LogIn
@@ -70,8 +69,6 @@ export type All =
     | SignUpSuccess
     | SignUpError
     | LogOut
-    | StartAppInitializer
-    | StartAppInitializerFail;
-
+ 
  
 

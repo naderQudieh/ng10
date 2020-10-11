@@ -14,7 +14,7 @@ import { AppState } from '../../core/core.module';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HomeRoutingModule } from './home-routing.module'; 
 import { HomeComponent } from './pages/home.component';
-import { ProductsService } from '../products/products.service';
+import { HomeService } from './home.service';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -35,7 +35,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         }) 
     ],
   entryComponents: [],
-    providers: [ProductsService]
+    providers: [HomeService]
 })
  
  

@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, Effect, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { merge,  BehaviorSubject, Observable } from 'rxjs';
-import { map, switchMap, mergeMap, concatMap, tap, distinctUntilChanged, filter } from 'rxjs/operators';
+import { map, flatMap, switchMap, mergeMap, concatMap, tap, distinctUntilChanged, filter } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { AuthActionTypes, StartAppInitializerFail, LogIn, LogInSuccess, LogInError, SignUp, SignUpSuccess, SignUpError, LogOut, } from './auth.actions';
+import { AuthActionTypes,  LogIn, LogInSuccess, LogInError, SignUp, SignUpSuccess, SignUpError, LogOut, } from './auth.actions';
 import { AuthToken, UserInfo } from './auth.model';
 import { selectQueryParam, selectUrl } from '../../../core/store/router/router.state';
 
@@ -25,13 +25,15 @@ export class AuthEffects {
     ) {
           
     }
-
+    @Effect({ dispatch: false })
     LogIn: Observable<any> = createEffect(() =>
         this.actions.pipe(ofType(AuthActionTypes.LOGIN))
-            .pipe(map((action: LogIn) => action.payload))
+            .pipe(map((action: LogIn) => {
+               return  action.payload ;  
+            }))
             .pipe(
                 switchMap((payload) => {
-                    console.log(payload);
+                   console.log(payload);
                     return this.authService.login(payload).pipe(map((authToken) => { 
                                 //console.log(authToken);
                                 if (authToken) {  
@@ -52,28 +54,27 @@ export class AuthEffects {
                 })
             )
     );
-    
-    LogInSuccess: Observable<any> = createEffect(() =>
-        this.actions.pipe(ofType(AuthActionTypes.LOGIN_SUCCESS))
-            .pipe(map((action: LogInSuccess) => action.payload))
-            .pipe(
-                tap((payload: AuthToken) => {
-                    //console.log(payload);
-                    let returnUrl = payload['returnUrl'] || null;
-                    //console.log(returnUrl);
-                    if (!returnUrl) {
-                        returnUrl = '/home';
-                    } else {
-                        this._delete(payload, 'returnUrl'); 
-                    } 
-                    this.authService.setUserToken(payload); 
-                    this.router.navigateByUrl(returnUrl);
-                })
-        ),
-        { dispatch: false }
-    );
-    
 
+
+    @Effect({ dispatch: false })
+    LogInSuccess = this.actions.pipe(
+        ofType(AuthActionTypes.LOGIN_SUCCESS),
+        flatMap((action: any) => { 
+            let payload = action['payload']; 
+            let redirectUrl = payload['redirectUrl'] || null;  
+            if (redirectUrl==null) {
+                redirectUrl = '/home';
+            } else {
+                this._delete(payload,  'redirectUrl');
+            } 
+            this.router.navigateByUrl(redirectUrl);
+            return this.authService.LogInSuccess(payload); 
+        })
+    );
+
+  
+    
+    @Effect({ dispatch: false })
     SignUp: Observable<any> = createEffect(() =>
         this.actions.pipe(ofType(AuthActionTypes.SIGNUP))
             .pipe(map((action: SignUp) => action.payload))
@@ -95,7 +96,7 @@ export class AuthEffects {
                 })
             )
     );
-
+    @Effect({ dispatch: false })
     SignUpSuccess: Observable<any> = createEffect(
         () =>
             this.actions.pipe(
@@ -112,33 +113,35 @@ export class AuthEffects {
         { dispatch: false }
     );
 
-    public LogOut: Observable<any> = createEffect(
-        () =>
-            this.actions.pipe( ofType(AuthActionTypes.LOGOUT),
-                tap((user) => { 
-                    //console.log('eff logout');
-                    this.authService.logout(); 
-                    this.storageService.clearToken(); 
-                    this.router.navigateByUrl('/auth/login');
-                })
-            ),
-        { dispatch: false }
+    @Effect({ dispatch: false })
+    LogOut: Observable<any> = this.actions.pipe(ofType(AuthActionTypes.LOGOUT),
+        map((action: any) => { 
+            return this.authService.logout().subscribe(res => { 
+                this.router.navigateByUrl('/auth/login');
+                return of(res);
+            });
+        })
     );
 
+    //public LogOut: Observable<any> = createEffect(
+    //    () => {
+    //        console.log('createEffect 1 logout');
+    //       return  this.actions.pipe(ofType(AuthActionTypes.LOGOUT),
+    //            tap((user) => {
+    //                console.log('createEffect 2 logout');
+    //                console.log(user);
+    //                this.authService.logout();
+    //                this.storageService.clearToken();
+    //                this.router.navigateByUrl('/auth/login');
+    //            })
+    //        )
+    //    },
+    //     { dispatch: false }
+       
+    //);
+
     
-    StartApp$ = this.actions
-        .pipe(
-            ofType(AuthActionTypes.INIT_APP),
-            mergeMap(() => {
-               // const token = this.storageService.getItem("userToken");
-                const payload = this.authService.decodeToken(); 
-                 return of(true)
-            }),
-            catchError(() => {
-                this.storageService.clear();
-                return of(new StartAppInitializerFail())
-            })
-        )
+ 
     public redirectAfterLogin: Observable<any> =   createEffect(
         () =>
             this.store.pipe(select(selectQueryParam('returnUrl'))).pipe( 

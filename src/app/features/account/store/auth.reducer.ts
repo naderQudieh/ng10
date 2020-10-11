@@ -63,11 +63,7 @@ export function authReducer(state = initialState, action: any): AuthState {
                 userclaims: null,
             };
         }
-        case AuthActionTypes.INIT_APP_ERROR:
-            return initialState
-        default: {
-            return state;
-        }
+       
     } 
     
 }
@@ -130,6 +126,8 @@ export const getAuthTokenClaims = (state: AuthState) => {
     return jwtHelper.decodeToken(state.authToken.access_token) as UserClaims
 };
 export const getAuthToken = (state: AuthState) => state.authToken;
+
+export const getAccessToken = (state: AuthState) => state.authToken.access_token;
 
 export function isAuthTokenExpired() : boolean {
     const jwtHelper = new JwtHelperService();

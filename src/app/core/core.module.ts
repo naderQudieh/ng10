@@ -17,33 +17,31 @@ import { MATERIAL_MODULES_CORE } from '../shared/material.module';
 import { JwtModule } from '@auth0/angular-jwt';
 import { SpinnerService } from '../shared/services';
 
-import {  ROUTE_ANIMATIONS_ELEMENTS,  routeAnimations} from './route.animations';
-
- 
-import { faIconscore } from './constants';
-
-import { FooterComponent } from '../shared/components/footer/footer.component'; 
+import {  ROUTE_ANIMATIONS_ELEMENTS,  routeAnimations} from './route.animations'; 
+import { faIconscore } from './constants';  
 import { AppState, reducers, selectRouterState  } from './store/app.state';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { environment } from '../../environments/environment';
 import { Configuration } from './configuration';
 
+ 
+import { FooterComponent } from '../shared/components/footer/footer.component'; 
 
 import {
     AppErrorHandler, SnackbarService,  TitleService, globalVariableService,
-    LocalStorageService, AnimationsService, AuthGuardService
+    LocalStorageService, AnimationsService, AuthGuard
 } from './services';
  
 
 
 const SHARED_SERVICES: any[] = [globalVariableService, TitleService,  
     LocalStorageService, AnimationsService, SnackbarService,
-    AppErrorHandler, AuthGuardService, SpinnerService,
+    AppErrorHandler, AuthGuard, SpinnerService,
 ];
 
 export {
     LocalStorageService, AnimationsService, SnackbarService,
-    AppErrorHandler, AuthGuardService, TitleService, SpinnerService,
+    AppErrorHandler, AuthGuard, TitleService, SpinnerService,
     routeAnimations, ROUTE_ANIMATIONS_ELEMENTS, 
     AppState,  
     selectRouterState     
@@ -59,8 +57,6 @@ export function tokenGetter() {
         return null;
     }
 }
-
-
  
 
 export function HttpLoaderFactory(http: HttpClient) {

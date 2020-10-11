@@ -1,9 +1,8 @@
 <div class="d-flex justify-content-center align-items-center flex-column home-content">
     <h3>Home .</h3> <h3>{{ 'form.auth.login' | translate }}</h3>
     <p>Home product-list works!</p>
-    <a [routerLink]="['/products']" [queryParams]="{ page: 99 }">Go to Page 99</a>
-
+    
     <a mat-icon-button mat-button mat-stroked-button color="accent" (click)="goToPage()">
-        goProducts
+        Products
     </a>
 </div>

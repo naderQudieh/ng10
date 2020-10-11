@@ -1,0 +1,18 @@
+<h3>ADMIN</h3>
+ 
+<div>
+     
+        <mat-toolbar>
+            <button routerLink="./" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                Dashboard
+            </button>
+            <button routerLink="./crises" routerLinkActive="active"> 
+                Manage Crises
+            </button>
+            <button routerLink="./heroes" routerLinkActive="active"> 
+                Manage Heroes
+            </button>
+        </mat-toolbar>
+    
+    <router-outlet ></router-outlet>
+</div>

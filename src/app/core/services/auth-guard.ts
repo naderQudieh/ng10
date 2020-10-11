@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanLoad, Route , UrlTree, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, NavigationExtras, RouterStateSnapshot, CanLoad, Route , UrlTree, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { globalVariableService } from './globalVariableService';
@@ -13,7 +13,7 @@ import { log } from 'util';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate {
+export class AuthGuard  implements CanActivate {
     isAuthenticated: boolean;
     constructor(private authService: AuthService, private router: Router, private store: Store<AppState>,
         private globalVarSrv: globalVariableService,) {
@@ -28,6 +28,7 @@ export class AuthGuardService implements CanActivate {
     }
   
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree { 
+        const returnurl: string = state.url;
         this.globalVarSrv.isAuthenticated.subscribe((isAuth) => {
             if (!isAuth) {
                 console.log(isAuth);
@@ -36,14 +37,17 @@ export class AuthGuardService implements CanActivate {
             }
         })
         const observable = new Observable<boolean>((observer) => {
-            const authenticated: boolean = this.authService.isAuthenticated(); 
-            console.log(authenticated);
-            console.log(state.url);
+            const authenticated: boolean = this.authService.isAuthenticated();  
             if (authenticated) {
                 observer.next(true);
             }
             else {
-                this.router.navigate(["/auth/login"]);
+                this.authService.redirectUrl = returnurl; 
+                const navigationExtras: NavigationExtras = {
+                    queryParams: { redirectUrl: returnurl } 
+                };
+                this.router.navigate(['/auth/login'], navigationExtras);
+                observer.next(false);
             }
             //if (!this.auth.isTokenExpired()) {
             //    observer.next(true);

@@ -1,20 +1,23 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { NavigationEnd, NavigationStart, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart,  RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { PageNotFoundComponent } from 'src/app/shared/components/page-not-found/page-not-found.component';
-import { AuthGuardService } from './core/services/auth-guard.service';
+import { AuthGuard } from './core/services/auth-guard';
 import { catchError, delay, tap, map } from 'rxjs/operators';
 //import { Logger, LoggerFactory } from "./services/logger-factory.service";
 import { SpinnerService } from 'src/app/shared/services';
 import { BehaviorSubject,   Observable } from 'rxjs';
 import { of } from "rxjs";
- 
+import { SelectivePreloadingStrategyService } from './selective-preloading-strategy.service';
+import { HomeComponent } from 'src/app/features/home/pages/home.component';
+import { HomeService } from 'src/app/features/home/home.service';
 
 const routes: Routes = [
     
     {
         path: '', redirectTo: 'home', pathMatch: 'full'
     },
+    
     {
         path: 'products', 
         loadChildren: () => import('./features/products/products.module')
@@ -31,12 +34,16 @@ const routes: Routes = [
         loadChildren: () => import('./features/account/account.module').then((m) => m.AccountModule)
     },
     {
+        path: 'admin', runGuardsAndResolvers: 'always', canActivate: [AuthGuard],
+        loadChildren: () => import('./features/admin/admin.module').then((m) => m.AdminModule)
+    },
+    {
         path: 'about', runGuardsAndResolvers: 'always',
         loadChildren: () => import('./features/about/about.module').then((m) => m.AboutModule)
     },  
     {
         path: 'setting',
-        canActivate: [AuthGuardService],
+        canActivate: [AuthGuard],
         loadChildren: () => import('./features/setting/setting.module')
             .then(m => m.SettingModule)
             .catch(() => location.reload())
@@ -59,8 +66,10 @@ const routes: Routes = [
            // enableTracing: true,
             useHash: true,
             scrollPositionRestoration: 'enabled',
+            //preloadingStrategy: SelectivePreloadingStrategyService,
             preloadingStrategy: PreloadAllModules,
-            onSameUrlNavigation: 'reload'
+            onSameUrlNavigation: 'reload',
+            urlUpdateStrategy: "eager" 
         })
     ],
     exports: [RouterModule]
@@ -70,9 +79,9 @@ export class AppRoutingModule {
     
     constructor(private router: Router, private spinnerService: SpinnerService) {
         router.events.subscribe((event) => {
-            console.log('NavigationStart ' + this.router.url);
+            
             if (event instanceof NavigationStart) {
-                console.log('NavigationStart '+this.router.url);
+                //console.log('NavigationStart '+this.router.url);
                 spinnerService.show();
             }
             if (event instanceof RouteConfigLoadStart) {
@@ -85,7 +94,7 @@ export class AppRoutingModule {
 
             if (event instanceof NavigationEnd) {
                 //console.log('NavigationStart ' +this.router.url);
-                of('dummy').pipe(delay(200)).subscribe(val => {
+                of('dummy').pipe(delay(100)).subscribe(val => {
                     spinnerService.hide();
                 });
                 document.querySelector('meta[property=og\\:url').setAttribute('content', window.location.href);

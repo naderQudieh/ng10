@@ -19,18 +19,24 @@ export class AuthService {
     userId: number;
     protected logoutUrl = `${environment.baseUrl}/auth/sign-out`;
     protected tokenUrl = `${environment.baseUrl}/auth/login`;
- 
+    isLoggedIn = false; 
+    // store the URL so we can redirect after logging in
+    redirectUrl: string = "";
+
     constructor(private spinner: SpinnerService, private gStoreService: globalVariableService, protected http: HttpClient, public jwtHelper: JwtHelperService,
         protected storageService: LocalStorageService) {
-        
+        this.redirectUrl = "";
     }
 
     public registerUser(registerData: any): Observable<any> {
         
         return this.http.post(`${environment.baseUrl}/auth/sign-up`, registerData);
     }
-
+     
+    
     public login(loginData: any): Observable<AuthToken> {
+        console.log(loginData); 
+        this.redirectUrl = loginData.redirectUrl;
         // let fakeResponse = [1, 2, 3];
         // let delayedObservable = Observable.of(fakeResponse).delay(5000);
         let _userClaims: UserClaims = {
@@ -54,17 +60,17 @@ export class AuthService {
             token_type: 'bear',
             expires_date: '11/11/2020' 
         }
-        this.userId = _token.userId; 
-        //this.storageService.setUserToken(_token);
-       // let xxxx = this.storageService.getUserAuthToken();
-        //console.log(this.jwtHelper.decodeToken(xxxx.access_token));
-        //this.gStoreService.setLoggedIn();
-        return of(_token);
-        // this.storageService.deleteAdmin();
-        //return this.http.post(`${environment.baseUrl}/auth/sign-in`, loginData);
+        this.userId = _token.userId;  
+        _token['redirectUrl'] = this.redirectUrl;
+        this.gStoreService.setAuthenticated(true);
+        return of(_token)  
     }
 
-
+    public LogInSuccess(authtoken: AuthToken): Observable<any> {
+        this.gStoreService.setAuthenticated(true);
+        this.storageService.setUserToken(authtoken);
+        return of(true);
+    }
 
     public logout(): Observable<any> {
         //const headers = new HttpHeaders();
@@ -72,8 +78,8 @@ export class AuthService {
         //headers.set('Authorization', 'Bearer ' + accessToken);
         //headers.set('Cache-Control', 'no-cache');
         this.storageService.clearToken(); 
-        //this.gStoreService.setLoggedOut();
-        return of({ fake: true }); 
+        this.gStoreService.setAuthenticated(false);
+        return of(true); 
     }
 
     public forgot(forgotData: any) {

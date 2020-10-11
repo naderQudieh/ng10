@@ -45,7 +45,7 @@ export class LocalStorageService {
         let _authTokenInfo = this.jwtHelper.decodeToken(token.access_token);
         localStorage.setItem(USER_INFO, JSON.stringify(_authTokenInfo)); 
         localStorage.setItem(TOKEN_INFO, JSON.stringify(token)); 
-        console.log(JSON.parse(localStorage.getItem(TOKEN_INFO)) );  
+        
     }
 
     getUserAuthToken(): AuthToken {
@@ -75,7 +75,7 @@ export class LocalStorageService {
         return token ? token.access_token : null;
     }
 
-    clearToken() {
+    clearToken() { 
         localStorage.removeItem(TOKEN_INFO);
         localStorage.removeItem(USER_INFO);
     }

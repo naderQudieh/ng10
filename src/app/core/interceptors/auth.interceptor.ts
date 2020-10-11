@@ -42,13 +42,14 @@ export class AuthInterceptor implements HttpInterceptor {
 
 	public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		
-		return this.store.select(AuthSelectors.getAuthToken).pipe(
+		return this.isSameOriginUrl(request) && this.store.select(AuthSelectors.getValidToken).pipe(
 			map(token => { 
 				return request.clone({ setHeaders: { Authorization: `${token != null ? token.access_token : ''}` } }) 
 			}),
 			switchMap(request => next.handle(request))
 		);
 	}
+
 	//intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 	//	console.log("inside the intercept method");
 	//	if (this.access_token) {
@@ -172,7 +173,7 @@ export class AuthInterceptor implements HttpInterceptor {
 			);
 		}
 	}
-	addRefreshToken(request: HttpRequest<any>): HttpRequest<any> {
+	private addRefreshToken(request: HttpRequest<any>): HttpRequest<any> {
 		const token = this.getRefreshToken();
 		if (token) {
 			request = request.clone({
@@ -184,7 +185,7 @@ export class AuthInterceptor implements HttpInterceptor {
 		return request;
 	}
 
-	addToken(request: HttpRequest<any>): HttpRequest<any> {
+	private addToken(request: HttpRequest<any>): HttpRequest<any> {
 		const token = this.getAccessToken();
 		if (token) {
 			request = request.clone({
@@ -195,14 +196,36 @@ export class AuthInterceptor implements HttpInterceptor {
 		}
 		return request;
 	}
-	getRefreshToken(): string {
+	private getRefreshToken(): string {
 		let token = localStorage.getItem('user_token');
 		let tokenObj = JSON.parse(token) || null;
 		return tokenObj['refresh_token'] || null;
 	}
-	getAccessToken(): string {
+	private getAccessToken(): string {
 		let token = localStorage.getItem('user_token');
 		let tokenObj = JSON.parse(token) || null;
 		return tokenObj['access_token'] || null;
+	}
+
+	private isSameOriginUrl(req: any) {
+		// It's an absolute url with the same origin.
+		if (req.url.startsWith(`${window.location.origin}/`)) {
+			return true;
+		}
+
+		// It's a protocol relative url with the same origin.
+		// For example: //www.example.com/api/Products
+		if (req.url.startsWith(`//${window.location.host}/`)) {
+			return true;
+		}
+
+		// It's a relative url like /api/Products
+		if (/^\/[^\/].*/.test(req.url)) {
+			return true;
+		}
+
+		// It's an absolute or protocol relative url that
+		// doesn't have the same origin.
+		return false;
 	}
 }

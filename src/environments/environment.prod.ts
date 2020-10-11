@@ -1,6 +1,7 @@
  
 
 export const environment = {
+  baseUrl: '/',
   appName: 'ngAppZero',
   envName: 'PROD',
   production: true,

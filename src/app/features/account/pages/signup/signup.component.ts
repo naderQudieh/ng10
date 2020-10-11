@@ -34,13 +34,13 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-      //this.store.dispatch(new AuthActions.LogOut());
-      this.store.pipe(select(getAuth), take(1))
-          .subscribe((auth) => {
-              console.log(auth);
-            this.mainform.patchValue(auth)
-          });
-      this.error$ = this.store.pipe(select(getAuthError));
+      
+      //this.store.pipe(select(getAuth), take(1))
+      //    .subscribe((auth) => {
+      //        console.log(auth);
+      //      this.mainform.patchValue(auth)
+      //    });
+      //this.error$ = this.store.pipe(select(getAuthError));
   }
  
 

@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     navigation = [
         { link: 'home', label: 'main.menu.home' },
         { link: 'products', label: 'main.menu.products' },
-        { link: 'about', label: 'main.menu.about' }
+        { link: 'about', label: 'main.menu.about' }, { link: 'admin', label: 'admin' }
     ];
     navigationSideMenu = [
         ...this.navigation,
@@ -42,8 +42,7 @@ export class AppComponent implements OnInit {
     
     selectedtheme: any;
     selectedlanguage: any;
-    isAuthenticated: any;
-    
+    isAuthenticated: Observable<boolean>;
     showSpinner$: Observable<boolean>;
     private _dirChangeSubscription = Subscription.EMPTY;
 
@@ -55,8 +54,13 @@ export class AppComponent implements OnInit {
         this.showSpinner$ = spinnerService.getValue();
         this.store.pipe(select(getAuth))
             .subscribe((auth) => {
-                console.log(auth);
-                this.isAuthenticated = auth.isAuthenticated;
+               // console.log(auth);
+                if (auth) {
+                   // this.isAuthenticated = auth.isAuthenticated;
+                } else {
+                   // this.isAuthenticated = false;
+                }
+                
             });
 
         //this.isRtl = dir.value === 'rtl';
@@ -66,14 +70,7 @@ export class AppComponent implements OnInit {
         //    console.log('dir changed');
         //    this.isRtl2 = drc;
         //});
-       
-        this.globalVarSrv.getIsAuthenticated().subscribe(
-            auth => {
-                console.log(auth);
-               // this.isAuthenticated = auth ;
-            }
-        )
-        
+        this.isAuthenticated = this.globalVarSrv.getIsAuthenticated(); 
         this.languages = this.globalVarSrv.getLanguages().map(p => p.value);
         this.themes = this.globalVarSrv.getThemesList().map(p => p.value);
          
@@ -86,9 +83,9 @@ export class AppComponent implements OnInit {
     
     ngOnInit(): void {
 
-        this.globalVarSrv.getLanguage().subscribe(lang => {
-            this.selectedlanguage = lang;
-        })
+        //this.globalVarSrv.getLanguage().subscribe(lang => {
+        //    this.selectedlanguage = lang;
+        //})
         //this.selectedtheme = 'black-theme';
         this.globalVarSrv.getTheme().subscribe(theme => {
             this.selectedtheme = theme.toLowerCase();
@@ -100,10 +97,7 @@ export class AppComponent implements OnInit {
             if (toRemove.length) {
                 classList.remove(...toRemove);
             }
-            classList.add(this.selectedtheme);
-
-            //this.overlayContainer.getContainerElement().classList.add(this.selectedtheme);
-           // console.log(this.overlayContainer.getContainerElement().classList);
+            classList.add(this.selectedtheme); 
         }) 
         
     }
@@ -113,9 +107,7 @@ export class AppComponent implements OnInit {
     }
 
     onLanguageSelect({ value: language }) {
-        this.globalVarSrv.setLanguage(language);
-        // this.changeLangage(language);   
-        // this.store.dispatch(actionSettingChangeLanguage({ language }));
+        this.globalVarSrv.setLanguage(language); 
     }
 
    

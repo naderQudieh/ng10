@@ -42,51 +42,51 @@
                     <span routerLink="" class="branding spacer d-none d-md-inline">
                         <img [src]="logo" [alt]="logo" /> {{'appName' | translate }}
                     </span>
-                    <a matTooltip="products" mat-icon-button routerLink="/products" class="d-none d-sm-inline">
+                    <a matTooltip="products" mat-icon-button routerLink="/products"  >
                         <mat-icon>stars</mat-icon>
                     </a>
-                    <a matTooltip="home" mat-icon-button routerLink="/home" class="d-none d-sm-inline">
+                    <button matTooltip="home" mat-icon-button routerLink="/home"  >
                         <mat-icon>home</mat-icon>
-                    </a>
-                    <button matTooltip="about" mat-icon-button routerLink="about" class="d-none d-sm-inline">
-                        about
-                    </button>
-                    <a mat-icon-button mat-button mat-stroked-button color="accent" *ngIf="!(isAuthenticated)" (click)="onLoginClick()">
-                        {{ 'main.menu.login' | translate }}
-                    </a>
-
-                    <button matTooltip="logout" mat-icon-button *ngIf="(isAuthenticated)" [matMenuTriggerFor]="toolbarUserMenu">
-                        <fa-icon icon="user-circle"></fa-icon>
-                    </button>
-                    <mat-menu #toolbarUserMenu="matMenu">
-                        <button mat-menu-item (click)="onLogoutClick()">
-                            <mat-icon>exit_to_app</mat-icon>
-                            <span>{{ 'main.menu.logout' | translate }}</span>
                         </button>
-                    </mat-menu>
-
-                    <button matTooltip="settings" mat-icon-button routerLink="setting" class="d-none d-sm-inline">
-                        <mat-icon>settings</mat-icon>
+                    <button matTooltip="about" mat-icon-button routerLink="about">
+                        about  {{ isAuthenticated  | async}}
                     </button>
+                        <button mat-icon-button mat-button   color="accent" *ngIf="!(isAuthenticated | async)" (click)="onLoginClick()">
+                            {{ 'main.menu.login' | translate }}
+                        </button>
 
-                    <span *ngIf="selectedlanguage">
-                        <mat-select [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
-                            <mat-option *ngFor="let l of languages" [value]="l">
-                                {{ l.toUpperCase() }}
-                            </mat-option>
-                        </mat-select>
-                    </span>
+                        <button matTooltip="logout" mat-icon-button *ngIf="(isAuthenticated | async)" [matMenuTriggerFor]="toolbarUserMenu">
+                            <fa-icon icon="user-circle"></fa-icon>
+                        </button>
+                        <mat-menu #toolbarUserMenu="matMenu">
+                            <button mat-menu-item (click)="onLogoutClick()">
+                                <mat-icon>exit_to_app</mat-icon>
+                                <span>{{ 'main.menu.logout' | translate }}</span>
+                            </button>
+                        </mat-menu>
 
-                    <span *ngIf="selectedtheme">
-                        <mat-select [ngModel]="selectedtheme.toUpperCase()" (selectionChange)="onThemeSelect($event)">
-                            <mat-option *ngFor="let l of themes" [value]="l">
-                                {{ l.toUpperCase() }}
-                            </mat-option>
-                        </mat-select>
-                    </span>
+                        <button matTooltip="settings" mat-icon-button routerLink="setting" class="d-none d-sm-inline">
+                            <mat-icon>settings</mat-icon>
+                        </button>
+
+                        <span *ngIf="selectedlanguage">
+                            <mat-select [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
+                                <mat-option *ngFor="let l of languages" [value]="l">
+                                    {{ l.toUpperCase() }}
+                                </mat-option>
+                            </mat-select>
+                        </span>
+
+                        <span *ngIf="selectedtheme">
+                            <mat-select [ngModel]="selectedtheme.toUpperCase()" (selectionChange)="onThemeSelect($event)">
+                                <mat-option *ngFor="let l of themes" [value]="l">
+                                    {{ l.toUpperCase() }}
+                                </mat-option>
+                            </mat-select>
+                        </span>
 
 
-                </mat-toolbar>
+</mat-toolbar>
             </div> 
         
             <div class="content" [@routeAnimations]="o.isActivated && o.activatedRoute.routeConfig.data && o.activatedRoute.routeConfig.data.title">
