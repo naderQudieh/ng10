@@ -1,25 +1,31 @@
 import browser from 'browser-detect';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {    Component,    OnInit,    Output,
+    EventEmitter,    Input,    ChangeDetectionStrategy,    ViewEncapsulation,} from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { DOCUMENT } from "@angular/common";
 import { Inject } from "@angular/core";
 import { Router } from '@angular/router';
-import { Observable, of, Subscription } from 'rxjs';
-import { filter, debounceTime, map, take } from 'rxjs/operators';
+import { Observable,  of, Subscription } from 'rxjs';
+import { filter, delay, debounceTime, map, take } from 'rxjs/operators';
 import { environment as env } from '../../environments/environment';
-import { globalVariableService } from '../core/services';
+import { GlobalService } from '../core/services';
 import { AppState, routeAnimations  } from '../core/core.module';
 import * as fromActions from '../features/account/store/auth.actions';
 import { AuthActions, AuthState, getAuth, getAuthError } from '../features/account/store';
 import { BidiModule, Directionality, Direction } from '@angular/cdk/bidi'
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { SpinnerService } from '../shared/services/spinner.service';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { NotificationComponent } from '../core/components/widgets/notification.component';
+ 
 
 @Component({
     selector: 'anms-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    animations: [routeAnimations]
+    animations: [routeAnimations],
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+   
 })
 export class AppComponent implements OnInit {
     public isProd = env.production;
@@ -27,9 +33,8 @@ export class AppComponent implements OnInit {
     public isRtl2: Direction;
     public envName = env.envName;
     public year = new Date().getFullYear();
-    public logo = require('../../assets/logo.png').default;
-    public languages : any[] 
-    public themes: any[]  
+    public logo = require('../../assets/images/OFACLogo.png').default;
+
     navigation = [
         { link: 'home', label: 'main.menu.home' },
         { link: 'products', label: 'main.menu.products' },
@@ -39,30 +44,29 @@ export class AppComponent implements OnInit {
         ...this.navigation,
         { link: 'setting', label: 'main.menu.setting' }
     ];
-    
+    isLoggedIn: boolean;
     selectedtheme: any;
     selectedlanguage: any;
-    isAuthenticated: Observable<boolean>;
+    language$: Observable<string>;
+    isAuthenticated$: Observable<boolean>;
+    showLoadingBar$: Observable<boolean>;
     showSpinner$: Observable<boolean>;
+    public languages: any[]
+    public themes: any[]  
     private _dirChangeSubscription = Subscription.EMPTY;
+    @Output() toggleSidenavNotice = new EventEmitter<void>();
 
-    constructor(private spinnerService: SpinnerService, dir: Directionality,
-        @Inject(DOCUMENT) private document: Document, private globalVarSrv: globalVariableService,
+    constructor(dir: Directionality,
+        @Inject(DOCUMENT) private document: Document, private globalService: GlobalService,
         private overlayContainer: OverlayContainer, private router: Router, private store: Store<AppState>) {
         
         // this.router.navigate([''])
-        this.showSpinner$ = spinnerService.getValue();
-        this.store.pipe(select(getAuth))
-            .subscribe((auth) => {
-               // console.log(auth);
-                if (auth) {
-                   // this.isAuthenticated = auth.isAuthenticated;
-                } else {
-                   // this.isAuthenticated = false;
-                }
-                
-            });
+        this.showLoadingBar$ = globalService.getBarValue().pipe(delay(30));
 
+        globalService.getSpinnerValue().subscribe((e) => { 
+            this.showSpinner$ = of(e); 
+         });
+       
         //this.isRtl = dir.value === 'rtl';
         //this.isRtl2 = dir.value;
 
@@ -70,9 +74,9 @@ export class AppComponent implements OnInit {
         //    console.log('dir changed');
         //    this.isRtl2 = drc;
         //});
-        this.isAuthenticated = this.globalVarSrv.getIsAuthenticated(); 
-        this.languages = this.globalVarSrv.getLanguages().map(p => p.value);
-        this.themes = this.globalVarSrv.getThemesList().map(p => p.value);
+        this.isAuthenticated$ = this.globalService.getIsAuthenticated(); 
+        this.languages = this.globalService.getLanguages().map(p => p.value);
+        this.themes = this.globalService.getThemesList().map(p => p.value);
          
     }
    
@@ -82,12 +86,16 @@ export class AppComponent implements OnInit {
 
     
     ngOnInit(): void {
-
-        //this.globalVarSrv.getLanguage().subscribe(lang => {
-        //    this.selectedlanguage = lang;
-        //})
-        //this.selectedtheme = 'black-theme';
-        this.globalVarSrv.getTheme().subscribe(theme => {
+       
+         this.globalService.getLanguage().subscribe(lang => {
+             this.selectedlanguage = lang;
+          })
+        
+        this.globalService.getIsAuthenticated().subscribe(auth => {
+            this.isLoggedIn = auth;
+        })
+       
+        this.globalService.getTheme().subscribe(theme => {
             this.selectedtheme = theme.toLowerCase();
 
             const classList = this.overlayContainer.getContainerElement().classList;
@@ -103,11 +111,11 @@ export class AppComponent implements OnInit {
     }
 
     onThemeSelect(theme: any) { 
-        this.globalVarSrv.setTheme(theme.value);
+        this.globalService.setTheme(theme.value);
     }
 
     onLanguageSelect({ value: language }) {
-        this.globalVarSrv.setLanguage(language); 
+        this.globalService.setLanguage(language); 
     }
 
    
@@ -117,8 +125,8 @@ export class AppComponent implements OnInit {
 
 
     onLogoutClick() {
-        //this.globalVarSrv.setAuthenticated(false);
-        this.store.dispatch(new fromActions.LogOut());
+         this.globalService.setAuthenticated(false);
+         this.store.dispatch(new fromActions.LogOut());
     }
 
   

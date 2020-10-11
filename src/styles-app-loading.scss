@@ -6,3 +6,22 @@
     background-size: cover;
   }
 }
+:host ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+    stroke:#00ff21;
+}
+
+.mat-progress-spinner {
+    animation-name: mat-progress-spinner-stroke-rotate-100;
+    stroke-dasharray: 282.743px;
+    stroke-width: 10%; 
+    z-index: 99999;
+}
+.overlay {
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.286);
+    z-index: 10;
+    top: 0;
+    left: 0;
+    position: fixed;
+}

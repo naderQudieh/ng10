@@ -17,3 +17,6 @@ $grid-breakpoints: (
 
 $success-colors: mat-palette($mat-green, 400);
 $warning-colors: mat-palette($mat-amber, 400);
+$app-error: mat-palette($mat-red);
+
+$error: mat-color($app-error);

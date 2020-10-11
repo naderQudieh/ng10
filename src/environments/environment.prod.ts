@@ -1,5 +1,5 @@
  
-
+export const DEBUG_DIALOGS = false;
 export const environment = {
   baseUrl: '/',
   appName: 'ngAppZero',

@@ -12,7 +12,7 @@ import { AuthActions, AuthState, getAuth, getAuthError } from '../../store';
 @Component({
     selector: 'auth-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'] 
+    styleUrls: ['../auth-styles.scss'] 
 })
 export class SignupComponent implements OnInit {
     public error$: Observable<string>;

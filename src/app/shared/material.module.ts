@@ -12,7 +12,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
@@ -27,11 +26,12 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar'; 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export const MATERIAL_MODULES_CORE = [MatDialogModule ,
     MatToolbarModule, BidiModule, MatProgressBarModule,
-    MatIconModule,
+    MatIconModule, MatProgressSpinnerModule, MatProgressBarModule,
     MatMenuModule,
     MatSidenavModule,
     MatListModule,
@@ -41,14 +41,13 @@ export const MATERIAL_MODULES_CORE = [MatDialogModule ,
     MatButtonModule,
 ];
 const MATERIAL_MODULES_SHARED = [
-    FlexLayoutModule, MatTabsModule, MatChipsModule, MatProgressBarModule, MatSlideToggleModule, MatDividerModule, MatSliderModule,
+    FlexLayoutModule, MatTabsModule, MatChipsModule,  MatSlideToggleModule, MatDividerModule, MatSliderModule,
     MatButtonModule,
     MatCardModule,
     MatRadioModule,
     MatCheckboxModule,
     MatSnackBarModule,
-    MatGridListModule,
-    MatProgressSpinnerModule,
+    MatGridListModule, 
     MatDialogModule,
     MatInputModule,
     MatTableModule,

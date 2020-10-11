@@ -1,4 +1,3 @@
-/// <reference path="../../store/auth.selectors.ts" />
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
@@ -12,7 +11,7 @@ import { AuthActions, AuthState, getAuth, getAuthError } from '../../store';
 @Component({
     selector: 'auth-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'] 
+    styleUrls: ['../auth-styles.scss'] 
 })
 export class LoginComponent implements OnInit {
     isLoading = false;
@@ -75,7 +74,8 @@ export class LoginComponent implements OnInit {
         } 
         if (data.value) {
             console.log(this.redirectUrl); 
-            this.store.dispatch(new AuthActions.LogIn(me));
+            this.store.dispatch(new AuthActions.LogIn(me ));
+            // this.store.dispatch(AuthActions.SignIn({ payload: me }));
         }
     }
  

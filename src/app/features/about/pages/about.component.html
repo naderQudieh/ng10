@@ -1,24 +1,30 @@
 <div class="background">
-  <div class="gradient">
-      <div [ngClass]="routeAnimationsElements" class="container"> 
-          <h1>{{ 'main.menu.about' | translate }}</h1>
-          <div class="actions">
-              <a  mat-raised-button class="actions-main" color="primary" routerLink="../feature-list">
-                  {{ 'anms.menu.features' | translate }}
-              </a>
-              <a mat-raised-button class="actions-main" color="accent" routerLink="../examples" [ngClass]="routeAnimationsElements">
-                  {{ 'anms.menu.examples' | translate }}
-              </a>
-              <a mat-raised-button class="actions-main" color="warn" routerLink="../setting" [ngClass]="routeAnimationsElements">
-                  {{ 'anms.about.change-theme' | translate }}
-              </a>
-              <a mat-raised-button class="actions-main" color="accent" (click)="showDialog()">
-                  Show Dialog
-              </a> 
-          </div>
+    <div class="gradient">
+        <mat-spinner color="primary" mode="indeterminate"> </mat-spinner>
 
-      </div>
-  </div>
+        <mat-progress-spinner class="progressSpinner"
+                              [color]="'red'"
+                              [value]="30">
+        </mat-progress-spinner>
+        <div [ngClass]="routeAnimationsElements" class="container">
+            <h1>{{ 'main.menu.about' | translate }}</h1>
+            <div class="actions">
+                <a mat-raised-button class="actions-main" color="primary" routerLink="../feature-list">
+                    {{ 'anms.menu.features' | translate }}
+                </a>
+                <a mat-raised-button class="actions-main" color="accent" routerLink="../examples" [ngClass]="routeAnimationsElements">
+                    {{ 'anms.menu.examples' | translate }}
+                </a>
+                <a mat-raised-button class="actions-main" color="warn" routerLink="../setting" [ngClass]="routeAnimationsElements">
+                    {{ 'anms.about.change-theme' | translate }}
+                </a>
+                <a mat-raised-button class="actions-main" color="accent" (click)="showDialog()">
+                    Show Dialog
+                </a>
+            </div>
+
+        </div>
+    </div>
 </div>
  
  

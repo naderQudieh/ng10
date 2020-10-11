@@ -7,7 +7,7 @@ import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateS
 import { TranslateHttpLoader } from '@ngx-translate/http-loader'; 
 import { SharedModule } from '../../shared/shared.module';
 import { environment } from '../../../environments/environment';
-import { globalVariableService } from '../../core/services';
+import { GlobalService } from '../../core/services';
 import { AccountRoutingModule } from './account-routing.module'; 
 import { AuthEffects } from './store/auth.effects';
 import { FEATURE_NAME, account_reducers } from './account.state';
@@ -16,6 +16,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
@@ -45,14 +46,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     ])
   ],
   declarations: [
-      LayoutComponent, LoginComponent, SignupComponent, ResetPasswordComponent
+      LayoutComponent, LoginComponent, ChangePasswordComponent, SignupComponent, ResetPasswordComponent
   
   ],
   providers: []
 })
 export class AccountModule {
     constructor(private readonly translateService: TranslateService,
-        private readonly globalVarSrv: globalVariableService) {
+        private readonly globalVarSrv: GlobalService) {
         this.globalVarSrv.getLanguage().subscribe((language) => {
             this.translateService.use(language)
         });

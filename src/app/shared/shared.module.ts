@@ -10,12 +10,12 @@ import { BigInputActionComponent } from './components/big-input/big-input-action
 import { RtlSupportDirective } from './components/rtl-support/rtl-support.directive';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { SpinnerService, NotifyService,   ConfirmModalService } from './services';
+import {  NotifyService,   ConfirmModalService } from './services';
 
 
 
 const SHARED_SERVICES: any[] = [
-    SpinnerService, ConfirmModalService, NotifyService 
+     ConfirmModalService, NotifyService 
 ];
 
 const SHARED_COMPONENTS: any[] = [

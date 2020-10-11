@@ -18,7 +18,7 @@ export class LogIn implements Action {
         console.log('Action LogIn'); 
     }
 }
-
+ 
 export class LogInSuccess implements Action {
     readonly type = AuthActionTypes.LOGIN_SUCCESS;
     constructor(public payload: any ) {
@@ -62,7 +62,7 @@ export class LogOut implements Action {
  
 
 export type All =
-    | LogIn
+    | LogIn  
     | LogInSuccess
     | LogInError
     | SignUp

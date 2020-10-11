@@ -7,7 +7,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { Store, select } from '@ngrx/store';
 import { tap, take, distinctUntilChanged, filter } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { globalVariableService } from '../../core/services';
+import { GlobalService } from '../../core/services';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AppState } from '../../core/core.module';
 
@@ -41,7 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
  
 export class HomeModule {
     constructor(private store: Store<AppState>, private readonly translateService: TranslateService,
-        private readonly globalVarSrv: globalVariableService) {
+        private readonly globalVarSrv: GlobalService) {
         this.globalVarSrv.getLanguage().subscribe((language) => {
             this.translateService.use(language)
         });

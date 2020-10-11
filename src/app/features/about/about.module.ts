@@ -11,7 +11,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from '../../../environments/environment';
 import { AppState  } from '../../core/core.module';
 import { tap, take, distinctUntilChanged, filter } from 'rxjs/operators';
-import { globalVariableService } from '../../core/services';
+import { GlobalService } from '../../core/services';
 
 import { AboutComponent } from './pages/about.component';
 import { AboutRoutingModule } from './about-routing.module';
@@ -39,7 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 })
  
 export class AboutModule {
-    constructor(private store: Store<AppState>, private readonly translateService: TranslateService, private readonly globalVarSrv: globalVariableService) { 
+    constructor(private store: Store<AppState>, private readonly translateService: TranslateService, private readonly globalVarSrv: GlobalService) { 
         this.globalVarSrv.getLanguage().subscribe((language) => { 
             this.translateService.use(language) 
         });

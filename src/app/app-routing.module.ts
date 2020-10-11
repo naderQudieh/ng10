@@ -4,10 +4,8 @@ import { NavigationEnd, NavigationStart,  RouteConfigLoadEnd, RouteConfigLoadSta
 import { PageNotFoundComponent } from 'src/app/shared/components/page-not-found/page-not-found.component';
 import { AuthGuard } from './core/services/auth-guard';
 import { catchError, delay, tap, map } from 'rxjs/operators';
-//import { Logger, LoggerFactory } from "./services/logger-factory.service";
-import { SpinnerService } from 'src/app/shared/services';
-import { BehaviorSubject,   Observable } from 'rxjs';
-import { of } from "rxjs";
+import { of, BehaviorSubject, Observable } from 'rxjs';
+import { GlobalService } from 'src/app/core/services';
 import { SelectivePreloadingStrategyService } from './selective-preloading-strategy.service';
 import { HomeComponent } from 'src/app/features/home/pages/home.component';
 import { HomeService } from 'src/app/features/home/home.service';
@@ -67,7 +65,7 @@ const routes: Routes = [
             useHash: true,
             scrollPositionRestoration: 'enabled',
             //preloadingStrategy: SelectivePreloadingStrategyService,
-            preloadingStrategy: PreloadAllModules,
+             preloadingStrategy: PreloadAllModules,
             onSameUrlNavigation: 'reload',
             urlUpdateStrategy: "eager" 
         })
@@ -77,12 +75,12 @@ const routes: Routes = [
 export class AppRoutingModule {
    // private logger: Logger; private router: Router,
     
-    constructor(private router: Router, private spinnerService: SpinnerService) {
+    constructor(private router: Router, private gService: GlobalService) {
         router.events.subscribe((event) => {
             
             if (event instanceof NavigationStart) {
                 //console.log('NavigationStart '+this.router.url);
-                spinnerService.show();
+                gService.showBar();
             }
             if (event instanceof RouteConfigLoadStart) {
                 
@@ -94,8 +92,8 @@ export class AppRoutingModule {
 
             if (event instanceof NavigationEnd) {
                 //console.log('NavigationStart ' +this.router.url);
-                of('dummy').pipe(delay(100)).subscribe(val => {
-                    spinnerService.hide();
+                of('dummy').pipe(delay(200)).subscribe(val => {
+                    gService.hideBar();
                 });
                 document.querySelector('meta[property=og\\:url').setAttribute('content', window.location.href);
             }

@@ -1,14 +1,14 @@
 import { Injectable, ErrorHandler } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http'; 
-import { environment } from '../../../environments/environment'; 
+import { DEBUG_DIALOGS, environment } from 'src/environments/environment'; 
 import { SnackbarService } from './snackbar.service';
-
+ 
 /** Application-wide error handler that adds a UI notification to the error handling
  * provided by the default Angular ErrorHandler.
  */
 @Injectable()
 export class AppErrorHandler extends ErrorHandler {
-    constructor(private notificationsService: SnackbarService) {
+    constructor(private snackbarService: SnackbarService) {
       super();
      
   }
@@ -22,8 +22,15 @@ export class AppErrorHandler extends ErrorHandler {
       displayMessage += ' See console for details.';
     }
 
-    this.notificationsService.error(displayMessage);
-
+        this.snackbarService.error(displayMessage);
+        if (DEBUG_DIALOGS) {
+            this.snackbarService.showConfirmDialog({
+                noCancelButton: true,
+                messageHtml: `<span>${displayMessage}</span><pre>${error}</pre>`,
+                title: `Error  `,
+                confirmButtonText: 'OK'
+            });
+        }
     super.handleError(error);
   }
 }

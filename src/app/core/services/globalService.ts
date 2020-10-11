@@ -2,10 +2,10 @@
 import { BehaviorSubject, of, Observable} from 'rxjs'
 import {shareReplay, map} from 'rxjs/operators' 
 import { AuthService } from './auth.service';
-import { LocalStorageService } from '../../core/services/local-storage.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({providedIn: 'root'})
-export class globalVariableService  { 
+export class GlobalService  { 
     appthemes: Array<any> = [
         { value: 'default', name: 'Default', cssClass: null },
         { value: 'light', name: 'Light', cssClass: 'light-theme' },
@@ -31,6 +31,9 @@ export class globalVariableService  {
     public UserLanguage = new BehaviorSubject<string>(this.CurrentLang());
     public UserTheme = new BehaviorSubject<string>(this.CurrentTheme());
 
+    private progressBar  = new BehaviorSubject<boolean>(false);
+    private spinnerBar = new BehaviorSubject<boolean>(false);
+
     constructor(private localStorage: LocalStorageService) {
         this.InitilizaeApp();
     }
@@ -38,6 +41,7 @@ export class globalVariableService  {
   
  
     InitilizaeApp(): void {
+        this.setAuthenticated(false);
         let lang = this.CurrentLang();
         if (lang == null || lang == undefined) {
             lang = "en";
@@ -121,6 +125,30 @@ export class globalVariableService  {
     }
     private hasToken(): boolean {
         return !!this.localStorage.getUserAuthToken();
+    } 
+   
+
+    showBar(): void {
+        this.progressBar.next(true);
     }
 
+    hideBar(): void {
+        this.progressBar.next(false);
+    }
+
+    getBarValue(): Observable<boolean> {
+        return this.progressBar.asObservable();
+    }
+
+    showSpinner(): void {
+        this.spinnerBar.next(true);
+    }
+
+    hideSpinner(): void {
+        this.spinnerBar.next(false);
+    }
+
+    getSpinnerValue(): Observable<boolean> {
+        return this.spinnerBar.asObservable();
+    }
 }

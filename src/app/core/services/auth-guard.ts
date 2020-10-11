@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, NavigationExtras, RouterStateSnapshot, CanLoad, Route , UrlTree, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { globalVariableService } from './globalVariableService';
+import { GlobalService } from './globalService';
 //import { selectIsAuthenticated } from '../../features/account/store/auth.selectors';
 import { AccountState, } from '../../features/account/account.state';
 import {AuthState  } from '../../features/account/store/auth.model';
@@ -16,7 +16,7 @@ import { log } from 'util';
 export class AuthGuard  implements CanActivate {
     isAuthenticated: boolean;
     constructor(private authService: AuthService, private router: Router, private store: Store<AppState>,
-        private globalVarSrv: globalVariableService,) {
+        private globalVarSrv: GlobalService,) {
       
        // this.store.pipe(select(selectAuthState), take(1))
        //             .subscribe((auth) => {

@@ -8,7 +8,7 @@ import { StoreModule } from '@ngrx/store';
 import { environment } from '../../../environments/environment';
 import { AppState } from '../../core/core.module';
 import { tap, take, distinctUntilChanged, filter } from 'rxjs/operators';
-import { globalVariableService } from '../../core/services';
+import { GlobalService } from '../../core/services';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -41,7 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
  
 export class SettingModule {
     constructor( private readonly translateService: TranslateService,
-        private readonly globalVarSrv: globalVariableService) {
+        private readonly globalVarSrv: GlobalService) {
         this.globalVarSrv.getLanguage().subscribe((language) => {
             console.log(language);
             this.translateService.use(language)

@@ -11,7 +11,7 @@ import { ProductsService } from './products.service';
 import { ProductsRoutingModule } from './products-routing.module';   
 import { LayoutComponent } from './layout/layout.component';
 import { ProductsComponent } from './pages/products.component'; 
-import { globalVariableService } from '../../core/services';
+import { GlobalService } from '../../core/services';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
@@ -45,7 +45,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 })
 export class ProductsModule {
     constructor(private readonly translateService: TranslateService,
-        private readonly globalVarSrv: globalVariableService) {
+        private readonly globalVarSrv: GlobalService) {
         this.globalVarSrv.getLanguage().subscribe((language) => {
             this.translateService.use(language)
         });

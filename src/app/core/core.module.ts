@@ -7,45 +7,45 @@ import { FormsModule } from '@angular/forms';
 import { StoreModule, Store } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; 
-import { CustomNGXLoggerService, LoggerModule, NgxLoggerLevel } from "ngx-logger";
 import { MissingTranslationHandler, TranslateModule, TranslateLoader, TranslateService, TranslateCompiler } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 //import { RecaptchaModule } from 'ng-recaptcha';
 import { httpInterceptorProviders } from './interceptors';
 import { FaIconLibrary,  FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { MATERIAL_MODULES_CORE } from '../shared/material.module';
-import { JwtModule } from '@auth0/angular-jwt';
-import { SpinnerService } from '../shared/services';
+import { JwtModule } from '@auth0/angular-jwt'; 
 
 import {  ROUTE_ANIMATIONS_ELEMENTS,  routeAnimations} from './route.animations'; 
 import { faIconscore } from './constants';  
-import { AppState, reducers, selectRouterState  } from './store/app.state';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AppState, reducers, metaReducers, selectRouterState  } from './store/app.state';
 import { environment } from '../../environments/environment';
 import { Configuration } from './configuration';
 
- 
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { NotificationComponent } from './components/widgets/notification.component';
 import { FooterComponent } from '../shared/components/footer/footer.component'; 
+import { SidebarNoticeComponent } from './components/sidebar-notice/sidebar-notice.component';
+import { UserComponent } from './components/widgets/user.component';
 
 import {
-    AppErrorHandler, SnackbarService,  TitleService, globalVariableService,
-    LocalStorageService, AnimationsService, AuthGuard
-} from './services';
+     AuthService,  AppErrorHandler, SnackbarService,   GlobalService,
+    LocalStorageService, AnimationsService, AuthGuard  } from './services';
  
-
-
-const SHARED_SERVICES: any[] = [globalVariableService, TitleService,  
+const SHARED_SERVICES: any[] = [GlobalService,
     LocalStorageService, AnimationsService, SnackbarService,
-    AppErrorHandler, AuthGuard, SpinnerService,
+    AppErrorHandler, AuthGuard,
 ];
+
+const SHARED_DECLARATIONS: any[] = [FooterComponent, NotificationComponent,
+    UserComponent, SidebarNoticeComponent, ConfirmDialogComponent];
+ 
 
 export {
     LocalStorageService, AnimationsService, SnackbarService,
-    AppErrorHandler, AuthGuard, TitleService, SpinnerService,
-    routeAnimations, ROUTE_ANIMATIONS_ELEMENTS, 
-    AppState,  
-    selectRouterState     
+    AppErrorHandler, AuthGuard, routeAnimations, ROUTE_ANIMATIONS_ELEMENTS, 
+    AppState,  selectRouterState     
 };
+
 
 export function tokenGetter() { 
     try { 
@@ -79,7 +79,7 @@ export function HttpLoaderFactory(http: HttpClient) {
             },
         }),
     // ngrx
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(), 
     environment.production? [] : StoreDevtoolsModule.instrument({ name: 'AppZero'}),
 
@@ -94,19 +94,19 @@ export function HttpLoaderFactory(http: HttpClient) {
               }
     })
   ],
-    declarations: [FooterComponent],
+    declarations: [...SHARED_DECLARATIONS],
     providers: [...SHARED_SERVICES,Configuration, httpInterceptorProviders, 
         { provide: ErrorHandler, useClass: AppErrorHandler },
         //{ provide: HTTP_INTERCEPTORS, useClass: JtwInterceptor, multi: true },
         { provide: RouterStateSerializer, useClass: CustomRouterSerializer },
        // {        provide: APP_INITIALIZER, useFactory: initStore, deps: [Store], multi: true  }
   ],
-    exports: [FormsModule, FooterComponent, MATERIAL_MODULES_CORE,  // RecaptchaModule,
+    exports: [...SHARED_DECLARATIONS,FormsModule,  MATERIAL_MODULES_CORE,  // RecaptchaModule,
              FontAwesomeModule, TranslateModule]
 })
 export class CoreModule {
     constructor(@Optional() @SkipSelf() parentModule: CoreModule, faIconLibrary: FaIconLibrary,
-        private readonly translateService: TranslateService, private readonly globalVarSrv: globalVariableService
+        private readonly translateService: TranslateService, private readonly globalVarSrv: GlobalService
     ) {
         if (parentModule) {
            throw new Error('CoreModule is already loaded. Import only in AppModule');

@@ -1,12 +1,12 @@
-import { Action, ActionReducerMap,  MetaReducer,  createFeatureSelector} from '@ngrx/store';
+import { Action, ActionReducerMap, ActionReducer,  MetaReducer,  createFeatureSelector} from '@ngrx/store';
 import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 import { environment } from '../../../environments/environment';
- 
 import { createReducer, createSelector, Selector } from '@ngrx/store';
 import { authReducer, initialState } from '../../features/account/store/auth.reducer'; 
 import { AuthActions } from '../../features/account/store'; 
  import { AuthState } from '../../features/account/store/auth.model';
 import { RouterState } from './router/router.state';
+import { storeLogger } from 'ngrx-store-logger';
 
 export const reducers: ActionReducerMap<AppState> = {
   
@@ -29,12 +29,10 @@ export const getCoreState: Selector<AppState, AppState> = state => {
     return state
 };
 
-//export const getSelectedCore = createSelector(
-//    getAllCore,
-//    getSelectedId,
-//    (core, id) => {
-//        const result = core.find(it => it['id'] === id);
-//        return result ? Object.assign({}, result) : undefined;
-//    }
-//);
- 
+export function logger(reducer: ActionReducer<AppState>): any {
+    return storeLogger()(reducer);
+}
+
+export const metaReducers: MetaReducer<AppState>[] = [
+   // logger
+];

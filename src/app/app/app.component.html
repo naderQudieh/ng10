@@ -1,5 +1,4 @@
 <div [class]="'theme-wrapper ' + (selectedtheme)">
-
     <mat-sidenav-container>
         <mat-sidenav fixedInViewport="true" #sidenav mode="over">
             <mat-toolbar color="primary">
@@ -7,9 +6,7 @@
                 <button style=" margin-left: 80px;" mat-icon-button (click)="sidenav.toggle()">
                     <fa-icon class="fas   fa-lg" icon="bars"></fa-icon>
                 </button>
-
             </mat-toolbar>
-
             <mat-nav-list>
                 <a mat-list-item *ngFor="let item of navigationSideMenu" (click)="sidenav.close()" [routerLink]="[item.link]"
                    routerLinkActive="active">
@@ -26,79 +23,103 @@
                 <mat-icon>account_box</mat-icon>   {{ 'user.profile' | translate}}
             </a>
         </mat-sidenav>
-
         <div class="wrapper">
-
             <div class="toolbar">
                 <mat-toolbar color="primary">
                     <button mat-icon-button (click)="sidenav.toggle()">
                         <fa-icon icon="bars"></fa-icon>
                     </button>
 
-                    <span routerLink="" class="branding spacer center d-inline d-sm-none">
-                        <img [src]="logo" [alt]="logo" />
-                    </span>
-
                     <span routerLink="" class="branding spacer d-none d-md-inline">
                         <img [src]="logo" [alt]="logo" /> {{'appName' | translate }}
                     </span>
-                    <a matTooltip="products" mat-icon-button routerLink="/products"  >
-                        <mat-icon>stars</mat-icon>
-                    </a>
-                    <button matTooltip="home" mat-icon-button routerLink="/home"  >
-                        <mat-icon>home</mat-icon>
-                        </button>
-                    <button matTooltip="about" mat-icon-button routerLink="about">
-                        about  {{ isAuthenticated  | async}}
+
+                    <button mat-icon-button class="matero-toolbar-button">
+                        <mat-icon>search</mat-icon>
                     </button>
-                        <button mat-icon-button mat-button   color="accent" *ngIf="!(isAuthenticated | async)" (click)="onLoginClick()">
-                            {{ 'main.menu.login' | translate }}
-                        </button>
+                    
 
-                        <button matTooltip="logout" mat-icon-button *ngIf="(isAuthenticated | async)" [matMenuTriggerFor]="toolbarUserMenu">
-                            <fa-icon icon="user-circle"></fa-icon>
-                        </button>
-                        <mat-menu #toolbarUserMenu="matMenu">
-                            <button mat-menu-item (click)="onLogoutClick()">
-                                <mat-icon>exit_to_app</mat-icon>
-                                <span>{{ 'main.menu.logout' | translate }}</span>
-                            </button>
-                        </mat-menu>
+                    <button mat-icon-button mat-button color="accent" *ngIf="!(isAuthenticated$ | async)" (click)="onLoginClick()">
+                        {{ 'main.menu.login' | translate }}
+                    </button>
 
-                        <button matTooltip="settings" mat-icon-button routerLink="setting" class="d-none d-sm-inline">
+                    <button matTooltip="home" mat-icon-button routerLink="home" class="d-none d-sm-inline">
+                        <mat-icon>home</mat-icon>
+                    </button>
+                  
+                    <span *ngIf="selectedlanguage">
+
+                        <!--<mat-icon>translate  {{ selectedlanguage }} </mat-icon>-->
+                        <mat-select [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
+                            <mat-option *ngFor="let l of languages" [value]="l">
+                                {{ l.toUpperCase() }}
+                            </mat-option>
+                        </mat-select>
+                    </span>
+                    <span *ngIf="selectedtheme">
+                        <mat-select [ngModel]="selectedtheme.toUpperCase()" (selectionChange)="onThemeSelect($event)">
+                            <mat-option *ngFor="let l of themes" [value]="l">
+                                {{ l.toUpperCase() }}
+                            </mat-option>
+                        </mat-select>
+                    </span>
+                    <button mat-icon-button (click)="sidenavNotice.toggle()">
+                        <fa-icon icon="bars"></fa-icon>
+                    </button>
+
+                    <app-notification fxHide.lt-sm></app-notification>
+                    <a *ngIf="(isAuthenticated$ | async)" mat-menu-item (click)="onLogoutClick()">
+                        <mat-icon>exit_to_app</mat-icon>
+                        <span>{{ 'main.menu.logout' | translate }}</span>
+                    </a>
+                    <button matTooltip="Menu" mat-icon-button [matMenuTriggerFor]="userMenu">
+                        <!--<mat-icon>account_circle</mat-icon>-->
+                        <img class="matero-avatar" src="assets/images/avatar.jpg" width="32" alt="avatar" />
+                    </button>
+                    <mat-menu #userMenu="matMenu">
+                        <a *ngIf="(!isLoggedIn)" mat-menu-item [routerLink]="['/auth/login']">
+                            <mat-icon>login</mat-icon> Login
+                        </a>
+                        <a *ngIf="(!isLoggedIn )" mat-menu-item [routerLink]="['/about']">
+                            <mat-icon>about</mat-icon>About
+                        </a>
+                        <a *ngIf="(isLoggedIn )" mat-menu-item [routerLink]="['/setting']">
                             <mat-icon>settings</mat-icon>
-                        </button>
-
-                        <span *ngIf="selectedlanguage">
-                            <mat-select [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
-                                <mat-option *ngFor="let l of languages" [value]="l">
-                                    {{ l.toUpperCase() }}
-                                </mat-option>
-                            </mat-select>
-                        </span>
-
-                        <span *ngIf="selectedtheme">
-                            <mat-select [ngModel]="selectedtheme.toUpperCase()" (selectionChange)="onThemeSelect($event)">
-                                <mat-option *ngFor="let l of themes" [value]="l">
-                                    {{ l.toUpperCase() }}
-                                </mat-option>
-                            </mat-select>
-                        </span>
+                            <span> {{ 'main.menu.setting' | translate}}</span>
+                        </a>
+                        <a *ngIf="(isLoggedIn )" mat-menu-item (click)="onLogoutClick()">
+                            <mat-icon>exit_to_app</mat-icon>
+                            <span>{{ 'main.menu.logout' | translate }}</span>
+                        </a>
+                    </mat-menu>
 
 
-</mat-toolbar>
-            </div> 
-        
+                </mat-toolbar>
+
+
+            </div>
+
             <div class="content" [@routeAnimations]="o.isActivated && o.activatedRoute.routeConfig.data && o.activatedRoute.routeConfig.data.title">
-                <div *ngIf="showSpinner$ | async" >
+                <div *ngIf="showLoadingBar$ | async">
                     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+
+
+                <div *ngIf="showSpinner$ | async" class="overlay">
+                    <div class="center">
+                        <mat-spinner color="primary" style="margin:0 auto;" mode="indeterminate"> </mat-spinner>
+                    </div>
                 </div>
                 <router-outlet #o="outlet"></router-outlet>
 
             </div>
-            <app-footer></app-footer>
-        </div>
 
+        </div>
+     
+        
+        <mat-sidenav #sidenavNotice position="end" mode="over">
+            <app-sidebar-notice></app-sidebar-notice>
+        </mat-sidenav>
     </mat-sidenav-container>
 
 

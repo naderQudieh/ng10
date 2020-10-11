@@ -9,8 +9,8 @@ import { LocalStorageService } from '../../core/services/local-storage.service';
 import { UserInfo, AuthToken, UserClaims, AuthState } from '../../features/account/store/auth.model';
 import { AppState } from '../store/app.state';
 import { AuthReducer, AuthActions, AuthSelectors } from '../../features/account/store';
-import { globalVariableService } from './globalVariableService';
-import { SpinnerService } from 'src/app/shared/services';
+import { GlobalService } from './globalService';
+
 
 @Injectable({
     providedIn: 'root',
@@ -23,7 +23,7 @@ export class AuthService {
     // store the URL so we can redirect after logging in
     redirectUrl: string = "";
 
-    constructor(private spinner: SpinnerService, private gStoreService: globalVariableService, protected http: HttpClient, public jwtHelper: JwtHelperService,
+    constructor( private gStoreService: GlobalService, protected http: HttpClient, public jwtHelper: JwtHelperService,
         protected storageService: LocalStorageService) {
         this.redirectUrl = "";
     }
@@ -77,8 +77,9 @@ export class AuthService {
         //const accessToken = this.storageService.getAccessToken();
         //headers.set('Authorization', 'Bearer ' + accessToken);
         //headers.set('Cache-Control', 'no-cache');
-        this.storageService.clearToken(); 
+        console.log('call setAuthenticated(false)');
         this.gStoreService.setAuthenticated(false);
+        this.storageService.clearToken();  
         return of(true); 
     }
 

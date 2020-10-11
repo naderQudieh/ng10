@@ -1,8 +1,22 @@
 <div class="d-flex justify-content-center align-items-center flex-column home-content">
     <h3>Home .</h3> <h3>{{ 'form.auth.login' | translate }}</h3>
     <p>Home product-list works!</p>
-    
-    <a mat-icon-button mat-button mat-stroked-button color="accent" (click)="goToPage()">
+
+    <a mat-button color="accent" (click)="goToPage()">
         Products
+    </a>
+    <a mat-button color="accent" (click)="goToTestDialog()">
+        Test snackbar Dialog
+    </a>
+    <a mat-button color="accent" (click)="goToTestsnackbarMessage()">
+        goToTestsnackbarMessage
+    </a>
+
+    <a mat-button color="accent" (click)="goToShowSpinner()">
+        ShowSpinner
+    </a>
+
+    <a mat-button color="accent" (click)="goToBar()">
+        Show Bar
     </a>
 </div>

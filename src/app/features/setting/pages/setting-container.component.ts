@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { globalVariableService } from '../../../core/services';
+import { GlobalService } from '../../../core/services';
 import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../core/core.module';
 import { TranslateService } from '@ngx-translate/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -21,7 +21,7 @@ export class SettingContainerComponent implements OnInit {
     public selectedtheme: any;
     public selectedlanguage: any;
 
-    constructor(private overlayContainer: OverlayContainer,  private translate: TranslateService , private globalVarSrv: globalVariableService,) {
+    constructor(private overlayContainer: OverlayContainer,  private translate: TranslateService , private globalVarSrv: GlobalService,) {
         this.languages = this.globalVarSrv.getLanguages().map(p => p.value);
         this.themes = this.globalVarSrv.getThemesList();//.map(p => p.value);
         
