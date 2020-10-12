@@ -1,10 +1,10 @@
 .app-loading {
-  .logo {
-    width: 64px;
-    height: 64px;
-    background: url(./assets/logo.png) center center no-repeat;
-    background-size: cover;
-  }
+    .logo {
+        width: 64px;
+        height: 64px;
+        background: url(./assets/images/logo.png) center center no-repeat;
+        background-size: cover;
+    }
 }
 :host ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
     stroke:#00ff21;

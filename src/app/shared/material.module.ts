@@ -28,8 +28,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar'; 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
-export const MATERIAL_MODULES_CORE = [MatDialogModule ,
+import { MatBadgeModule } from '@angular/material/badge';
+export const MATERIAL_MODULES_CORE = [MatDialogModule, MatBadgeModule,
     MatToolbarModule, BidiModule, MatProgressBarModule,
     MatIconModule, MatProgressSpinnerModule, MatProgressBarModule,
     MatMenuModule,

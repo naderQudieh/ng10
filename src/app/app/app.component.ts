@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     public isRtl2: Direction;
     public envName = env.envName;
     public year = new Date().getFullYear();
-    public logo = require('../../assets/images/OFACLogo.png').default;
+    public logo = require('../../assets/images/logo.png').default;
 
     navigation = [
         { link: 'home', label: 'main.menu.home' },
