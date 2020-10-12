@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { Subscription, Observable } from 'rxjs';
 import { filter, debounceTime, map, take } from 'rxjs/operators';
@@ -19,31 +19,54 @@ export class LoginComponent implements OnInit {
     hide = true;
     redirectUrl: string="";
     private loadingSub: Subscription;
-      mainform = this.fb.group({
-        autosave: false,
-          email: ['', [Validators.required, Validators.email]],  
-          password: ['', [Validators.required]
-          ] 
-    
-      });
-
+    mainform: FormGroup;
  
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-    private fb: FormBuilder,
+        private formBuilder: FormBuilder,
     private store: Store,
     private translate: TranslateService 
   ) {}
 
+    createForm() {
+        this.mainform = this.formBuilder.group({
+            email: ['', Validators.compose([
+                Validators.required,
+                Validators.minLength(3),
+                Validators.maxLength(30),
+                this.validateEmail
+            ])],
+            password: ['', Validators.compose([
+                Validators.required,
+                Validators.minLength(8),
+                Validators.maxLength(30),
+                this.validatePassword
+            ])]
+        })
+    }
+
+    validateEmail(controls) {
+        const regExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        if (regExp.test(controls.value)) {
+            return null;
+        } else {
+            return { 'validateEmail': true }
+        }
+    }
+
+    validatePassword(controls) {
+        const regExp = new RegExp(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,30})$/);
+        if (regExp.test(controls.value)) {
+            return null;
+        } else {
+            return { 'validatePassword': true }
+        }
+    }
     ngOnInit() {
         this.isLoading = false; 
-        //this.store.pipe(select(getAuth), take(1))
-        //.subscribe((auth) => {
-        //    console.log(auth);
-        //    //this.mainform.patchValue(auth)
-        //});
+        this.createForm();
         this.error$ = this.store.pipe(select(getAuthError)); 
         this.route.params.subscribe((params) => {
             console.log(params); 
@@ -78,7 +101,7 @@ export class LoginComponent implements OnInit {
             // this.store.dispatch(AuthActions.SignIn({ payload: me }));
         }
     }
- 
-
+     
+     
  
 }

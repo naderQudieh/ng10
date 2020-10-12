@@ -17,6 +17,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
+import { ProfileComponent } from './profile/profile.component';
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(
@@ -47,6 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   declarations: [
       LayoutComponent, LoginComponent, ChangePasswordComponent, SignupComponent, ResetPasswordComponent
+      , ProfileComponent
   
   ],
   providers: []

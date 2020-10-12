@@ -1,0 +1,73 @@
+<div class="page-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
+    <mat-card fxFlex="45" [fxFlex.xs]="95" [fxFlex.sm]="75" [fxFlex.lg]="25">
+        <mat-card-header>
+             
+            <div>  <mat-icon style="font-size:30px;">person</mat-icon> </div>
+            <mat-card-title> <h3>{{ 'user.profile' | translate }}</h3></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form fxLayout="column" [formGroup]="mainform" autocomplete="off">
+                <mat-form-field fxFill>
+                    <input matInput placeholder="{{ 'form.auth.email' | translate }}"
+                           formControlName="email" type="email">
+                    <mat-error *ngIf="mainform.get('email').hasError('required')">
+                        {{ 'form.auth.email.error1' | translate }}
+                    </mat-error>
+                    <mat-error *ngIf="mainform.get('email').hasError('email')">
+                        {{ 'form.auth.email.error2' | translate }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFill>
+                    <input id="password"
+                           matInput
+                           formControlName="password" placeholder="Password*"
+                           [type]="hide ? 'password':'text'">
+                    <mat-icon matSuffix (click)="hide = !hide">
+                        {{hide ? 'visibility' : 'visibility_off'}}
+                    </mat-icon>
+                    <mat-error *ngIf="mainform.get('password').invalid">
+                        {{ 'form.auth.password' | translate }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="field-width">
+                    <mat-select placeholder="Country" name="country" [(ngModel)]="selectedCountry" formControlName="country" (change)="optionSelected($event)">
+                        <mat-option>None</mat-option>
+                        <mat-option *ngFor="let country of countries" [value]="country">
+                            {{country.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+
+                <mat-form-field class="field-width">
+                    <mat-select placeholder="Language" name="language" formControlName="language">
+                        <mat-option *ngFor="let language of languages" [value]="language">
+                            {{ language }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Gender</mat-label>
+                    <mat-select formControlName="gender" [(value)]="gender">
+                        <mat-option value="Female">Female</mat-option>
+                        <mat-option value="Male">Male</mat-option>
+                        <mat-option value="Other">Other</mat-option>
+                    </mat-select>
+                </mat-form-field><br>
+
+                <mat-form-field  class="pr-sm-8" fxFlex="100">
+                    <mat-label>Dob</mat-label>
+                    <input matInput [matDatepicker]="dobDatePicker" name="dob">
+                    <mat-datepicker-toggle matSuffix [for]="dobDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dobDatePicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-spinner *ngIf="isLoading"></mat-spinner>
+            </form>
+        </mat-card-content>
+        <mat-card-actions fxLayout="column" fxFlex.xl="100" fxLayoutAlign="end space-between">
+            <button color="primary" (click)="SubmitForm(mainform);" mat-flat-button>Save</button> 
+        </mat-card-actions>
+    </mat-card>
+</div>

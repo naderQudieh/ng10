@@ -105,6 +105,10 @@
                         <a *ngIf="(isLoggedIn )" mat-menu-item [routerLink]="['/setting']">
                             <mat-icon>settings</mat-icon>
                             <span> {{ 'main.menu.setting' | translate}}</span>
+                        </a> 
+                        <a *ngIf="(isLoggedIn )" mat-menu-item [routerLink]="['/auth/profile']">
+                            <mat-icon>profile</mat-icon>
+                            <span> {{ 'user.profile' | translate}}</span>
                         </a>
                         <a *ngIf="(isLoggedIn )" mat-menu-item (click)="onLogoutClick()">
                             <mat-icon>exit_to_app</mat-icon>
