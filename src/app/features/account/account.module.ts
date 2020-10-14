@@ -10,8 +10,7 @@ import { environment } from '../../../environments/environment';
 import { GlobalService } from '../../core/services';
 import { AccountRoutingModule } from './account-routing.module'; 
 import { AuthEffects } from './store/auth.effects';
-import { FEATURE_NAME, account_reducers } from './account.state';
-
+import { FEATURE_NAME, account_reducers } from './account.state'; 
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
@@ -48,7 +47,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ])
   ],
   declarations: [
-      LayoutComponent, LoginComponent, ChangePasswordComponent, SignupComponent, ResetPasswordComponent
+       LayoutComponent, LoginComponent, ChangePasswordComponent, SignupComponent, ResetPasswordComponent
       , ProfileComponent
   
   ],

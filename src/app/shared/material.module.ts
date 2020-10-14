@@ -16,7 +16,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BidiModule } from '@angular/cdk/bidi'
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
@@ -28,7 +27,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar'; 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatBadgeModule } from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge'; 
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
+ 
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+ 
 export const MATERIAL_MODULES_CORE = [MatDialogModule, MatBadgeModule,
     MatToolbarModule, BidiModule, MatProgressBarModule,
     MatIconModule, MatProgressSpinnerModule, MatProgressBarModule,
@@ -38,7 +49,8 @@ export const MATERIAL_MODULES_CORE = [MatDialogModule, MatBadgeModule,
     MatTooltipModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatButtonModule,
+    MatButtonModule, MatDatepickerModule,
+    MatNativeDateModule,
 ];
 const MATERIAL_MODULES_SHARED = [
     FlexLayoutModule, MatTabsModule, MatChipsModule,  MatSlideToggleModule, MatDividerModule, MatSliderModule,
@@ -51,13 +63,13 @@ const MATERIAL_MODULES_SHARED = [
     MatDialogModule,
     MatInputModule,
     MatTableModule,
-    MatDatepickerModule,
-    MatNativeDateModule
+    MatRippleModule
 ];
 
 @NgModule({
   imports: [CommonModule,...MATERIAL_MODULES_SHARED, ...MATERIAL_MODULES_CORE],
-  exports: [...MATERIAL_MODULES_SHARED, ...MATERIAL_MODULES_CORE]
+    exports: [...MATERIAL_MODULES_SHARED, ...MATERIAL_MODULES_CORE],
+    providers: [MatDatepickerModule],
 })
 export class MaterialModule {
   constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {

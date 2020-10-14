@@ -45,3 +45,16 @@
   @include angular-material-theme($anms-nature-theme);
   @include custom-components-theme($anms-nature-theme);
 }
+ 
+
+.mat-dialog-container {
+    padding: 5px !important;
+
+    .light-theme {
+        box-shadow: none !important;
+    }
+
+    .mat-card {
+        box-shadow: none !important; 
+    }
+}

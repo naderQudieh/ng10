@@ -10,12 +10,18 @@ import { UserInfo, AuthToken, UserClaims, AuthState } from '../../features/accou
 import { AppState } from '../store/app.state';
 import { AuthReducer, AuthActions, AuthSelectors } from '../../features/account/store';
 import { GlobalService } from './globalService';
+ 
 
+ 
+  const TOKEN_INFO = 'user_token';
+  const USER_INFO = 'user_claims';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
+    private _credentials: AuthToken | null = null;
+    private _token: any = null;
     userId: number;
     protected logoutUrl = `${environment.baseUrl}/auth/sign-out`;
     protected tokenUrl = `${environment.baseUrl}/auth/login`;
@@ -26,6 +32,10 @@ export class AuthService {
     constructor( private gStoreService: GlobalService, protected http: HttpClient, public jwtHelper: JwtHelperService,
         protected storageService: LocalStorageService) {
         this.redirectUrl = "";
+        const savedCredentials = sessionStorage.getItem(TOKEN_INFO) || localStorage.getItem(TOKEN_INFO);
+            if (savedCredentials) {
+                this._credentials = JSON.parse(savedCredentials);
+            }
     }
 
     public registerUser(registerData: any): Observable<any> {
@@ -197,5 +207,7 @@ export class AuthService {
     }
     private handleError(error: HttpErrorResponse): Observable<never> {
         return throwError(error);
-    }
+    }  
+    
+   
 }

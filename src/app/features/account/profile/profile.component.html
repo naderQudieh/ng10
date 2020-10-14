@@ -1,7 +1,6 @@
 <div class="page-container" fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
-    <mat-card fxFlex="45" [fxFlex.xs]="95" [fxFlex.sm]="75" [fxFlex.lg]="25">
+    <mat-card style="min-width:500px!important" fxFlex.lt-lg="100%"   [fxFlex.xs]="95" [fxFlex.sm]="75" >
         <mat-card-header>
-             
             <div>  <mat-icon style="font-size:30px;">person</mat-icon> </div>
             <mat-card-title> <h3>{{ 'user.profile' | translate }}</h3></mat-card-title>
         </mat-card-header>
@@ -30,7 +29,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field class="field-width">
+                <mat-form-field fxFill>
                     <mat-select placeholder="Country" name="country" [(ngModel)]="selectedCountry" formControlName="country" (change)="optionSelected($event)">
                         <mat-option>None</mat-option>
                         <mat-option *ngFor="let country of countries" [value]="country">
@@ -40,14 +39,14 @@
                 </mat-form-field>
 
 
-                <mat-form-field class="field-width">
+                <mat-form-field fxFill>
                     <mat-select placeholder="Language" name="language" formControlName="language">
                         <mat-option *ngFor="let language of languages" [value]="language">
                             {{ language }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field fxFill>
                     <mat-label>Gender</mat-label>
                     <mat-select formControlName="gender" [(value)]="gender">
                         <mat-option value="Female">Female</mat-option>
@@ -55,8 +54,15 @@
                         <mat-option value="Other">Other</mat-option>
                     </mat-select>
                 </mat-form-field><br>
-
-                <mat-form-field  class="pr-sm-8" fxFlex="100">
+                <mat-form-field fxFill>
+                    <mat-label for="form2">Photo Url</mat-label>
+                    <input matInput type="text" #form2 formControlName="photoUrl" />
+                </mat-form-field>
+                <div class="avatar"  >
+                    <img *ngIf="profile.photoUrl" src="{{ profile.photoUrl }}" height="96" width="96" class="rounded-circle"
+                         alt="avatar image">
+                </div>
+                <mat-form-field fxFill>
                     <mat-label>Dob</mat-label>
                     <input matInput [matDatepicker]="dobDatePicker" name="dob">
                     <mat-datepicker-toggle matSuffix [for]="dobDatePicker"></mat-datepicker-toggle>

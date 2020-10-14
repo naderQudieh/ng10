@@ -107,7 +107,7 @@
                             <span> {{ 'main.menu.setting' | translate}}</span>
                         </a> 
                         <a *ngIf="(isLoggedIn )" mat-menu-item [routerLink]="['/auth/profile']">
-                            <mat-icon>profile</mat-icon>
+                            <mat-icon>account_box</mat-icon>
                             <span> {{ 'user.profile' | translate}}</span>
                         </a>
                         <a *ngIf="(isLoggedIn )" mat-menu-item (click)="onLogoutClick()">

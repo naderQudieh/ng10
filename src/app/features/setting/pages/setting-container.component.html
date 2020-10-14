@@ -21,7 +21,10 @@
 
         <div class="row">
             <div class="col-md-6" [ngClass]="routeAnimationsElements">
-                <mat-icon color="accent"><fa-icon icon="paint-brush" color="accent"></fa-icon></mat-icon>
+                <mat-icon mat-list-icon>
+                    format_color_fill
+                </mat-icon>
+                
                 <mat-form-field *ngIf="selectedtheme" fxFill>
                     <mat-select [placeholder]="'anms.setting.themes.placeholder' | translate"
                                 [ngModel]="selectedtheme"

@@ -41,11 +41,17 @@ export class LocalStorageService {
 
 
     setUserToken(token: AuthToken) {
-       
-        let _authTokenInfo = this.jwtHelper.decodeToken(token.access_token);
-        localStorage.setItem(USER_INFO, JSON.stringify(_authTokenInfo)); 
-        localStorage.setItem(TOKEN_INFO, JSON.stringify(token)); 
-        
+        if (token) {
+            let _authTokenInfo = this.jwtHelper.decodeToken(token.access_token);
+            const storage = sessionStorage;
+            localStorage.setItem(USER_INFO, JSON.stringify(_authTokenInfo.access_token));
+            localStorage.setItem(TOKEN_INFO, JSON.stringify(_authTokenInfo)); 
+        } else {
+            sessionStorage.removeItem(TOKEN_INFO);
+            localStorage.removeItem(TOKEN_INFO);
+            sessionStorage.removeItem(TOKEN_INFO);
+            localStorage.removeItem(TOKEN_INFO);
+        } 
     }
 
     getUserAuthToken(): AuthToken {

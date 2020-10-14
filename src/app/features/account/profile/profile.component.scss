@@ -3,3 +3,17 @@
     margin-top:30px;
     min-width:400px;
 }
+
+
+
+.mat-dialog-container#mat-dialog-0 {
+    .mat-card.mat-card.mat-focus-indicator {
+        box-shadow: none !important;
+        background-color: red !important;
+    }
+}
+.mat-dialog-container   .mat-card {
+    box-shadow: none !important;
+    background-color: red !important;
+}
+ 

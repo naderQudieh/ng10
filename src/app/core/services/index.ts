@@ -7,4 +7,4 @@ export * from './api.service';
 export * from './auth-guard';
 export * from './snackbar.service';
 export * from './globalService';
- 
+export * from '../../shared/services/dialog.service';

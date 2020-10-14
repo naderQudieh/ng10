@@ -1,8 +1,11 @@
+/// <reference path="../../account/pages/login/login.component.ts" />
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
 import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../core/core.module';
 import { ConfirmModalService } from '../../../shared/services';
 import { TranslateService } from '@ngx-translate/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 @Component({
   selector: 'anms-about',
   templateUrl: './about.component.html',
@@ -12,8 +15,11 @@ import { TranslateService } from '@ngx-translate/core';
 export class AboutComponent implements OnInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
   releaseButler = require('../../../../assets/release-butler.png').default;
-
-    constructor(private confirmModalService: ConfirmModalService, private translate: TranslateService,) {}
+    
+    constructor(private confirmModalService: ConfirmModalService  ,
+        private translate: TranslateService ) {
+         
+    }
 
     ngOnInit() { }
 
@@ -32,4 +38,6 @@ export class AboutComponent implements OnInit {
                    
             );
     }
+
+    
 }

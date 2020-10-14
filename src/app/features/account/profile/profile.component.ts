@@ -1,15 +1,30 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators, NgForm } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { retry } from 'rxjs/operators';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+
  
- 
+
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.component.html',
     styleUrls:  ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+    @Output() closeClicked = new EventEmitter<any>();
+    @Output() submitClicked = new EventEmitter<any>();
+    profile = {
+        photoUrl :'',
+    };
+    hide;
+    gender;
+    password;
+    visibility;
+    visibility_off;
+    isLoading: boolean = false;
     selectedCountry;
     selectedLanguage;
     countries = [];
@@ -26,11 +41,24 @@ export class ProfileComponent implements OnInit {
     @ViewChild('boy') private boy: MatCheckbox;
     @ViewChild('girl') private girl: MatCheckbox;
     @ViewChild('male') private male: MatCheckbox;
-    @ViewChild('female') private female: MatCheckbox;
+    @ViewChild('female') private female: MatCheckbox; 
+    formdata: any; 
     constructor( ) {
+        //if (false) {
+        //    this.dialogRef = this.injector.get(this.dialogRef2);
+        //    this.formdata = this.injector.get(MAT_DIALOG_DATA);
+        //}
+        //this.formdata = data;
     }
-
+    //constructor(@Inject(MAT_DIALOG_DATA) public data: any, private readonly dialogRef: MatDialogRef<ProfileComponent>,) {
+    //    //if (false) {
+    //    //    this.dialogRef = this.injector.get(this.dialogRef2);
+    //    //    this.formdata = this.injector.get(MAT_DIALOG_DATA);
+    //    //}
+    //    this.formdata = data;
+    //}
     ngOnInit(): void {
+        console.log(this.formdata);
         this.mainform = new FormGroup(
             {
                 firstName: new FormControl('',),
@@ -40,7 +68,7 @@ export class ProfileComponent implements OnInit {
                 language: new FormControl('',),
                 country: new FormControl('',),
                 gender: new FormControl('',),
-
+                photoUrl: new FormControl('',),
             })
        
 
@@ -70,12 +98,20 @@ export class ProfileComponent implements OnInit {
         };
     }
 
-    SubmitForm(data: any): void {
+    public submit(): void {
+         this.dialogRef.close() ;
+    }
 
+    SubmitForm(data: any): void { 
         let me = {
             email: data.value.email,
             password: data.value.password 
         }
+        this.submitClicked.emit(me);
         return;  
+    }
+    CloseForm(data: any): void { 
+        this.closeClicked.emit({});
+        return;
     }
 }
