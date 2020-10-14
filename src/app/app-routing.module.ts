@@ -49,7 +49,7 @@ const routes: Routes = [
         loadChildren: () => import('./features/setting/setting.module')
             .then(m => m.SettingModule)
             .catch(() => location.reload())
-    }
+    } 
     ,
     {
         path: 'notfound',

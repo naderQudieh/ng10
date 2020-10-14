@@ -106,10 +106,10 @@ export function HttpLoaderFactory(http: HttpClient) {
              FontAwesomeModule, TranslateModule]
 })
 export class CoreModule {
-    constructor(@Optional() @SkipSelf() parentModule: CoreModule, faIconLibrary: FaIconLibrary,
+    constructor(@Optional() @SkipSelf() parent: CoreModule, faIconLibrary: FaIconLibrary,
         private readonly translateService: TranslateService, private readonly globalVarSrv: GlobalService
     ) {
-        if (parentModule) {
+        if (parent) {
            throw new Error('CoreModule is already loaded. Import only in AppModule');
         }
         
