@@ -8,8 +8,7 @@
     mat-drawer-container {
         mat-toolbar {
             button {
-                line-height: 50px;
-
+               
                 &.active {
                     color: mat-color($accent, default-contrast);
                     background-color: mat-color($accent);

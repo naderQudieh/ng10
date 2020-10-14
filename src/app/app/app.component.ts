@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     navigations = [
         { link: 'dashboard', label: 'main.menu.dashboard', icon:"dashboard" },
         { link: 'products', label: 'main.menu.products', icon: "star"},
-        { link: 'about', label: 'main.menu.about', icon: "info_outline" },
+      
         { link: 'admin', label: 'admin', icon: "star" },
         { link: 'setting', label: 'main.menu.setting', icon: "settings" }
     ];

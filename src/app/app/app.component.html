@@ -8,13 +8,19 @@
                 </button>
             </mat-toolbar>
             <mat-nav-list>
-                <a mat-menu-item   *ngFor="let item of navigations" (click)="drawer.close()" [routerLink]="[item.link]"
+                <a mat-menu-item *ngFor="let item of navigations" (click)="drawer.close()" [routerLink]="[item.link]"
                    routerLinkActive="active">
                     <mat-icon> {{item.icon}}</mat-icon> {{item.label | translate}}
                 </a>
                 <mat-divider></mat-divider>
-                <a mat-menu-item  routerLink="/profile"  >
+
+
+                <h3 mat-subheader>Resources</h3>
+                <a mat-menu-item routerLink="/profile">
                     <mat-icon>account_box</mat-icon>   {{ 'user.profile' | translate}}
+                </a>
+                <a mat-menu-item routerLink="/about">
+                    <mat-icon>info_outline</mat-icon>   {{ 'main.menu.about' | translate}}
                 </a>
                 <mat-divider></mat-divider>
             </mat-nav-list>
@@ -52,12 +58,7 @@
                     </button>
 
 
-                    <button mat-icon-button mat-button color="accent" *ngIf="!(isAuthenticated$ | async)" (click)="onLoginClick()">
-                        {{ 'main.menu.login' | translate }}
-                    </button>
-
-                   
-                    <span  style="min-width:100px"  matTooltip="language" *ngIf="selectedlanguage">
+                    <span style="min-width:100px" matTooltip="language" *ngIf="selectedlanguage">
 
                         <!--<mat-icon>translate  {{ selectedlanguage }} </mat-icon>-->
                         <mat-select [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
@@ -66,18 +67,23 @@
                             </mat-option>
                         </mat-select>
                     </span>
-                    <span  style="min-width:100px"  matTooltip="theme"  *ngIf="selectedtheme">
+                    <span style="min-width:100px" matTooltip="theme" *ngIf="selectedtheme">
                         <mat-select [ngModel]="selectedtheme.toUpperCase()" (selectionChange)="onThemeSelect($event)">
                             <mat-option *ngFor="let l of themes" [value]="l">
-                                <span style="display:inline-block;min-width:60px">{{ l.toUpperCase() }}</span> 
+                                <span style="display:inline-block;min-width:60px">{{ l.toUpperCase() }}</span>
                             </mat-option>
                         </mat-select>
-                    </span> 
+                    </span>
 
-                    <app-notification  matTooltip="Notifications"  ></app-notification>
-                    <a  matTooltip="{{ 'main.menu.logout' | translate }}"   *ngIf="(isAuthenticated$ | async)" mat-menu-item (click)="onLogoutClick()">
-                        <mat-icon>exit_to_app</mat-icon>
-                        <span>{{ 'main.menu.logout' | translate }}</span>
+                    <app-notification matTooltip="Notifications"></app-notification>
+                    <a matTooltip="{{ 'main.menu.logout' | translate }}" mat-icon-button *ngIf="!(isAuthenticated$ | async)" (click)="onLoginClick()">
+                        {{ 'main.menu.login' | translate }}
+                    </a>
+  
+                    <a  matTooltip="{{ 'main.menu.logout' | translate }}" style=" display:block; max-width:60px!important"
+                       *ngIf="(isAuthenticated$ | async)"
+                       mat-item mat-icon-button (click)="onLogoutClick()">
+                        <mat-icon>exit_to_app</mat-icon> 
                     </a>
                     <button matTooltip="Menu" mat-icon-button [matMenuTriggerFor]="userMenu">
                         <!--<mat-icon>account_circle</mat-icon>-->
