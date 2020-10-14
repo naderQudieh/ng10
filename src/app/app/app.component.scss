@@ -1,5 +1,8 @@
 @import '../../styles-variables';
-
+.navbar-spacer {
+    flex: 1 1 auto;
+}
+ 
 .loading-container {
     z-index: 201;
     top: 0;
@@ -9,6 +12,10 @@
 .theme-wrapper {
   height: 100%;
   width: 100%;
+}
+ 
+.mat-icon{
+    margin-right:20px;
 }
 
 mat-drawer-container {
@@ -56,9 +63,7 @@ mat-drawer-container {
             margin-right: 10px;
         }
 
-        .spacer {
-            flex: 1 1 auto;
-        }
+
 
         mat-select {
             margin: 0 0 0 20px;
@@ -98,14 +103,8 @@ mat-drawer-container {
     }
 }
 
-mat-drawer.sidenavnotice {
-    width: 300px;
-    position: fixed !important; 
-    overflow: hidden;
-}
 
-mat-drawer {
-    width: 270px; 
+mat-drawer { 
     .branding {
         height: 64px;
         padding: 8px 10px;

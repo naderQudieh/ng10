@@ -38,6 +38,10 @@ const routes: Routes = [
     {
         path: 'about', runGuardsAndResolvers: 'always',
         loadChildren: () => import('./features/about/about.module').then((m) => m.AboutModule)
+    },
+    {
+        path: 'dashboard',  
+        loadChildren: () => import('./features/dashboard/dashboard.module').then((m) => m.DashboardModule)
     },  
     {
         path: 'setting',

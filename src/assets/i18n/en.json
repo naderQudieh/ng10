@@ -16,6 +16,7 @@
   "main.menu.signup": "Signup",
   "main.menu.logout": "Logout",
   "main.menu.setting": "Setting",
+  "main.menu.dashboard": "Dashboard",
   "form.auth.signup": "Register",
   "form.auth.login": "Login",
   "form.auth.reset_password": "Reset password",

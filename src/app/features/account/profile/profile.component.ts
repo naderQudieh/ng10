@@ -99,7 +99,7 @@ export class ProfileComponent implements OnInit {
     }
 
     public submit(): void {
-         this.dialogRef.close() ;
+         //this.dialogRef.close() ;
     }
 
     SubmitForm(data: any): void { 

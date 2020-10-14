@@ -1,9 +1,9 @@
 import browser from 'browser-detect';
-import {    Component,    OnInit,    Output,
-    EventEmitter,    Input,    ChangeDetectionStrategy,    ViewEncapsulation,} from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import {Output,  EventEmitter, Input, ChangeDetectionStrategy,    ViewEncapsulation,} from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { DOCUMENT } from "@angular/common";
-import { Inject } from "@angular/core";
+import { Inject, Component, OnInit, ChangeDetectorRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable,  of, Subscription } from 'rxjs';
 import { filter, delay, debounceTime, map, take } from 'rxjs/operators';
@@ -27,7 +27,11 @@ import { NotificationComponent } from '../core/components/widgets/notification.c
     changeDetection: ChangeDetectionStrategy.OnPush,
    
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+
+    private _mobileQueryListener: () => void;
+    mobileQuery: MediaQueryList;
+
     public isProd = env.production;
     public isRtl: boolean = false;
     public isRtl2: Direction;
@@ -35,15 +39,14 @@ export class AppComponent implements OnInit {
     public year = new Date().getFullYear();
     public logo = require('../../assets/images/logo.png').default;
 
-    navigation = [
-        { link: 'home', label: 'main.menu.home' },
-        { link: 'products', label: 'main.menu.products' },
-        { link: 'about', label: 'main.menu.about' }, { link: 'admin', label: 'admin' }
+    navigations = [
+        { link: 'dashboard', label: 'main.menu.dashboard', icon:"dashboard" },
+        { link: 'products', label: 'main.menu.products', icon: "star"},
+        { link: 'about', label: 'main.menu.about', icon: "info_outline" },
+        { link: 'admin', label: 'admin', icon: "star" },
+        { link: 'setting', label: 'main.menu.setting', icon: "settings" }
     ];
-    navigationSideMenu = [
-        ...this.navigation,
-        { link: 'setting', label: 'main.menu.setting' }
-    ];
+  
     isLoggedIn: boolean;
     selectedtheme: any;
     selectedlanguage: any;
@@ -56,10 +59,16 @@ export class AppComponent implements OnInit {
     private _dirChangeSubscription = Subscription.EMPTY;
     @Output() toggleSidenavNotice = new EventEmitter<void>();
 
-    constructor(dir: Directionality,
+    constructor(dir: Directionality, private changeDetectorRef: ChangeDetectorRef,
+        private media: MediaMatcher,
         @Inject(DOCUMENT) private document: Document, private globalService: GlobalService,
         private overlayContainer: OverlayContainer, private router: Router, private store: Store<AppState>) {
-        
+
+        this.mobileQuery = this.media.matchMedia('(max-width: 1000px)');
+        this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+        // tslint:disable-next-line: deprecation
+        this.mobileQuery.addListener(this._mobileQueryListener);
+
         // this.router.navigate([''])
         this.showLoadingBar$ = globalService.getBarValue().pipe(delay(30));
 
@@ -163,7 +172,11 @@ export class AppComponent implements OnInit {
         //    headTag.appendChild(newLink);
         //}
     }
+    ngAfterViewInit(): void {
+        this.changeDetectorRef.detectChanges();
+    }
     ngOnDestroy() {
+        this.mobileQuery.removeListener(this._mobileQueryListener); 
         this._dirChangeSubscription.unsubscribe();
     }
 }
