@@ -1,5 +1,5 @@
 <div [class]="'theme-wrapper ' + (selectedtheme)">
-    <mat-drawer-container class="example-container" autosize>
+    <mat-drawer-container   autosize>
         <mat-drawer fixedInViewport="true" position="start" #drawer class="mainsidenav" mode="over">
             <mat-toolbar color="primary">
                 {{ 'appName' | translate}}
@@ -12,9 +12,7 @@
                    routerLinkActive="active">
                     <mat-icon> {{item.icon}}</mat-icon> {{item.label | translate}}
                 </a>
-                <mat-divider></mat-divider>
-
-
+                <mat-divider></mat-divider> 
                 <h3 mat-subheader>Resources</h3>
                 <a mat-menu-item routerLink="/profile">
                     <mat-icon>account_box</mat-icon>   {{ 'user.profile' | translate}}
@@ -53,13 +51,11 @@
                     </span>
 
                     <span class="navbar-spacer"></span>
-                    <button mat-icon-button class="matero-toolbar-button">
+                    <button class="matero-toolbar-button" mat-icon-button>
                         <mat-icon>search</mat-icon>
                     </button>
 
-
-                    <span style="min-width:100px" matTooltip="language" *ngIf="selectedlanguage">
-
+                    <span class="matero-toolbar-button" style="min-width:60px!important" matTooltip="language" *ngIf="selectedlanguage">
                         <!--<mat-icon>translate  {{ selectedlanguage }} </mat-icon>-->
                         <mat-select [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
                             <mat-option *ngFor="let l of languages" [value]="l">
@@ -67,8 +63,8 @@
                             </mat-option>
                         </mat-select>
                     </span>
-                    <span style="min-width:100px" matTooltip="theme" *ngIf="selectedtheme">
-                        <mat-select [ngModel]="selectedtheme.toUpperCase()" (selectionChange)="onThemeSelect($event)">
+                    <span class="matero-toolbar-button" matTooltip="theme" *ngIf="selectedtheme">
+                        <mat-select style="min-width:80px!important" [ngModel]="selectedtheme.toUpperCase()" (selectionChange)="onThemeSelect($event)">
                             <mat-option *ngFor="let l of themes" [value]="l">
                                 <span style="display:inline-block;min-width:60px">{{ l.toUpperCase() }}</span>
                             </mat-option>
@@ -76,19 +72,23 @@
                     </span>
 
                     <app-notification matTooltip="Notifications"></app-notification>
-                    <a matTooltip="{{ 'main.menu.logout' | translate }}" mat-icon-button *ngIf="!(isAuthenticated$ | async)" (click)="onLoginClick()">
+                    <a class="matero-toolbar-button" matTooltip="{{ 'main.menu.logout' | translate }}" mat-icon-button *ngIf="!(isAuthenticated$ | async)" (click)="onLoginClick()">
                         {{ 'main.menu.login' | translate }}
                     </a>
-  
-                    <a  matTooltip="{{ 'main.menu.logout' | translate }}" style=" display:block; max-width:60px!important"
+                    <a mat-menu-item mat-icon-butto routerLink="/setting" matTooltip="{{ 'main.menu.setting' | translate }}" >
+                        <mat-icon>setting</mat-icon>   {{ 'main.menu.setting' | translate}}
+                    </a>
+                   
+                    <a class="matero-toolbar-button" matTooltip="{{ 'main.menu.logout' | translate }}"
+                       style=" display:block; max-width:60px!important"
                        *ngIf="(isAuthenticated$ | async)"
                        mat-item mat-icon-button (click)="onLogoutClick()">
-                        <mat-icon>exit_to_app</mat-icon> 
+                        <mat-icon>exit_to_app</mat-icon>
                     </a>
-                    <button matTooltip="Menu" mat-icon-button [matMenuTriggerFor]="userMenu">
+                    <a class="matero-toolbar-button" matTooltip="Menu" mat-icon-button [matMenuTriggerFor]="userMenu">
                         <!--<mat-icon>account_circle</mat-icon>-->
                         <img class="matero-avatar" src="assets/images/avatar.jpg" width="32" alt="avatar" />
-                    </button>
+                    </a>
                     <mat-menu #userMenu="matMenu">
                         <a *ngIf="(!isLoggedIn)" mat-menu-item [routerLink]="['/auth/login']">
                             <mat-icon>login</mat-icon> Login
@@ -109,13 +109,11 @@
                             <span>{{ 'main.menu.logout' | translate }}</span>
                         </a>
                     </mat-menu>
-                    <button mat-icon-button (click)="sidenavNotice.toggle()">
+                    <a class="matero-toolbar-button" mat-icon-button (click)="sidenavNotice.toggle()">
                         <fa-icon icon="bars"></fa-icon>
-                    </button>
+                    </a>
 
-                </mat-toolbar>
-
-
+                </mat-toolbar> 
             </div>
 
             <div class="content" [@routeAnimations]="o.isActivated && o.activatedRoute.routeConfig.data && o.activatedRoute.routeConfig.data.title">
@@ -127,24 +125,13 @@
                     <div class="center">
                         <mat-spinner color="primary" style="margin:0 auto;" mode="indeterminate"> </mat-spinner>
                     </div>
-                </div>
-                <!--<nav class="breadcrumb">
-                    <ol class="matero-breadcrumb">
-                        <li class="matero-breadcrumb-item">
-                            <a href="#" class="link">Home</a>
-                            <mat-icon class="chevron">chevron_right</mat-icon>
-                        </li>
-                        <li class="matero-breadcrumb-item">
-                            <a href="#" class="link">Home</a>
-                            <mat-icon class="chevron">chevron_right</mat-icon>
-                        </li>
-                    </ol>
-                </nav>-->
+                </div> 
                 <router-outlet #o="outlet"></router-outlet>
 
             </div>
 
         </div> 
+   
     </mat-drawer-container>
     <mat-drawer   fixedInViewport="true"  
                 style="min-width:30%;position:fixed;top:60px; " class="sidenavnotice" #sidenavNotice position="end" mode="over">
@@ -154,4 +141,5 @@
         <mat-divider></mat-divider>
         <app-sidebar-notice></app-sidebar-notice>
     </mat-drawer>
+
 </div>

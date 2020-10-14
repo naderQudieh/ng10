@@ -2,17 +2,19 @@
 .navbar-spacer {
     flex: 1 1 auto;
 }
+
+.matero-toolbar-button {
+    margin-left:10px!important ;
+}
  
+
 .loading-container {
     z-index: 201;
     top: 0;
     left: 0;
     height: 10px;
 }
-.theme-wrapper {
-  height: 100%;
-  width: 100%;
-}
+ 
  
 .mat-icon{
     margin-right:20px;
@@ -21,6 +23,7 @@
 mat-drawer-container {
     height: 100%;
     width: 100%;
+    position: absolute!important;
 
     .toolbar {
         position: fixed;
@@ -81,11 +84,6 @@ mat-drawer-container {
     }
 
     .wrapper {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
         display: flex;
         flex-direction: column;
 

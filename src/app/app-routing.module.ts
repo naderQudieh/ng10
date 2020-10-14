@@ -45,7 +45,7 @@ const routes: Routes = [
     },  
     {
         path: 'setting',
-        canActivate: [AuthGuard],
+       // canActivate: [AuthGuard],
         loadChildren: () => import('./features/setting/setting.module')
             .then(m => m.SettingModule)
             .catch(() => location.reload())
@@ -65,7 +65,7 @@ const routes: Routes = [
     // useHash supports github.io demo page, remove in your app
     imports: [
         RouterModule.forRoot(routes, {
-           // enableTracing: true,
+            enableTracing: true,
             useHash: true,
             scrollPositionRestoration: 'enabled',
             //preloadingStrategy: SelectivePreloadingStrategyService,
