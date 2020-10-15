@@ -1,95 +1,105 @@
-import { Injectable } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { DOCUMENT, isPlatformServer } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID, RendererFactory2 } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-@Injectable()
+import { Theme } from '../constants';
+
+const THEME_COOKIE_NAME = 'admin-theme';
+/** Id to query default theme element */
+const DEFAULT_THEME_ID = 'head-theme-script';
+/** Whether default script element is not found, then use default theme */
+const DEFAULT_THEME = Theme.LIGHT;
+
+@Injectable({
+    providedIn: 'root'
+})
+/**
+ * Theme management. Used to
+ * - manage programmatic theme changes
+ * - store theme in cookie
+ * - read `(prefers-color-scheme: dark/light)` media queries
+ */
 export class ThemeService {
 
-  themes: Array<any> = [
-    { value: 'default', name: 'Default', cssClass: null },
-    { value: 'light', name: 'Light', cssClass: 'light-theme' },
-    { value: 'snow-white', name: 'Snow white', cssClass: 'snow-white-theme' },
-    { value: 'mixed', name: 'Mixed', cssClass: 'mixed-theme' },
-    { value: 'Dark', name: 'Dark', cssClass: 'dark-theme' },
-    { value: 'black', name: 'Black', cssClass: 'black-theme' }
-  ];
+    private readonly isLoading$ = new BehaviorSubject<boolean>(false);
+    private readonly currentTheme$ = new BehaviorSubject<Theme>(Theme.LIGHT);
+    private readonly renderer = this.rendererFactory.createRenderer(null, null);
+    private readonly themeScriptMap = new Map<Theme, Element>();
 
-  /**
-  * Loads saved theme and sets required classes to body element.
-  */
-  loadSavedTheme(){
-    let theme = localStorage.getItem('theme');
-    if(theme !== undefined){
-      let selectedTheme = JSON.parse(theme);
-      if(selectedTheme != null && selectedTheme.cssClass){
-        let body = document.getElementsByTagName('body')[0];
-        body.classList.add(selectedTheme.cssClass);
-      }
+    constructor( 
+         
+        private overlay: OverlayContainer,
+        @Inject(DOCUMENT) private document: Document,
+        private rendererFactory: RendererFactory2,
+        @Inject(PLATFORM_ID) private platformId: Object,
+        private breakpointObserver: BreakpointObserver,
+    ) {
     }
 
-    // Set toolbar width
-    let fullWidthSaved = localStorage.getItem('fullWidth');
-    if(fullWidthSaved){
-      this.setFullWidth(JSON.parse(fullWidthSaved));
-    }
-  }
-
-  /**
-  * Gets current theme.
-  */
-  currentTheme(){
-    let storedTheme = localStorage.getItem('theme');
-
-    if(storedTheme != null){
-        let tempTheme = JSON.parse(storedTheme);
-        let theme = this.themes.filter(theme => theme.value && theme.value === tempTheme.value);
-
-        if(theme != null)
-          return theme[0];
+    public themeChanges(): Observable<Theme> {
+        return this.currentTheme$.asObservable();
     }
 
-    return this.themes[0];
-  }
-
-  /**
-  * Sets theme.
-  *
-  * @param theme Theme to use.
-  */
-  setTheme(theme: any){
-    let body = document.getElementsByTagName('body')[0];
-    this.themes.forEach(theme => body.classList.remove(theme.cssClass));
-    localStorage.removeItem('theme');
-
-    if(theme.cssClass){
-      localStorage.setItem('theme', JSON.stringify(theme));
-      body.classList.add(theme.cssClass);
+    public loadingChanges(): Observable<boolean> {
+        return this.isLoading$.asObservable();
     }
-  }
 
-  isFullWidth(): boolean{
-    let fullWidthSaved = localStorage.getItem('fullWidth');
-    if(fullWidthSaved){
-      return JSON.parse(fullWidthSaved) as boolean;
-    }
-    else{
-      let body = document.getElementsByTagName('body')[0]; 
-      return body.classList.contains('full-width');   
-    }
-  }
+    public setTheme(theme: Theme): void {
+        if (this.isLoading$.getValue()) {
 
-  /**
-   * Sets toolbar full width options.
-   * 
-   * @param fullWidth Indicates whether toolbar is displayed in full width.
-   */
-  setFullWidth(fullWidth: boolean){
-    let body = document.getElementsByTagName('body')[0];
-    localStorage.setItem('fullWidth', JSON.stringify(fullWidth));
+            return;
+        }
+        const lastTheme = this.currentTheme$.getValue();
+        if (this.themeScriptMap.has(theme)) {
+            this.applyThemeClasses(theme, lastTheme);
+            this.applyThemeSetting(theme);
+        } else {
+            this.createLinkElement(theme, lastTheme);
+            this.applyThemeSetting(theme);
+        }
+    }
 
-    if(fullWidth){
-      body.classList.add('full-width');
+    public initialize(): void {
+         if (this.breakpointObserver.isMatched('(prefers-color-scheme: dark)')) {
+            this.setTheme(Theme.DARK);
+        } else if (this.breakpointObserver.isMatched('(prefers-color-scheme: light)')) {
+            this.setTheme(Theme.LIGHT);
+        } else {
+            this.setTheme(DEFAULT_THEME);
+        }
     }
-    else{
-      body.classList.remove('full-width');
+
+    private applyThemeClasses(theme: Theme, lastTheme: Theme): void {
+        this.document.body.classList.remove(lastTheme);
+        this.document.body.classList.add(theme);
+        this.overlay.getContainerElement().classList.remove(lastTheme);
+        this.overlay.getContainerElement().classList.add(theme);
     }
-  }
+
+    private applyThemeSetting(theme: Theme): void { 
+        this.currentTheme$.next(theme);
+    }
+
+    private createLinkElement(theme: Theme, lastTheme: Theme): void {
+        if (isPlatformServer(this.platformId)) {
+            const defaultThemeElement = this.document.head.querySelector(`#${DEFAULT_THEME_ID}`);
+            if (defaultThemeElement) {
+                this.renderer.removeChild(this.document.head, defaultThemeElement);
+            }
+        }
+        this.isLoading$.next(true);
+        const linkElement = this.renderer.createElement('link');
+        this.renderer.setAttribute(linkElement, 'rel', 'stylesheet');
+        this.renderer.setAttribute(linkElement, 'href', `${theme}.css`);
+        const listenDestructor = this.renderer.listen(linkElement, 'load', () => {
+            this.applyThemeClasses(theme, lastTheme);
+            this.isLoading$.next(false);
+            listenDestructor();
+        });
+        this.renderer.appendChild(this.document.head, linkElement);
+        this.themeScriptMap.set(theme, linkElement);
+    }
+
 }

@@ -18,43 +18,52 @@ export class SettingContainerComponent implements OnInit {
 
     public languages: any[]
     public themes: any[]  
-    public selectedtheme: any;
+    public selectedtheme : any ;
     public selectedlanguage: any;
 
-    constructor(private overlayContainer: OverlayContainer,  private translate: TranslateService , private globalVarSrv: GlobalService,) {
-        this.languages = this.globalVarSrv.getLanguages().map(p => p.value);
-        this.themes = this.globalVarSrv.getThemesList();//.map(p => p.value);
+    constructor(private overlayContainer: OverlayContainer, private translate: TranslateService, private globalService: GlobalService,) {
+        this.languages = this.globalService.getLanguages() ;
+        this.themes = this.globalService.getThemesList(); 
         
     }
 
     ngOnInit() {
-        this.globalVarSrv.getTheme().subscribe(theme => { 
-            let apptheme = this.themes.filter(item => {
-                return item.value.toLowerCase() === theme.toLowerCase()
-            }); 
-            this.selectedtheme = apptheme[0];  
-        })
+        this.globalService.UserTheme.subscribe(theme => { 
 
-        this.globalVarSrv.getLanguage().subscribe(lang => {
-          
+            let apptheme = this.themes.filter(item => {
+                return item.value.toLowerCase()  == theme.toLowerCase()
+            }); 
+            this.selectedtheme = apptheme[0];
+            console.log(this.selectedtheme);
+           
+        })
+        
+        this.globalService.UserLanguage.subscribe(lang => { 
             let applang = this.languages.filter(item => { 
-                return item  === lang 
+                return item.value  == lang  ;  
             });
             this.selectedlanguage = applang[0];
+            
         })
-  }
+    }
 
-    onLanguageSelect({ value: lang }) {
-        console.log(lang);
-        this.globalVarSrv.setLanguage(lang);  
-  }
+    onLanguageSelect() {
+       
+        this.globalService.setLanguage(this.selectedlanguage['value']);
+    }
       
-  onThemeSelect({ value: theme }) { 
-        let apptheme = this.themes.filter(item => { 
-            return item.value === theme.value
-        });
-        this.selectedtheme = apptheme[0] ; 
-        this.globalVarSrv.setTheme(apptheme[0].value.toLowerCase());  
-  } 
- 
+    onThemeSelect() { 
+        this.globalService.setTheme(this.selectedtheme['value'] );  
+    } 
+
+
+    //onThemeSelect({ value: theme }) {
+    //    console.log(theme);
+    //    let apptheme = this.themes.filter(item => {
+    //        return item.value === theme.value
+    //    });
+    //    this.selectedtheme = apptheme[0];
+    //    console.log(apptheme[0].value.toLowerCase());
+    //    this.globalService.setTheme(apptheme[0].value.toLowerCase());
+    //} 
 }

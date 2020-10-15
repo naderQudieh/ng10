@@ -23,7 +23,7 @@
 mat-drawer-container {
     height: 100%;
     width: 100%;
-    position: absolute!important;
+    position: absolute !important;
 
     .toolbar {
         position: fixed;
@@ -69,10 +69,13 @@ mat-drawer-container {
 
 
         mat-select {
-            margin: 0 0 0 20px;
-            width: 40px;
+            
+            min-width:70px!important;
             font-size: 14px;
+            padding:0 0;
         }
+
+         
 
         @media (max-width: map-get($grid-breakpoints, lg)) {
             .nav-button {

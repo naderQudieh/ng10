@@ -9,9 +9,7 @@ export class TitleService {
 
     private readonly title$ = new BehaviorSubject<string>(this.title.getTitle());
 
-    constructor(
-        private title: Title,
-    ) {
+    constructor( private title: Title) {
     }
 
     titleChanges(): Observable<string> {

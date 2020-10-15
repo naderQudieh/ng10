@@ -47,9 +47,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     ];
   
     isLoggedIn: boolean;
-    selectedtheme: any;
-    selectedlanguage: any;
-    language$: Observable<string>;
+    themeClass = "DEFAULT-THEME".toLowerCase();
+    public selectedtheme: any;
+    public selectedlanguage: any;
+  
     isAuthenticated$: Observable<boolean>;
     showLoadingBar$: Observable<boolean>;
     showSpinner$: Observable<boolean>;
@@ -83,8 +84,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         //    this.isRtl2 = drc;
         //});
         this.isAuthenticated$ = this.globalService.getIsAuthenticated(); 
-        this.languages = this.globalService.getLanguages().map(p => p.value);
-        this.themes = this.globalService.getThemesList().map(p => p.value);
+        this.languages = this.globalService.getLanguages() ;
+        this.themes = this.globalService.getThemesList() ;
          
     }
    
@@ -94,18 +95,24 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     
     ngOnInit(): void {
-       
-         this.globalService.getLanguage().subscribe(lang => {
-             this.selectedlanguage = lang;
-          })
-        
         this.globalService.getIsAuthenticated().subscribe(auth => {
             this.isLoggedIn = auth;
         })
-       
-        this.globalService.getTheme().subscribe(theme => {
-            this.selectedtheme = theme.toLowerCase();
 
+        this.globalService.UserLanguage.subscribe(lang => { 
+            let applang = this.languages.filter(item => {
+                return item.value  == lang ;
+            }); 
+            this.selectedlanguage = applang[0]; 
+        }) 
+       
+        this.globalService.UserTheme.subscribe(theme => { 
+            let apptheme = this.themes.filter(item => {
+                return item.value.toLowerCase() == theme.toLowerCase()
+            });
+            this.selectedtheme = apptheme[0];
+            console.log(this.selectedtheme);
+            this.themeClass = theme.toLowerCase(); 
             const classList = this.overlayContainer.getContainerElement().classList;
             const toRemove = Array.from(classList).filter((item: string) =>
                 item.includes('-theme')
@@ -113,17 +120,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             if (toRemove.length) {
                 classList.remove(...toRemove);
             }
-            classList.add(this.selectedtheme); 
+            classList.add(this.themeClass); 
         }) 
         
     }
 
-    onThemeSelect(theme: any) { 
-        this.globalService.setTheme(theme.value);
+    onThemeSelect() { 
+        
+        this.globalService.setTheme(this.selectedtheme['value']);
     }
 
-    onLanguageSelect({ value: language }) {
-        this.globalService.setLanguage(language); 
+    onLanguageSelect() {
+        
+        this.globalService.setLanguage(this.selectedlanguage['value']); 
     }
 
    

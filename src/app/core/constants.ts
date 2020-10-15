@@ -40,3 +40,14 @@ export const faIconsshared: IconDefinition[] = [
     faStream,
     faBook
 ];
+
+
+
+export enum RegionTypes {
+    RU = 'ru',
+    EN = 'EN',
+}
+export enum Theme {
+    LIGHT = 'light-theme',
+    DARK = 'dark-theme',
+}

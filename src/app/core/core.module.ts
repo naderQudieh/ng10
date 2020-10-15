@@ -114,7 +114,13 @@ export class CoreModule {
         }
         
         this.globalVarSrv.getLanguage().subscribe((language) => {  
-            this.translateService.use(language)
+            let slang = language;
+
+            if (language['value']) {
+                slang = language['value']
+            }
+          
+            this.translateService.use(slang)
         }); 
       faIconLibrary.addIcons(...faIconscore);
   }

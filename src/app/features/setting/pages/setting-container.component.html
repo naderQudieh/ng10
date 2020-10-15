@@ -9,27 +9,22 @@
         <div class="row">
             <div class="col-md-6" [ngClass]="routeAnimationsElements">
                 <mat-icon color="accent"><fa-icon icon="language" color="accent"></fa-icon></mat-icon>
-                <mat-form-field *ngIf="selectedlanguage" fxFill>
-                    <mat-select placeholder="{{ 'Setting_Language' | translate }}" [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
-                        <mat-option *ngFor="let lang of languages" [value]="lang">
-                            {{ lang  }}
-                        </mat-option>
+                <mat-form-field style="width:300px; display: inline-block; margin-right: 40px;">
+                    <mat-select [(ngModel)]="selectedlanguage" (selectionChange)="onLanguageSelect()">
+                        <mat-option *ngFor="let lang of languages" [value]="lang">{{lang.label}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="selectedtheme">
             <div class="col-md-6" [ngClass]="routeAnimationsElements">
                 <mat-icon mat-list-icon>
                     format_color_fill
                 </mat-icon>
-                
-                <mat-form-field *ngIf="selectedtheme" fxFill>
-                    <mat-select [placeholder]="'anms.setting.themes.placeholder' | translate"
-                                [ngModel]="selectedtheme"
-                                (selectionChange)="onThemeSelect($event)"
-                                name="themes">
+                {{ selectedtheme.label }}
+                <mat-form-field style="width:300px; display: inline-block; margin-right: 40px;">
+                    <mat-select [(ngModel)]="selectedtheme" (selectionChange)="onThemeSelect()">
                         <mat-option *ngFor="let theme of themes" [value]="theme">
                             {{ 'anms.setting.themes.' + theme.label | translate }}
                         </mat-option>

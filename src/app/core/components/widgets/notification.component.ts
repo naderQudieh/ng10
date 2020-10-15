@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-notification',
   template: `
-    <button mat-icon-button class="matero-toolbar-button" [matMenuTriggerFor]="menu3">
+    <button mat-menu-item   class="matero-toolbar-button" [matMenuTriggerFor]="menu3">
      <mat-icon matBadge="15" matBadgeColor="warn">notifications</mat-icon>
     </button>
 

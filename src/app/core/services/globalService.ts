@@ -6,19 +6,12 @@ import { LocalStorageService } from './local-storage.service';
 
 @Injectable({providedIn: 'root'})
 export class GlobalService  { 
-    appthemes: Array<any> = [
-        { value: 'default', name: 'Default', cssClass: null },
-        { value: 'light', name: 'Light', cssClass: 'light-theme' },
-        { value: 'snow-white', name: 'Snow white', cssClass: 'snow-white-theme' },
-        { value: 'mixed', name: 'Mixed', cssClass: 'mixed-theme' },
-        { value: 'Dark', name: 'Dark', cssClass: 'dark-theme' },
-        { value: 'black', name: 'Black', cssClass: 'black-theme' }
-    ];
+  
     themes = [
-        { value: 'DEFAULT-THEME', label: 'blue' },
-        { value: 'LIGHT-THEME', label: 'light' },
-        { value: 'NATURE-THEME', label: 'nature' },
-        { value: 'BLACK-THEME', label: 'dark' }
+        { value: 'DEFAULT-THEME', label: 'Blue' },
+        { value: 'LIGHT-THEME', label: 'Light' },
+        { value: 'NATURE-THEME', label: 'Nature' },
+        { value: 'BLACK-THEME', label: 'Dark' }
     ];
 
     languages = [
@@ -42,6 +35,7 @@ export class GlobalService  {
  
     InitilizaeApp(): void {
         this.setAuthenticated(false);
+
         let lang = this.CurrentLang();
         if (lang == null || lang == undefined) {
             lang = "en";
@@ -77,24 +71,23 @@ export class GlobalService  {
 
     setLanguage(lang: string): void {
         this.localStorage.setItem('settingslang', lang)
+        console.log(lang);
         this.UserLanguage.next(lang);
     }
 
 
     getLanguage(): Observable<string> { 
-            let lang = this.localStorage.getItem('settingslang');
-            
+            let lang = this.localStorage.getItem('settingslang'); 
             if (!lang) {
                 lang = "en";
                 this.setLanguage(lang);
-            }
-            
+            } 
             return this.UserLanguage.asObservable(); 
     }
 
-    setTheme(theme: string): void {
+    setTheme(theme: string): void {  
         this.localStorage.setItem('settingstheme', theme.toLowerCase())
-        this.UserTheme.next(theme );
+        this.UserTheme.next(theme);
     }
 
 
@@ -121,7 +114,12 @@ export class GlobalService  {
         }  
     }
     private CurrentTheme(): string {
-        return this.localStorage.getItem('settingstheme') || 'DEFAULT-THEME'; 
+        try {
+            return this.localStorage.getItem('settingstheme') || 'DEFAULT-THEME'.toLowerCase();
+        } catch (err) {
+            return 'DEFAULT-THEME'.toLowerCase();
+        }  
+        
     }
     private hasToken(): boolean {
         return !!this.localStorage.getUserAuthToken();

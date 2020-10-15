@@ -43,8 +43,13 @@ export class SettingModule {
     constructor( private readonly translateService: TranslateService,
         private readonly globalVarSrv: GlobalService) {
         this.globalVarSrv.getLanguage().subscribe((language) => {
-            console.log(language);
-            this.translateService.use(language)
+            let slang = language;
+           
+            if (language['value']) {
+                slang = language['value']
+            }
+            
+            this.translateService.use(slang)
         });
         
     }

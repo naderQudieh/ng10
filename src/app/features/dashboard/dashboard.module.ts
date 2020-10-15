@@ -41,7 +41,13 @@ export function HttpLoaderFactory(http: HttpClient) {
 export class DashboardModule {
     constructor(private store: Store<AppState>, private readonly translateService: TranslateService, private readonly globalVarSrv: GlobalService) { 
         this.globalVarSrv.getLanguage().subscribe((language) => { 
-            this.translateService.use(language) 
+            let slang = language;
+
+            if (language['value']) {
+                slang = language['value']
+            }
+             
+            this.translateService.use(slang) 
         });
         //this.store.pipe(select(selectSettingLanguage))
         //    .subscribe((language) => { 

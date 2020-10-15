@@ -1,6 +1,6 @@
-<div [class]="'theme-wrapper ' + (selectedtheme)">
+<div [class]="'theme-wrapper ' + (themeClass)">
     <mat-drawer-container   autosize>
-        <mat-drawer fixedInViewport="true" position="start" #drawer class="mainsidenav" mode="over">
+        <mat-drawer style=" width: 240px;" fixedInViewport="true" position="start" #drawer class="mainsidenav" mode="over">
             <mat-toolbar color="primary">
                 {{ 'appName' | translate}}
                 <button style=" margin-left: 120px;" mat-icon-button (click)="drawer.toggle()">
@@ -24,21 +24,7 @@
             </mat-nav-list>
         </mat-drawer>
 
-        <div class="content" [@routeAnimations]="o.isActivated && o.activatedRoute.routeConfig.data && o.activatedRoute.routeConfig.data.title">
-
-
-            <div *ngIf="showLoadingBar$ | async">
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-            </div>
-
-            <div *ngIf="showSpinner$ | async" class="overlay">
-                <div class="center">
-                    <mat-spinner color="primary" style="margin:0 auto;" mode="indeterminate"> </mat-spinner>
-                </div>
-            </div>
-            <router-outlet #o="outlet"></router-outlet>
-
-        </div>
+    
         <div class="wrapper">
             <div class="toolbar">
                 <mat-toolbar color="primary">
@@ -55,30 +41,28 @@
                         <mat-icon>search</mat-icon>
                     </button>
 
-                    <span class="matero-toolbar-button" style="min-width:60px!important" matTooltip="language" *ngIf="selectedlanguage">
-                        <!--<mat-icon>translate  {{ selectedlanguage }} </mat-icon>-->
-                        <mat-select [ngModel]="selectedlanguage" (selectionChange)="onLanguageSelect($event)">
-                            <mat-option *ngFor="let l of languages" [value]="l">
-                                <span style="display:inline-block;min-width:60px">{{ l.toUpperCase() }}</span>
+
+                    <span mat-icon-button class="matero-toolbar-button" style="min-width:80px!important" matTooltip="language"
+                          *ngIf="selectedlanguage">
+                        <mat-select [(ngModel)]="selectedlanguage" (selectionChange)="onLanguageSelect()">
+                            <mat-option *ngFor="let lang of languages" [value]="lang">{{lang.label}}</mat-option>
+                        </mat-select>
+                    </span>{{ selectedtheme.label }}
+                    <span mat-icon-button class="matero-toolbar-button" style="min-width:80px!important" matTooltip="theme"
+                          *ngIf="selectedtheme">
+                        <mat-select [(ngModel)]="selectedtheme" (selectionChange)="onThemeSelect()">
+                            <mat-option *ngFor="let theme of themes" [value]="theme">
+                                {{ 'anms.setting.themes.' + theme.label | translate }}
                             </mat-option>
                         </mat-select>
                     </span>
-                    <span class="matero-toolbar-button" matTooltip="theme" *ngIf="selectedtheme">
-                        <mat-select style="min-width:80px!important" [ngModel]="selectedtheme.toUpperCase()" (selectionChange)="onThemeSelect($event)">
-                            <mat-option *ngFor="let l of themes" [value]="l">
-                                <span style="display:inline-block;min-width:60px">{{ l.toUpperCase() }}</span>
-                            </mat-option>
-                        </mat-select>
-                    </span>
+
 
                     <app-notification matTooltip="Notifications"></app-notification>
                     <a class="matero-toolbar-button" matTooltip="{{ 'main.menu.logout' | translate }}" mat-icon-button *ngIf="!(isAuthenticated$ | async)" (click)="onLoginClick()">
                         {{ 'main.menu.login' | translate }}
                     </a>
-                    <a mat-menu-item mat-icon-butto routerLink="/setting" matTooltip="{{ 'main.menu.setting' | translate }}" >
-                        <mat-icon>setting</mat-icon>   {{ 'main.menu.setting' | translate}}
-                    </a>
-                   
+
                     <a class="matero-toolbar-button" matTooltip="{{ 'main.menu.logout' | translate }}"
                        style=" display:block; max-width:60px!important"
                        *ngIf="(isAuthenticated$ | async)"
