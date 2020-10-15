@@ -41,7 +41,10 @@ export const faIconsshared: IconDefinition[] = [
     faBook
 ];
 
-
+export interface ValueLabel {
+    value: string;
+    label?: string;
+}
 
 export enum RegionTypes {
     RU = 'ru',

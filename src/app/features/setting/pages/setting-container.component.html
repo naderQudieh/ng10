@@ -6,32 +6,36 @@
     </div> 
     <ng-container>
 
-        <div class="row">
-            <div class="col-md-6" [ngClass]="routeAnimationsElements">
-                <mat-icon color="accent"><fa-icon icon="language" color="accent"></fa-icon></mat-icon>
-                <mat-form-field style="width:300px; display: inline-block; margin-right: 40px;">
-                    <mat-select [(ngModel)]="selectedlanguage" (selectionChange)="onLanguageSelect()">
-                        <mat-option *ngFor="let lang of languages" [value]="lang">{{lang.label}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
 
-        <div class="row" *ngIf="selectedtheme">
+        <div class="row">
             <div class="col-md-6" [ngClass]="routeAnimationsElements">
                 <mat-icon mat-list-icon>
                     format_color_fill
                 </mat-icon>
-                {{ selectedtheme.label }}
+
                 <mat-form-field style="width:300px; display: inline-block; margin-right: 40px;">
-                    <mat-select [(ngModel)]="selectedtheme" (selectionChange)="onThemeSelect()">
+                    <mat-select [(ngModel)]="selectedTheme" (selectionChange)="onSelectTheme()">
                         <mat-option *ngFor="let theme of themes" [value]="theme">
                             {{ 'anms.setting.themes.' + theme.label | translate }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-        </div>
-       
+        </div> 
+
+        <div class="row">
+            <div class="col-md-6" [ngClass]="routeAnimationsElements">
+                <mat-icon mat-list-icon>
+                    language
+                </mat-icon>
+
+                <mat-form-field style="width:300px; display: inline-block; margin-right: 40px;">
+                    <mat-select [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageSelect()">
+                        <mat-option *ngFor="let language of languages" [value]="language">{{language.label}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div> 
+
     </ng-container>
 </div>

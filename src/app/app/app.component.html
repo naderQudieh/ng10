@@ -42,15 +42,18 @@
                     </button>
 
 
+
+
                     <span mat-icon-button class="matero-toolbar-button" style="min-width:80px!important" matTooltip="language"
-                          *ngIf="selectedlanguage">
-                        <mat-select [(ngModel)]="selectedlanguage" (selectionChange)="onLanguageSelect()">
-                            <mat-option *ngFor="let lang of languages" [value]="lang">{{lang.label}}</mat-option>
+                          *ngIf="selectedLanguage">
+                        <mat-select [(ngModel)]="selectedLanguage" (selectionChange)="onLanguageSelect()">
+                            <mat-option *ngFor="let language of languages" [value]="language">{{language.label}}</mat-option>
                         </mat-select>
-                    </span>{{ selectedtheme.label }}
+                    </span>
+
                     <span mat-icon-button class="matero-toolbar-button" style="min-width:80px!important" matTooltip="theme"
-                          *ngIf="selectedtheme">
-                        <mat-select [(ngModel)]="selectedtheme" (selectionChange)="onThemeSelect()">
+                          *ngIf="selectedTheme">
+                        <mat-select [(ngModel)]="selectedTheme" (selectionChange)="onSelectTheme()">
                             <mat-option *ngFor="let theme of themes" [value]="theme">
                                 {{ 'anms.setting.themes.' + theme.label | translate }}
                             </mat-option>

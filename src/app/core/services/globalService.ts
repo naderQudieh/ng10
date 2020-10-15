@@ -1,19 +1,23 @@
-﻿import { Injectable } from '@angular/core';
+﻿/// <reference path="../constants.ts" />
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, of, Observable} from 'rxjs'
 import {shareReplay, map} from 'rxjs/operators' 
 import { AuthService } from './auth.service';
 import { LocalStorageService } from './local-storage.service';
+import { ValueLabel } from '../constants';
+
+
 
 @Injectable({providedIn: 'root'})
 export class GlobalService  { 
-  
-    themes = [
-        { value: 'DEFAULT-THEME', label: 'Blue' },
-        { value: 'LIGHT-THEME', label: 'Light' },
-        { value: 'NATURE-THEME', label: 'Nature' },
-        { value: 'BLACK-THEME', label: 'Dark' }
-    ];
 
+    themes = [
+        { value: 'default-theme', label: 'Blue' },
+        { value: 'light-theme', label: 'Light' },
+        { value: 'nature-theme', label: 'Nature' },
+        { value: 'black-theme',label:  'Dark' }
+    ];
+    
     languages = [
         { value: 'en', label: 'English' },
         { value: 'fr', label: 'Français' },
@@ -21,8 +25,8 @@ export class GlobalService  {
     ];
 
     public isAuthenticated = new BehaviorSubject<boolean>(this.hasToken());   
-    public UserLanguage = new BehaviorSubject<string>(this.CurrentLang());
-    public UserTheme = new BehaviorSubject<string>(this.CurrentTheme());
+    public UserLanguage = new BehaviorSubject<string>(this.CurrentLang()); 
+    public Userthemes = new BehaviorSubject<ValueLabel>(this.CurrentTheme());
 
     private progressBar  = new BehaviorSubject<boolean>(false);
     private spinnerBar = new BehaviorSubject<boolean>(false);
@@ -42,11 +46,13 @@ export class GlobalService  {
             this.setLanguage(lang);
         }
 
-        let theme = this.CurrentTheme();
-        if (theme == null || theme == undefined) {
-            lang = "default-theme";
-            this.setTheme(lang);
+        let themes = this.CurrentTheme();
+        if (themes == null || themes == undefined) { 
+            this.setTheme(this.themes[0]);
         }
+
+       
+       
     }
      
 
@@ -66,44 +72,31 @@ export class GlobalService  {
         return this.isAuthenticated.asObservable();
     }
 
-
-    
-
-    setLanguage(lang: string): void {
-        this.localStorage.setItem('settingslang', lang)
-        console.log(lang);
-        this.UserLanguage.next(lang);
+    getThemeList(): ValueLabel[] {
+        return this.themes;
+    }
+    private CurrentTheme(): ValueLabel {
+        try {
+            return JSON.parse(this.localStorage.getItem('settingstheme') );
+        } catch (err) {
+            return this.themes[0];
+        }
+    }
+    setTheme(theme: ValueLabel): void {
+        this.localStorage.setItem('settingstheme', JSON.stringify(theme)) 
+        this.Userthemes.next(theme);
     }
 
 
-    getLanguage(): Observable<string> { 
-            let lang = this.localStorage.getItem('settingslang'); 
-            if (!lang) {
-                lang = "en";
-                this.setLanguage(lang);
-            } 
-            return this.UserLanguage.asObservable(); 
+    getTheme(): Observable<ValueLabel> {
+        let theme = this.localStorage.getItem('settingstheme');
+        if (!theme) { 
+            this.setTheme(this.themes[0]);
+        }
+        return this.Userthemes.asObservable();
     }
 
-    setTheme(theme: string): void {  
-        this.localStorage.setItem('settingstheme', theme.toLowerCase())
-        this.UserTheme.next(theme);
-    }
-
-
-    getTheme(): Observable<string> {
-        let theme = this.localStorage.getItem('settingstheme');  
-        if (!theme) {
-            theme = "default-theme" ;
-            this.setTheme(theme);
-        } 
-        return this.UserTheme.asObservable();
-    }
-
-    getThemesList(): any[]  { 
-        return this.themes ;
-    }
-    getLanguages(): any[] {
+    getLanguageList(): any[] {
         return this.languages;
     }
     private CurrentLang(): string {
@@ -111,16 +104,27 @@ export class GlobalService  {
             return this.localStorage.getItem('settingslang') || 'en';
         } catch (err) {
             return 'en';
-        }  
+        }
     }
-    private CurrentTheme(): string {
-        try {
-            return this.localStorage.getItem('settingstheme') || 'DEFAULT-THEME'.toLowerCase();
-        } catch (err) {
-            return 'DEFAULT-THEME'.toLowerCase();
-        }  
-        
+    setLanguage(lang: string): void {
+        this.localStorage.setItem('settingslang', lang)
+        console.log(lang);
+        this.UserLanguage.next(lang);
     }
+
+
+    getLanguage(): Observable<string> {
+        let lang = this.localStorage.getItem('settingslang');
+        if (!lang) {
+            lang = "en";
+            this.setLanguage(lang);
+        }
+        return this.UserLanguage.asObservable();
+    }
+    
+ 
+  
+  
     private hasToken(): boolean {
         return !!this.localStorage.getUserAuthToken();
     } 

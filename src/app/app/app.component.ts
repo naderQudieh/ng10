@@ -47,25 +47,30 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     ];
   
     isLoggedIn: boolean;
-    themeClass = "DEFAULT-THEME".toLowerCase();
-    public selectedtheme: any;
-    public selectedlanguage: any;
-  
+    themeClass = "default-theme" ;
+
+    public languages: any[];
+    public themes: any[];
+    
+
+    
+    public selectedLanguage: any;
+    public selectedTheme: any;
+    
     isAuthenticated$: Observable<boolean>;
     showLoadingBar$: Observable<boolean>;
     showSpinner$: Observable<boolean>;
-    public languages: any[]
-    public themes: any[]  
+ 
     private _dirChangeSubscription = Subscription.EMPTY;
     @Output() toggleSidenavNotice = new EventEmitter<void>();
 
-    constructor(dir: Directionality, private changeDetectorRef: ChangeDetectorRef,
+    constructor(dir: Directionality, private cdRef: ChangeDetectorRef,
         private media: MediaMatcher,
         @Inject(DOCUMENT) private document: Document, private globalService: GlobalService,
         private overlayContainer: OverlayContainer, private router: Router, private store: Store<AppState>) {
 
         this.mobileQuery = this.media.matchMedia('(max-width: 1000px)');
-        this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+        this._mobileQueryListener = () => cdRef.detectChanges();
         // tslint:disable-next-line: deprecation
         this.mobileQuery.addListener(this._mobileQueryListener);
 
@@ -84,8 +89,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         //    this.isRtl2 = drc;
         //});
         this.isAuthenticated$ = this.globalService.getIsAuthenticated(); 
-        this.languages = this.globalService.getLanguages() ;
-        this.themes = this.globalService.getThemesList() ;
+        this.languages = this.globalService.getLanguageList();
+        this.themes = this.globalService.getThemeList();
+         
          
     }
    
@@ -103,16 +109,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             let applang = this.languages.filter(item => {
                 return item.value  == lang ;
             }); 
-            this.selectedlanguage = applang[0]; 
+            this.selectedLanguage = applang[0]; 
         }) 
-       
-        this.globalService.UserTheme.subscribe(theme => { 
-            let apptheme = this.themes.filter(item => {
-                return item.value.toLowerCase() == theme.toLowerCase()
-            });
-            this.selectedtheme = apptheme[0];
-            console.log(this.selectedtheme);
-            this.themeClass = theme.toLowerCase(); 
+
+        this.globalService.Userthemes.subscribe(theme => { 
+            let apptheme = this.themes.filter(item => { 
+                return item.value == theme.value;
+            }); 
+            this.selectedTheme = apptheme[0];
             const classList = this.overlayContainer.getContainerElement().classList;
             const toRemove = Array.from(classList).filter((item: string) =>
                 item.includes('-theme')
@@ -120,19 +124,21 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             if (toRemove.length) {
                 classList.remove(...toRemove);
             }
+            this.themeClass = this.selectedTheme['value']; 
             classList.add(this.themeClass); 
         }) 
+         
         
     }
-
-    onThemeSelect() { 
-        
-        this.globalService.setTheme(this.selectedtheme['value']);
-    }
+    onSelectTheme() {
+        this.cdRef.detectChanges();
+        this.globalService.setTheme(this.selectedTheme );
+    } 
+    
 
     onLanguageSelect() {
-        
-        this.globalService.setLanguage(this.selectedlanguage['value']); 
+        this.cdRef.detectChanges();
+        this.globalService.setLanguage(this.selectedLanguage['value']); 
     }
 
    
@@ -158,7 +164,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         htmlTag.dir = (this.isRtl) ? "rtl" : "ltr";
         //this.changeCssFile(lang);
     }
-
+    
     changeCssFile(lang: string) {
         //let headTag = this.document.getElementsByTagName(
         //    "head"
@@ -181,7 +187,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         //}
     }
     ngAfterViewInit(): void {
-        this.changeDetectorRef.detectChanges();
+        this.cdRef.detectChanges();
     }
     ngOnDestroy() {
         this.mobileQuery.removeListener(this._mobileQueryListener); 

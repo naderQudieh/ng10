@@ -1,5 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, ChangeDetectionStrategy, ViewEncapsulation, } from '@angular/core';
+import { Inject, ChangeDetectorRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { AppState, routeAnimations } from '../../../core/core.module';
 import { Observable } from 'rxjs';
 import { GlobalService } from '../../../core/services';
 import { ROUTE_ANIMATIONS_ELEMENTS } from '../../../core/core.module';
@@ -7,56 +9,69 @@ import { TranslateService } from '@ngx-translate/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
-  selector: 'anms-setting',
+    selector: 'anms-setting',
+    animations: [routeAnimations],
   templateUrl: './setting-container.component.html',
   styleUrls: ['./setting-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SettingContainerComponent implements OnInit {
+export class SettingContainerComponent implements OnInit, OnDestroy, AfterViewInit {
   routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
- 
+  
+    public languages: any[];
+    public themes: any[];
+   
 
-    public languages: any[]
-    public themes: any[]  
-    public selectedtheme : any ;
-    public selectedlanguage: any;
+    public selectedTheme: any;
+    public selectedLanguage: any;
+    public selectedCountry: any;
+   
 
-    constructor(private overlayContainer: OverlayContainer, private translate: TranslateService, private globalService: GlobalService,) {
-        this.languages = this.globalService.getLanguages() ;
-        this.themes = this.globalService.getThemesList(); 
-        
-    }
+    constructor(private cdRef: ChangeDetectorRef,  private translate: TranslateService, private globalService: GlobalService,) {
+        this.languages = this.globalService.getLanguageList() ;
+        this.themes = this.globalService.getThemeList();  
+     }
 
     ngOnInit() {
-        this.globalService.UserTheme.subscribe(theme => { 
-
-            let apptheme = this.themes.filter(item => {
-                return item.value.toLowerCase()  == theme.toLowerCase()
-            }); 
-            this.selectedtheme = apptheme[0];
-            console.log(this.selectedtheme);
-           
-        })
+        
         
         this.globalService.UserLanguage.subscribe(lang => { 
             let applang = this.languages.filter(item => { 
                 return item.value  == lang  ;  
             });
-            this.selectedlanguage = applang[0];
-            
+            this.selectedLanguage = applang[0]; 
+            this.cdRef.detectChanges();
         })
+
+        this.globalService.Userthemes.subscribe(theme => {
+            console.log(theme);
+            let apptheme = this.themes.filter(item => {
+                return item.value == theme.value;
+            });
+            this.selectedTheme = apptheme[0];
+            this.cdRef.detectChanges();
+        }) 
     }
 
     onLanguageSelect() {
-       
-        this.globalService.setLanguage(this.selectedlanguage['value']);
+        this.cdRef.detectChanges();
+        this.globalService.setLanguage(this.selectedLanguage['value']);
     }
       
-    onThemeSelect() { 
-        this.globalService.setTheme(this.selectedtheme['value'] );  
+   
+    onSelectTheme() {
+        this.cdRef.detectChanges();
+        this.globalService.setTheme(this.selectedTheme );
     } 
-
-
+    compareFn(x: any, y: any): boolean {
+        return x && y ? x.value === y.value : x === y;
+    }
+    ngAfterViewInit(): void {
+        this.cdRef.detectChanges();
+    }
+    ngOnDestroy() {
+         
+    }
     //onThemeSelect({ value: theme }) {
     //    console.log(theme);
     //    let apptheme = this.themes.filter(item => {
